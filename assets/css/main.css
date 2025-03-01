@@ -2098,6 +2098,76 @@ input, select, textarea {
 				opacity: 1.0;
 			}
 
+			/* Search and Filter */
+			#search-filter {
+				margin-bottom: 2em;
+				text-align: center;
+			}
+
+			#search-bar {
+				width: 80%;
+				padding: 0.5em;
+				border: 2px solid #efefef;
+				border-radius: 0.35em;
+			}
+
+			#filter-toggles {
+				margin-top: 1em;
+			}
+
+			#filter-toggles label {
+				margin-right: 1em;
+			}
+
+			/* Project Grid */
+			#projects .grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 1em;
+			}
+
+			#projects .tile {
+				position: relative;
+				width: calc(33.333% - 1em);
+			}
+
+			#projects .tile .overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.5);
+				color: white;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				opacity: 0;
+				transition: opacity 0.3s;
+			}
+
+			#projects .tile:hover .overlay {
+				opacity: 1;
+			}
+
+			#projects .tile h3, #projects .tile p {
+				margin: 0;
+			}
+
+			/* Responsive */
+			@media screen and (max-width: 980px) {
+				#projects .tile {
+					width: calc(50% - 1em);
+				}
+			}
+
+			@media screen and (max-width: 736px) {
+				#projects .tile {
+					width: 100%;
+				}
+			}
+
 		.image img {
 			border-radius: 0.35em;
 			display: block;

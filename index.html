@@ -26,6 +26,41 @@
 		<!-- Main -->
 			<div id="main">
 
+					<!-- Search and Filter -->
+					<section id="search-filter">
+						<input type="text" id="search-bar" placeholder="Search projects..." />
+						<div id="filter-toggles">
+							<label><input type="checkbox" name="filter" value="3D printing"> 3D Printing</label>
+							<label><input type="checkbox" name="filter" value="CAD"> CAD</label>
+							<label><input type="checkbox" name="filter" value="Woodwork"> Woodwork</label>
+						</div>
+					</section>
+
+					<!-- Projects -->
+					<section id="projects">
+						<div class="grid">
+							<div class="tile" data-tags="3D printing CAD">
+								<a href="project1.html" class="image fit thumb">
+									<img src="images/thumbs/01.jpg" alt="" />
+									<div class="overlay">
+										<h3>Project 1</h3>
+										<p>Tagline for project 1</p>
+									</div>
+								</a>
+							</div>
+							<div class="tile" data-tags="Woodwork">
+								<a href="project2.html" class="image fit thumb">
+									<img src="images/thumbs/02.jpg" alt="" />
+									<div class="overlay">
+										<h3>Project 2</h3>
+										<p>Tagline for project 2</p>
+									</div>
+								</a>
+							</div>
+							<!-- ...more project tiles... -->
+						</div>
+					</section>
+
 				<!-- One -->
 					<section id="one">
 						<header class="major">
@@ -458,6 +493,27 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+				// JavaScript for search and filter functionality
+				document.getElementById('search-bar').addEventListener('input', function() {
+					const query = this.value.toLowerCase();
+					document.querySelectorAll('.tile').forEach(tile => {
+						const title = tile.querySelector('h3').textContent.toLowerCase();
+						tile.style.display = title.includes(query) ? '' : 'none';
+					});
+				});
+
+				document.querySelectorAll('#filter-toggles input').forEach(checkbox => {
+					checkbox.addEventListener('change', function() {
+						const activeFilters = Array.from(document.querySelectorAll('#filter-toggles input:checked')).map(cb => cb.value);
+						document.querySelectorAll('.tile').forEach(tile => {
+							const tags = tile.getAttribute('data-tags').split(' ');
+							const matches = activeFilters.every(filter => tags.includes(filter));
+							tile.style.display = matches ? '' : 'none';
+						});
+					});
+				});
+			</script>
 
 	</body>
 </html>
