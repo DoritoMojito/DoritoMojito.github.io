@@ -37,12 +37,13 @@ body {
 
 
 .project-grid {
+	position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Updated auto-fill */
     gap: 15px;
     padding: 20px;
     max-width: 90%;
-    margin: auto;
+    margin: 0 auto;
 }
 
 .project-tile {
