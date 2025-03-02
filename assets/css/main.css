@@ -1,3 +1,55 @@
+#header {
+	display:block;
+	flex-direction: column;
+	align-items: flex-end;
+	justify-content: space-between;
+	background-color: #606060;
+	background-attachment: scroll,								scroll;
+	background-image: url("images/overlay.png"), url("../../images/bg.jpg");
+	background-position: top left,							top left;
+	background-repeat: repeat,								no-repeat;
+	background-size: auto,								150%;
+	color: rgba(255, 255, 255, 0.5);
+	height: 100%;
+	left: 0;
+	padding: 8em 4em;
+	position: fixed;
+	text-align: right;
+	top: 0;
+	width: 35%;
+}
+
+	#header > * {
+		flex-shrink: 0;
+		width: 100%;
+	}
+
+	#header > .inner {
+		flex-grow: 1;
+		margin: 0 0 2em 0;
+	}
+
+	#header strong, #header b {
+		color: #ffffff;
+	}
+
+	#header h2, #header h3, #header h4, #header h5, #header h6 {
+		color: #ffffff;
+	}
+
+	#header h1 {
+		color: rgba(255, 255, 255, 0.5);
+		font-size: 1.35em;
+		line-height: 1.75em;
+		margin: 0;
+	}
+
+	#header .image.avatar {
+		margin: 0 0 1em 0;
+		width: 6.25em;
+	}
+
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
@@ -28,13 +80,8 @@ body {
 .filter-btn.active {
     background: #00759c; /* Change color when active */
     transform: scale(1.05); /* Optional: adds a slight scale effect */
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle inset shadow */
 }
-
-.filter-btn:active {
-    background: #004d67; /* Slightly darker when pressed */
-    color: white;
-}
-
 
 .project-grid {
 	position: relative;
@@ -57,7 +104,7 @@ body {
 }
 
 .project-tile:hover {
-    -transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .project-tile .tags span {
@@ -87,9 +134,8 @@ body {
     left: 0;
 	padding-inline-start: 2%;
     width: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
-    -padding: 10px;
     transform: translateY(100%);
     transition: transform 0.3s ease;
 }
@@ -123,36 +169,78 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, .25);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+	opacity: 0; /* Start with it invisible */
+    transition: opacity 0.5s ease; /* Only apply opacity transition to the background */
+}
+
+.expanded-view.show {
+    opacity: 1; /* Fade to fully visible */
 }
 
 .expanded-view iframe {
     width: 80%;
     height: 80%;
-	border-radius: 8px;
-	border: none;
+    border-radius: 10px;
+    border: none;
     background: white;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+	transform: scale(0.9); /* Start with the iframe slightly smaller */
+    transition: transform 0.5s ease; /* Apply smooth scaling transition only to the iframe */
+}
+
+.expanded-view.show iframe {
+    transform: scale(1); /* Grow iframe to normal size */
 }
 
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: red;
+    top: 10px;
+    right: 10px;
+    background: transparent;
     color: white;
-	border-radius: 4px;
     border: none;
-    padding: 10px;
+    font-size: 30px; /* Make the X larger */
     cursor: pointer;
-    font-size: 16px;
+    padding: 5px;
+    font-weight: bold;
 }
 
 .close-btn:hover {
-    background: darkred;
-    transform: scale(1.05); /* Slight scale effect */
+    color: #ff0000; /* Optional: Change color when hovering */
 }
+
+.share-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it's above the iframe */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.share-btn i {
+    font-size: 18px;
+}
+
+.share-btn:hover {
+    background: #0056b3;
+}
+
+.share-btn:active {
+    background: #004085;
+}
+
 
