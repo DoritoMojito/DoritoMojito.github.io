@@ -1,104 +1,41 @@
-<div class="featured_projects" unique-script-id="w-w-dm-id">
-	<div class="container-block bg">
-	  <p class="text-blk heading">
-		Featured Projects
-	  </p>
-	  <div class="responsive-container-block opt-cont">
-		<p class="text-blk tab tab-active" data-filter="all">
-		  All
-		</p>
-		<p class="text-blk tab" data-filter="webdes">
-		  Web Design
-		</p>
-		<p class="text-blk tab" data-filter="graphdes">
-		  Graphics Design
-		</p>
-		<p class="text-blk tab" data-filter="webdev">
-		  Web Development
-		</p>
-		<p class="text-blk tab" data-filter="mobdev">
-		  Mobile Development
-		</p>
-	  </div>
-	  <div class="responsive-container-block content">
-		<div class="responsive-container-block img webdes webdev">
-		  <img class="im image-block" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/P7.3.png">
-		  <div class="responsive-container-block overlay">
-		  </div>
-		  <div class="responsive-container-block desc">
-			<p class="text-blk title">
-			  Service Rendered
-			</p>
-			<p class="text-blk info">
-			  Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur
-			</p>
-		  </div>
-		</div>
-		<div class="responsive-container-block img webdes webdev">
-		  <div class="responsive-container-block overlay overlay-visible">
-		  </div>
-		  <div class="responsive-container-block desc">
-			<p class="text-blk title">
-			  Service Rendered
-			</p>
-			<p class="text-blk info">
-			  Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur
-			</p>
-		  </div>
-		  <img class="im" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/P7.1.png">
-		</div>
-		<div class="responsive-container-block img webdes webdev">
-		  <div class="responsive-container-block overlay">
-		  </div>
-		  <div class="responsive-container-block desc">
-			<p class="text-blk title">
-			  Service Rendered
-			</p>
-			<p class="text-blk info">
-			  Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur
-			</p>
-		  </div>
-		  <img class="im" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/P7.3.png">
-		</div>
-		<div class="responsive-container-block img graphdes mobdev">
-		  <img class="im" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/P7.1.png">
-		  <div class="responsive-container-block overlay">
-		  </div>
-		  <div class="responsive-container-block desc">
-			<p class="text-blk title">
-			  Service Rendered
-			</p>
-			<p class="text-blk info">
-			  Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur
-			</p>
-		  </div>
-		</div>
-		<div class="responsive-container-block img graphdes mobdev">
-		  <div class="responsive-container-block overlay">
-		  </div>
-		  <div class="responsive-container-block desc">
-			<p class="text-blk title">
-			  Service Rendered
-			</p>
-			<p class="text-blk info">
-			  Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur
-			</p>
-		  </div>
-		  <img class="im" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/P7.3.png">
-		</div>
-		<div class="responsive-container-block img graphdes mobdev">
-		  <img class="im" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/P7.1.png">
-		  <div class="responsive-container-block overlay">
-		  </div>
-		  <div class="responsive-container-block desc">
-			<p class="text-blk title">
-			  Service Rendered
-			</p>
-			<p class="text-blk info">
-			  Lorem ipsum dolor sit amet, conse ctetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur
-			</p>
-		  </div>
-		</div>
-	  </div>
-	</div>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Showcase</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div class="filter-container">
+        <button class="filter-btn" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="woodworking">Woodworking</button>
+        <button class="filter-btn" data-filter="CAD">CAD</button>
+		<button class="filter-btn" data-filter="3DP">3D Printing</button>
+        <!-- Add more filter buttons as needed -->
+    </div>
+    
+    <div class="project-grid">
+        <div class="project-tile" data-category="3DP, CAD" data-modified="2025-02-20">
+            <img src="assets/images/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 1" class="project-image">
+            <div class="overlay">
+                <h3>Splitbox</h3>
+                <p>Last Modified: 2025-02-20</p>
+                <span class="status finished">✔</span>
+            </div>
+        </div>
+        
+        <div class="project-tile" data-category="cad" data-modified="2025-01-15">
+            <img src="project2.jpg" alt="Project 2" class="project-image">
+            <div class="overlay">
+                <h3>Project Name</h3>
+                <p>Last Modified: 2025-01-15</p>
+                <span class="status wip">🛠</span>
+            </div>
+        </div>
+        <!-- More project tiles here -->
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
