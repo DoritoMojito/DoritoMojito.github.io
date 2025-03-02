@@ -11,7 +11,7 @@ body {
 }
 
 .filter-btn {
-    background: #4b6d91;
+    background: #383838;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -22,15 +22,20 @@ body {
 }
 
 .filter-btn:hover {
-    background: #0056b3;
+    background: #004d67;
+}
+
+.filter-btn:active {
+	background: #00759c;
+	color: white;
 }
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 15px;
     padding: 20px;
-    max-width: 1200px;
+    max-width: 90%;
     margin: auto;
 }
 
@@ -46,6 +51,19 @@ body {
 
 .project-tile:hover {
     -transform: scale(1.05);
+}
+
+.project-tile .tags {
+	margin-top: 10px;
+	font-size: 14px;
+	color: #555;
+}
+  
+.project-tile .tags span {
+	background-color: #f0f0f0;
+	border-radius: 5px;
+	padding: 5px 10px;
+	margin-right: 5px;
 }
 
 .project-image {
@@ -88,4 +106,38 @@ body {
 
 .status.cancelled {
     color: red;
+}
+
+.expanded-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.expanded-view iframe {
+    width: 80%;
+    height: 80%;
+	border-radius: 8px;
+	border: none;
+    background: white;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: red;
+    color: white;
+	border-radius: 4px;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
 }
