@@ -1,55 +1,3 @@
-#header {
-	display:block;
-	flex-direction: column;
-	align-items: flex-end;
-	justify-content: space-between;
-	background-color: #606060;
-	background-attachment: scroll,								scroll;
-	background-image: url("images/overlay.png"), url("../../images/bg.jpg");
-	background-position: top left,							top left;
-	background-repeat: repeat,								no-repeat;
-	background-size: auto,								150%;
-	color: rgba(255, 255, 255, 0.5);
-	height: 100%;
-	left: 0;
-	padding: 8em 4em;
-	position: fixed;
-	text-align: right;
-	top: 0;
-	width: 35%;
-}
-
-	#header > * {
-		flex-shrink: 0;
-		width: 100%;
-	}
-
-	#header > .inner {
-		flex-grow: 1;
-		margin: 0 0 2em 0;
-	}
-
-	#header strong, #header b {
-		color: #ffffff;
-	}
-
-	#header h2, #header h3, #header h4, #header h5, #header h6 {
-		color: #ffffff;
-	}
-
-	#header h1 {
-		color: rgba(255, 255, 255, 0.5);
-		font-size: 1.35em;
-		line-height: 1.75em;
-		margin: 0;
-	}
-
-	#header .image.avatar {
-		margin: 0 0 1em 0;
-		width: 6.25em;
-	}
-
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
@@ -57,40 +5,89 @@ body {
     padding: 0;
 }
 
-.filter-container {
-    text-align: center;
-    margin: 20px 0;
+.content-wrapper {
+    display: flex;
+	justify-self: center;
+    align-items: flex-start; /* Align items at the top */
+    gap: 20px;
+    max-width: 90%;
+    margin: auto;
+}
+
+.filter-dropdown-container {
+    position: relative;
+	justify-self: center;
+    display: inherit;
+    text-align: left; /* Align to the left */
+    margin-bottom: 15px;
+}
+
+.filter-dropdown {
+    cursor: pointer;
+	justify-self: center;
+	display: inherit;
+    padding: 10px;
+    background-color: #00759c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.filter-dropdown:hover {
+    background-color: #004d67;
+}
+
+.filter-menu {
+    display: none; /* Hidden by default */
+	justify-self: center;
+    position: absolute;
+    top: 100%; /* Position directly below the button */
+    width: auto; /* Adjust width as needed */
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for dropdown */
+    border-radius: 5px;
+    margin-top: 5px; /* Space between the button and the dropdown */
+}
+
+.filter-menu.open {
+    display: inherit; /* Show the dropdown when 'open' class is added */
+	width: 100%;
 }
 
 .filter-btn {
-    background: #383838;
-    color: white;
+    display: inherit;
+	justify-self: inherit;
+    width: 95%;
+    padding: 8px;
+    margin: 5px 0;
+    background: #eee;
     border: none;
-    padding: 10px 15px;
-    margin: 5px;
+    text-align: left;
     cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s;
+    border-radius: 5px; /* Rounded corners for filter buttons */
+}
+
+.filter-btn.active {
+    background: #00759c;
+    color: white;
 }
 
 .filter-btn:hover {
     background: #004d67;
 }
 
-.filter-btn.active {
-    background: #00759c; /* Change color when active */
-    transform: scale(1.05); /* Optional: adds a slight scale effect */
-	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle inset shadow */
-}
-
 .project-grid {
-	position: relative;
+    flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Updated auto-fill */
+    grid-template-columns: repeat(auto-fit, minmax(20vw, 80vw));
+	justify-self: center;
     gap: 15px;
     padding: 20px;
-    max-width: 90%;
-    margin: 0 auto;
+    max-width: 100%;
 }
 
 .project-tile {
@@ -138,6 +135,7 @@ body {
     color: white;
     transform: translateY(100%);
     transition: transform 0.3s ease;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .project-tile:hover .overlay {
@@ -175,12 +173,33 @@ body {
     align-items: center;
     z-index: 1000;
 	opacity: 0; /* Start with it invisible */
-    transition: opacity 0.5s ease; /* Only apply opacity transition to the background */
+	transform: scale(1); /* Start with it smaller */
+    transition: opacity 0.5s ease, transform 0.3s ease; /* Only apply opacity transition to the background */
 }
 
 .expanded-view.show {
     opacity: 1; /* Fade to fully visible */
+	transform: scale(1); /* Grow the background to full size */
 }
+
+/* .expanded-content {
+    position: fixed;
+    background: none;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} */
+
+/*.expanded-content iframe {
+    width: 90%;
+    height: 90%;
+    border-radius: 8px;
+    border: none;
+}*/
 
 .expanded-view iframe {
     width: 80%;
@@ -198,16 +217,16 @@ body {
 }
 
 .close-btn {
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
-    background: transparent;
-    color: white;
+    background: none; /* Transparent background */
+    /*color: white;*/
     border: none;
-    font-size: 30px; /* Make the X larger */
+    font-size: 20px; /* Make the X larger */
     cursor: pointer;
-    padding: 5px;
-    font-weight: bold;
+    /*padding: 5px;
+    font-weight: bold;*/
 }
 
 .close-btn:hover {
@@ -221,7 +240,7 @@ body {
     background: #007bff;
     color: white;
     border: none;
-    font-size: 16px;
+    font-size: 20px;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;

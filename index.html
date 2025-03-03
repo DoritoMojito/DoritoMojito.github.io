@@ -6,63 +6,41 @@
     <title>Project Showcase</title>
     <link rel="stylesheet" href="assets/css/main.css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<script src="assets/js/main.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked@4.0.10/lib/marked.min.js"></script>
 </head>
+<!-- <header class="header">
+    <h1 style="text-align: center; margin-top: 10px;">Welcome to My Project Showcase</h1>
+    <p style="text-align: center; margin-top: 10px;">Here you can explore my various projects. Use the filters to find specific categories of work. Each project includes details and can be expanded for more in-depth viewing.</p>
+</header> -->
+
 <body>
-    <div class="filter-container">
-        <button class="filter-btn" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
-        <button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
-		<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
-		<button class="filter-btn" data-filter="CAD">CAD</button>
-		<button class="filter-btn" data-filter="3DP">3D Printing</button>
-		
-        <!-- Add more filter buttons as needed -->
-    </div>
-    
+	
+	<div class="filter-dropdown-container">
+		<button id="filter-dropdown" class="filter-dropdown">Filter Projects ▼</button>		
+		<div id="filter-menu" style="text-align: center; margin-top: 10px;" class="filter-menu">
+			<button class="filter-btn" data-filter="all">All</button>
+			<button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
+			<button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
+			<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
+			<button class="filter-btn" data-filter="CAD">CAD</button>
+			<button class="filter-btn" data-filter="3DP">3D Printing</button>
+			<!-- Add more filter buttons as needed -->
+			
+		</div>
+	</div>
+	<div id="project-count" style="text-align: center; margin-top: 10px;">Showing X projects</div>
     <div class="project-grid">
-        <div class="project-tile" data-tags="3DP,CAD" data-modified="2025-02-20" data-url="https://en.wikipedia.org/wiki/Scope_creep">
+        <div class="project-tile" data-tags="3DP,CAD" data-modified="2025-02-20" data-url="/projects/L13 Cell biology.md">
             <img src="assets/images/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 1" class="project-image">
             <div class="overlay">
                 <h3>Splitbox</h3>
-                <p>Last Modified: 2025-02-20</p>
+                <p class="last-modified">Loading...</p>
                 <span class="status finished">✔</span>
             </div>
         </div>
-        <div class="project-tile" data-tags="CAD" data-modified="2025-01-15" data-url="projects/">
-            <img src="project2.jpg" alt="Project 2" class="project-image">
-            <div class="overlay">
-                <h3>Project Name</h3>
-                <p>Last Modified: 2025-01-15</p>
-                <span class="status wip">🛠</span>
-            </div>
-        </div>
-		<div class="project-tile" data-tags="CAD" data-modified="2025-01-15" data-url="projects/">
-            <img src="project3.jpg" alt="Project 3" class="project-image">
-            <div class="overlay">
-                <h3>Project Name</h3>
-                <p>Last Modified: 2025-01-15</p>
-                <span class="status wip">🛠</span>
-            </div>
-        </div>
-		<div class="project-tile" data-tags="CAD" data-modified="2025-01-15" data-url="projects/">
-            <img src="project4.jpg" alt="Project 4" class="project-image">
-            <div class="overlay">
-                <h3>Project Name</h3>
-                <p>Last Modified: 2025-01-15</p>
-                <span class="status wip">🛠</span>
-            </div>
-        </div>
-		<div class="project-tile" data-tags="LeatherWorking" data-modified="2025-01-15" data-url="projects/">
-			<img src="project5.jpg" alt="Project 5" class="project-image">
-			<div class="overlay">
-				<h3>Project Name</h3>
-				<p>Last Modified: 2025-01-15</p>
-				<span class="status wip">🛠</span>
-			</div>
-		</div>		
         <!-- More project tiles here -->
-    </div>
-
-    <script src="assets/js/main.js"></script>
+    </div>	
+	
 </body>
 </html>

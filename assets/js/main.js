@@ -1,85 +1,136 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const filterDropdown = document.getElementById("filter-dropdown");
+    const filterMenu = document.getElementById("filter-menu");
     const filterButtons = document.querySelectorAll(".filter-btn");
     const projectTiles = document.querySelectorAll(".project-tile");
-    let selectedFilters = new Set();
-    
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            button.classList.toggle('active');
-            const activeFilters = Array.from(filterButtons)
-                .filter(btn => btn.classList.contains('active'))
-                .map(btn => btn.dataset.filter);
+    const projectCount = document.getElementById("project-count");
 
-            if (activeFilters.includes('all') || activeFilters.length === 0) {
-                projectTiles.forEach(tile => {
-                    tile.style.display = 'block';
-                });
+    // Check if filterDropdown and filterMenu exist
+    if (!filterDropdown || !filterMenu) return; // Exit early if these elements don't exist
+
+    let activeFilters = new Set();
+
+    // Toggle dropdown visibility
+    filterDropdown.addEventListener("click", (event) => {
+        event.stopPropagation();  // Prevent closing the dropdown if clicked inside
+        filterMenu.classList.toggle("open");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!filterDropdown.contains(event.target) && !filterMenu.contains(event.target)) {
+            filterMenu.classList.remove("open");
+        }
+    });
+
+    function updateProjectVisibility() {
+        let visibleCount = 0;
+
+        projectTiles.forEach(tile => {
+            const tags = tile.dataset.tags ? tile.dataset.tags.split(",") : [];
+            const matches = [...activeFilters].some(filter => tags.includes(filter));
+
+            if (activeFilters.size === 0 || matches) {
+                tile.style.display = "block";
+                visibleCount++;
             } else {
-                projectTiles.forEach(tile => {
-                    const tags = tile.dataset.tags.split(',');
-                    const matches = activeFilters.some(filter => tags.includes(filter));
-                    tile.style.display = matches ? 'block' : 'none'; 
-                });
+                tile.style.display = "none";
             }
+        });
+
+        projectCount.textContent = `Showing ${visibleCount} projects`;
+    }
+
+    // Handle filter button clicks
+    filterButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const filter = button.dataset.filter;
+
+            if (filter === "all") {
+                activeFilters.clear();
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+            } else {
+                if (activeFilters.has(filter)) {
+                    activeFilters.delete(filter);
+                    button.classList.remove("active");
+                } else {
+                    activeFilters.add(filter);
+                    button.classList.add("active");
+                }
+            }
+
+            updateProjectVisibility();
         });
     });
 
-    function sortProjects() {
-        const grid = document.querySelector(".project-grid");
-        const tiles = Array.from(projectTiles);
-        
-        tiles.sort((a, b) => {
-            return new Date(b.getAttribute("data-modified")) - new Date(a.getAttribute("data-modified"));
-        });
-        
-        tiles.forEach(tile => grid.appendChild(tile));
-    }
+    updateProjectVisibility(); // Initial update
 
+    // Open Expanded View
     projectTiles.forEach(tile => {
         tile.addEventListener("click", function () {
             const projectUrl = tile.getAttribute("data-url");
             if (!projectUrl) return;
 
-            const existingView = document.querySelector(".expanded-view");
-            if (existingView) existingView.remove();
+            // Remove existing expanded view if any
+            document.querySelector(".expanded-view")?.remove();
 
+            // Create expanded view
             const expandedView = document.createElement("div");
             expandedView.classList.add("expanded-view");
-
             expandedView.innerHTML = `
-            <iframe src="${projectUrl}"></iframe>
-            <button class="close-btn">✖</button>
-            <button class="share-btn"><i class="fas fa-share-alt"></i></button>
+                <div class="expanded-content">
+                    <button class="close-btn">✖</button>
+                    <iframe src="${projectUrl}"></iframe>
+                    <button class="share-btn"><i class="fas fa-share-alt"></i></button>
+                </div>
             `;
 
             document.body.appendChild(expandedView);
 
-            // Trigger the transition by adding the 'show' class
-            setTimeout(() => {
-                expandedView.classList.add("show");
-            }, 10); // Ensure it happens after the element is added to the DOM
+            // Fade in animation
+            setTimeout(() => expandedView.classList.add("show"), 10);
 
-            expandedView.querySelector(".close-btn").addEventListener("click", function () {
-                expandedView.remove();
+            // Close on button click or clicking outside
+            expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
+            expandedView.addEventListener("click", (e) => {
+                if (e.target === expandedView) expandedView.remove();
             });
 
-            // Share functionality (Copy URL to clipboard)
-            expandedView.querySelector(".share-btn").addEventListener("click", function () {
-                const shareUrl = window.location.origin + projectUrl; // Full URL to the project page
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    alert("Project link copied to clipboard!");
-                }).catch(err => {
-                    alert("Failed to copy the link.");
-                });
-            });
-
-            expandedView.addEventListener("click", function (event) {
-                if (event.target === expandedView) {
-                    expandedView.remove();
-                }
+            // Share button
+            expandedView.querySelector(".share-btn").addEventListener("click", () => {
+                navigator.clipboard.writeText(projectUrl);
+                alert("Project link copied!");
             });
         });
     });
-
-    sortProjects();
 });
+async function getLastModified(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+        const lastModified = response.headers.get('Last-Modified');
+        return lastModified ? new Date(lastModified).toLocaleDateString() : "Unknown date";
+    } catch (error) {
+        console.error(`Error fetching last modified date for ${url}:`, error);
+        return "Unknown date";
+    }
+}
+
+async function updateProjectDates() {
+    const projectTiles = document.querySelectorAll(".project-tile");
+
+    projectTiles.forEach(async (tile) => {
+        const projectUrl = tile.getAttribute("data-url");
+        if (!projectUrl) return;
+
+        const lastModifiedDate = await getLastModified(projectUrl);
+        
+        // Update the displayed last modified date
+        const dateElement = tile.querySelector(".last-modified");
+        if (dateElement) {
+            dateElement.textContent = `Last Modified: ${lastModifiedDate}`;
+        }
+    });
+}
+
+// Run function after the DOM loads
+document.addEventListener("DOMContentLoaded", updateProjectDates);
