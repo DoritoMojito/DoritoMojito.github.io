@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    console.log("Custom Tooltip JS Loaded!");
+
     const filterDropdown = document.getElementById("filter-dropdown");
     const filterMenu = document.getElementById("filter-menu");
     const filterButtons = document.querySelectorAll(".filter-btn");
@@ -58,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateProjectVisibility();
         });
     });
+    
 
     updateProjectVisibility();
 
@@ -74,8 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
             expandedView.innerHTML = `
                 <div class="expanded-wrapper">
                     <div class="expanded-content">
-                        <button class="close-btn" title="Close">✖</button>
-                        <button class="new-tab-btn" title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
+                        <button class="close-btn" data-title="Close">✖</button>
+                        <button class="new-tab-btn" data-title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
                         <iframe src="${projectUrl}"></iframe>
                     </div>
                 </div>
@@ -96,6 +99,38 @@ document.addEventListener("DOMContentLoaded", function () {
             expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
                 window.open(projectUrl, "_blank");
             });
+        });
+    });
+
+    document.querySelectorAll('button[data-title]').forEach(button => {
+        button.addEventListener("mouseenter", function () {
+            let tooltipText = this.getAttribute('data-title');
+            if (!tooltipText) return;
+
+            let tooltip = document.createElement("div");
+            tooltip.className = "custom-tooltip";
+            tooltip.innerText = tooltipText;
+            document.body.appendChild(tooltip);
+
+            let rect = this.getBoundingClientRect();
+            tooltip.style.position = "absolute";
+            tooltip.style.top = `${rect.top - 30}px`;
+            tooltip.style.left = `${rect.left + rect.width / 2}px`;
+            tooltip.style.background = "black";
+            tooltip.style.color = "white";
+            tooltip.style.padding = "5px";
+            tooltip.style.borderRadius = "5px";
+            tooltip.style.opacity = "1";
+            tooltip.style.display = "block";
+
+            this.tooltipElement = tooltip;
+        });
+
+        button.addEventListener("mouseleave", function () {
+            if (this.tooltipElement) {
+                this.tooltipElement.remove();
+                this.tooltipElement = null;
+            }
         });
     });
 
