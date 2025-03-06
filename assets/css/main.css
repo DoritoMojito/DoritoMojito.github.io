@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
+    background-color: #393939;
+	color: white;
     margin: 0;
     padding: 0;
 }
@@ -35,7 +36,7 @@ body {
 	display: inherit;
     padding: 10px;
     background-color: #00759c;
-    color: white;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -51,11 +52,11 @@ body {
     position: absolute;
     top: 100%; /* Position directly below the button */
     width: auto; /* Adjust width as needed */
-    background-color: white;
-    border: 1px solid #ccc;
+    background-color: rgba(23, 23, 23, 0.817);
+    border: 1px solid #000000;
     z-index: 10;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for dropdown */
-    border-radius: 5px;
+    border-radius: 7px;
     margin-top: 5px; /* Space between the button and the dropdown */
 }
 
@@ -236,12 +237,13 @@ body {
     border: none;
     font-size: 20px; /* Make the X larger */
     cursor: pointer;
+	color: #ff0000;
     /*padding: 5px;
     font-weight: bold;*/
 }
 
 .close-btn:hover {
-    color: #ff0000; /* Optional: Change color when hovering */
+    color: #840101; /* Optional: Change color when hovering */
 }
 
 .new-tab-btn {
@@ -271,6 +273,36 @@ body {
 
 .new-tab-btn:active {
     background: #004085;
+}
+
+button[title] {
+    position: fixed;
+}
+
+button[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+/* Close Button Tooltip */
+.close-btn:hover::after {
+    top: 50%;
+    left: -110%;
+}
+
+/* Open in New Tab Button Tooltip */
+.new-tab-btn:hover::after {
+    top: 50%;
+    left: 110%;
 }
 
 
