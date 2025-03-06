@@ -5,18 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const projectTiles = document.querySelectorAll(".project-tile");
     const projectCount = document.getElementById("project-count");
 
-    // Check if filterDropdown and filterMenu exist
-    if (!filterDropdown || !filterMenu) return; // Exit early if these elements don't exist
+    if (!filterDropdown || !filterMenu) return;
 
     let activeFilters = new Set();
 
-    // Toggle dropdown visibility
     filterDropdown.addEventListener("click", (event) => {
-        event.stopPropagation();  // Prevent closing the dropdown if clicked inside
+        event.stopPropagation();
         filterMenu.classList.toggle("open");
     });
 
-    // Close dropdown when clicking outside
     document.addEventListener("click", (event) => {
         if (!filterDropdown.contains(event.target) && !filterMenu.contains(event.target)) {
             filterMenu.classList.remove("open");
@@ -41,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
         projectCount.textContent = `Showing ${visibleCount} projects`;
     }
 
-    // Handle filter button clicks
     filterButtons.forEach(button => {
         button.addEventListener("click", () => {
             const filter = button.dataset.filter;
@@ -63,54 +59,61 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    updateProjectVisibility(); // Initial update
+    updateProjectVisibility();
 
-    // Open Expanded View
     projectTiles.forEach(tile => {
         tile.addEventListener("click", function () {
             const projectUrl = tile.getAttribute("data-url");
             if (!projectUrl) return;
     
-            // Remove existing expanded view if any
             document.querySelector(".expanded-view")?.remove();
     
-            // Create expanded view
             const expandedView = document.createElement("div");
             expandedView.classList.add("expanded-view");
     
             expandedView.innerHTML = `
                 <div class="expanded-wrapper">
                     <div class="expanded-content">
-                        <button class="close-btn">✖</button>
+                        <button class="close-btn" title="Close">✖</button>
+                        <button class="new-tab-btn" title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
                         <iframe src="${projectUrl}"></iframe>
-                        <button class="share-btn"><i class="fas fa-share-alt"></i></button>
                     </div>
                 </div>
             `;
     
             document.body.appendChild(expandedView);
     
-            // Fade in animation
             setTimeout(() => expandedView.classList.add("show"), 10);
     
-            // Close when clicking outside the content
             expandedView.addEventListener("click", (e) => {
                 if (!expandedView.querySelector(".expanded-content").contains(e.target)) {
                     expandedView.remove();
                 }
             });
     
-            // Close button functionality
             expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
     
-            // Share button functionality
-            expandedView.querySelector(".share-btn").addEventListener("click", () => {
-                navigator.clipboard.writeText(projectUrl);
-                alert("Project link copied!");
+            expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
+                window.open(projectUrl, "_blank");
             });
         });
     });
+
+    function sortFilterButtons() {
+        const buttonsArray = Array.from(filterButtons);
+        const allButton = buttonsArray.find(btn => btn.dataset.filter === "all");
+        const otherButtons = buttonsArray.filter(btn => btn.dataset.filter !== "all");
+        
+        otherButtons.sort((a, b) => a.textContent.localeCompare(b.textContent));
+        
+        filterMenu.innerHTML = "";
+        if (allButton) filterMenu.appendChild(allButton);
+        otherButtons.forEach(btn => filterMenu.appendChild(btn));
+    }
+
+    sortFilterButtons();
 });
+
 async function getLastModified(url) {
     try {
         const response = await fetch(url, { method: 'HEAD' });
@@ -131,7 +134,6 @@ async function updateProjectDates() {
 
         const lastModifiedDate = await getLastModified(projectUrl);
         
-        // Update the displayed last modified date
         const dateElement = tile.querySelector(".last-modified");
         if (dateElement) {
             dateElement.textContent = `Last Modified: ${lastModifiedDate}`;
@@ -139,5 +141,4 @@ async function updateProjectDates() {
     });
 }
 
-// Run function after the DOM loads
 document.addEventListener("DOMContentLoaded", updateProjectDates);
