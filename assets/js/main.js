@@ -70,33 +70,40 @@ document.addEventListener("DOMContentLoaded", function () {
         tile.addEventListener("click", function () {
             const projectUrl = tile.getAttribute("data-url");
             if (!projectUrl) return;
-
+    
             // Remove existing expanded view if any
             document.querySelector(".expanded-view")?.remove();
-
+    
             // Create expanded view
             const expandedView = document.createElement("div");
             expandedView.classList.add("expanded-view");
+    
             expandedView.innerHTML = `
-                <div class="expanded-content">
-                    <button class="close-btn">✖</button>
-                    <iframe src="${projectUrl}"></iframe>
-                    <button class="share-btn"><i class="fas fa-share-alt"></i></button>
+                <div class="expanded-wrapper">
+                    <div class="expanded-content">
+                        <button class="close-btn">✖</button>
+                        <iframe src="${projectUrl}"></iframe>
+                        <button class="share-btn"><i class="fas fa-share-alt"></i></button>
+                    </div>
                 </div>
             `;
-
+    
             document.body.appendChild(expandedView);
-
+    
             // Fade in animation
             setTimeout(() => expandedView.classList.add("show"), 10);
-
-            // Close on button click or clicking outside
-            expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
+    
+            // Close when clicking outside the content
             expandedView.addEventListener("click", (e) => {
-                if (e.target === expandedView) expandedView.remove();
+                if (!expandedView.querySelector(".expanded-content").contains(e.target)) {
+                    expandedView.remove();
+                }
             });
-
-            // Share button
+    
+            // Close button functionality
+            expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
+    
+            // Share button functionality
             expandedView.querySelector(".share-btn").addEventListener("click", () => {
                 navigator.clipboard.writeText(projectUrl);
                 alert("Project link copied!");
