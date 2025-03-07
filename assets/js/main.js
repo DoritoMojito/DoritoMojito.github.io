@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const projectCount = document.getElementById("project-count");
     const filterDrawer = document.getElementById("filter-drawer");
 
-    if (!filterDropdown || !filterMenu) return;
+    if (!filterDropdown || !filterMenu  ) return;
 
     let activeFilters = new Set();
 
