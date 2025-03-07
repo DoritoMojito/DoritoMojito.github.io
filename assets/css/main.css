@@ -300,12 +300,6 @@ button[data-title]:hover + .custom-tooltip {
 	transform: translate(-50%, -100%);
 }
 
-/* Adjust positioning for the "Open in New Tab" button */
-.new-tab-btn:hover + .custom-tooltip {
-    left: auto; /* Reset left property */
-    right: 10px; /* Align to the right side of the button */
-    transform: translateX(0); /* Remove centering for right alignment */
-}
 
 button:hover + .custom-tooltip {
     opacity: 1;
@@ -314,12 +308,48 @@ button:hover + .custom-tooltip {
 /* Ensure the tooltip stays within the viewport horizontally */
 @media screen and (max-width: 768px) {
     .custom-tooltip {
-        left: 50% !important;
-        transform: translateX(-50%) !important;
     }
 
     /* Position it below the button on smaller screens */
     button[data-title]:hover + .custom-tooltip {
         top: 10px !important;
     }
+}
+/* Webkit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px; /* Width of vertical scrollbar */
+    height: 12px; /* Height of horizontal scrollbar */
+}
+
+/* The draggable thumb (scrollbar handle) */
+::-webkit-scrollbar-thumb {
+    background-color: #00759c; /* Color of the thumb */
+    border-radius: 10px; /* Round the thumb */
+}
+
+/* The track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Track color */
+    border-radius: 10px; /* Round the track */
+}
+
+/* Hover effect for the thumb */
+::-webkit-scrollbar-thumb:hover {
+    background-color: #004d67; /* Darken the thumb when hovering */
+}
+
+/* Firefox */
+html {
+    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-color: #00759c #f0f0f0; /* Thumb color and track color */
+}
+/* Style for Firefox */
+html {
+    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-color: #00759c #f0f0f000; /* Thumb color and track color */
+}
+* {
+    -moz-appearance: none;
+    border-radius: 10px;
+    overflow: auto;
 }
