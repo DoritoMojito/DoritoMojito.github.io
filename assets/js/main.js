@@ -60,9 +60,69 @@ document.addEventListener("DOMContentLoaded", function () {
             updateProjectVisibility();
         });
     });
-    
 
     updateProjectVisibility();
+
+    // Function to create and position the tooltip
+    function createTooltip(button) {
+        const tooltipText = button.getAttribute('data-title');
+
+        // Create the tooltip element
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('custom-tooltip');
+        tooltip.textContent = tooltipText;
+
+        // Append tooltip to the body
+        document.body.appendChild(tooltip);
+
+        // Get the button's position relative to the viewport
+        const rect = button.getBoundingClientRect();
+        const tooltipWidth = tooltip.offsetWidth;
+        const tooltipHeight = tooltip.offsetHeight;
+
+        // Calculate the position of the tooltip to ensure it stays within the viewport
+        let tooltipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
+        let tooltipTop = rect.top - tooltipHeight - 5;
+
+        // Adjust the tooltip's position if it's too far right or left
+        if (tooltipLeft + tooltipWidth > window.innerWidth) {
+            tooltipLeft = window.innerWidth - tooltipWidth - 10;
+        } else if (tooltipLeft < 0) {
+            tooltipLeft = 10;
+        }
+
+        // Adjust the tooltip's vertical position if it's too far top
+        if (tooltipTop < 0) {
+            tooltipTop = rect.bottom + 5; // Position it below the button if above the viewport
+        }
+
+        // Set the tooltip's final position
+        tooltip.style.top = `${tooltipTop}px`;
+        tooltip.style.left = `${tooltipLeft}px`;
+        tooltip.style.visibility = 'visible';  // Show tooltip
+        tooltip.style.opacity = '1'; // Fade in
+    }
+
+    // Function to remove the tooltip
+    function removeTooltip() {
+        const tooltip = document.querySelector('.custom-tooltip');
+        if (tooltip) {
+            tooltip.remove();  // Remove tooltip when the mouse leaves
+        }
+    }
+
+    // Event delegation for mouseenter and mouseleave events
+    document.body.addEventListener('mouseenter', function (event) {
+        if (event.target && event.target.matches('button[data-title]')) {
+            createTooltip(event.target);
+        }
+    }, true);  // Use capture phase to ensure it works with dynamically added buttons
+
+    document.body.addEventListener('mouseleave', function (event) {
+        if (event.target && event.target.matches('button[data-title]')) {
+            removeTooltip();
+        }
+    }, true);  // Use capture phase to ensure it works with dynamically added buttons
 
     projectTiles.forEach(tile => {
         tile.addEventListener("click", function () {
@@ -99,38 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
             expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
                 window.open(projectUrl, "_blank");
             });
-        });
-    });
-
-    document.querySelectorAll('button[data-title]').forEach(button => {
-        button.addEventListener("mouseenter", function () {
-            let tooltipText = this.getAttribute('data-title');
-            if (!tooltipText) return;
-
-            let tooltip = document.createElement("div");
-            tooltip.className = "custom-tooltip";
-            tooltip.innerText = tooltipText;
-            document.body.appendChild(tooltip);
-
-            let rect = this.getBoundingClientRect();
-            tooltip.style.position = "absolute";
-            tooltip.style.top = `${rect.top - 30}px`;
-            tooltip.style.left = `${rect.left + rect.width / 2}px`;
-            tooltip.style.background = "black";
-            tooltip.style.color = "white";
-            tooltip.style.padding = "5px";
-            tooltip.style.borderRadius = "5px";
-            tooltip.style.opacity = "1";
-            tooltip.style.display = "block";
-
-            this.tooltipElement = tooltip;
-        });
-
-        button.addEventListener("mouseleave", function () {
-            if (this.tooltipElement) {
-                this.tooltipElement.remove();
-                this.tooltipElement = null;
-            }
         });
     });
 
