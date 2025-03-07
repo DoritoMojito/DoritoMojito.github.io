@@ -21,66 +21,86 @@ body {
     margin: auto;
 }
 
-.filter-dropdown-container {
-    position: relative;
-	justify-self: center;
-    display: inherit;
-    text-align: center;
-    margin-bottom: 15px;
+.filter-drawer {
+    position: absolute;
+    z-index: 1003;
+    top: 20%;
+    right: -0; /* Hidden off-screen */
+    width: 180px;
+    height: auto;
+    border-radius: 8px 0 0 8px;
+    overflow: show;
+    transition: left 0.3s ease-in-out;
+}
+
+.filter-drawer.open {
+    right: 0;
 }
 
 .filter-dropdown {
-    cursor: pointer;
-	justify-self: center;
-	display: inherit;
-    padding: 10px;
-    background-color: #00759c;
-    color: rgb(255, 255, 255);
+    position: absolute;
+    right: 0;
+    top: 40%;
+    width: 30px;
+    height: auto;
+    padding: 5px;
+    background: #007bff;
+    z-index: 1000;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px 0 0 5px;
+    font-size: 18px;
 }
 
+
 .filter-dropdown:hover {
-    background-color: #004d67;
+    background-color: rgba(32, 32, 32, 0.475);
 }
 
 .filter-menu {
-    display: none; /* Hidden by default */
-	justify-self: center;
-    position: absolute;
-    top: 100%; /* Position directly below the button */
-    width: auto; /* Adjust width as needed */
-    background-color: rgba(23, 23, 23, 0.817);
-    border: 1px solid #000000;
-    z-index: 10;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow for dropdown */
-    border-radius: 7px;
-    margin-top: 5px; /* Space between the button and the dropdown */
+    padding: 10px;
+    right: -180px;
+    height: 150px;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+    overflow-y: scroll;
+    gap: 5px;
 }
 
 .filter-menu.open {
-    display: inherit; /* Show the dropdown when 'open' class is added */
+    visibility: visible; /* Show the dropdown when 'open' class is added */
+    background: rgba(0, 0, 0, 0.387);
+    box-shadow: 0,0,10,#ff0000;
+    border-radius: 0,0,5px,0;
+    right: 0;
 	width: 100%;
 }
 
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
 .filter-btn {
-    display: inherit;
-	justify-self: inherit;
-    width: 95%;
-    padding: 8px;
-    margin: 5px 0;
-    background: #eee;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: white;
+    background: gray;
     border: none;
-    text-align: left;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s;
-    border-radius: 5px; /* Rounded corners for filter buttons */
 }
 
 .filter-btn.active {
     background: #00759c;
     color: white;
+    box-shadow: inset;
 }
 
 .filter-btn:hover {
@@ -91,7 +111,7 @@ body {
     flex: 1;
 	position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
 	/* justify-self: auto; */
 	gap: 15px;
     padding: 20px;
@@ -111,6 +131,7 @@ body {
 
 .project-tile:hover {
     transform: scale(1.05);
+    z-index: 1002;
 }
 
 .project-tile .tags span {
@@ -180,7 +201,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1003;
 	opacity: 0; /* Start with it invisible */
 	transform: scale(1); /* Start with it smaller */
     transition: opacity 0.5s ease, transform 0.3s ease; /* Only apply opacity transition to the background */
@@ -229,7 +250,7 @@ body {
 
 .close-btn {
     position: absolute;
-    top: 10px;
+    top: 5px;
     right: 10px;
     background: none; /* Transparent background */
     /*color: white;*/
@@ -237,6 +258,9 @@ body {
     font-size: 20px; /* Make the X larger */
     cursor: pointer;
 	color: #ff0000;
+    z-index: 1003; /* Ensure it's above the iframe */
+    display: flex;
+    padding: 10px;
     /*padding: 5px;
     font-weight: bold;*/
 }
@@ -282,7 +306,7 @@ body {
     border-radius: 5px;
     opacity: 0;
     visibility: visible; /* Ensure it's visible when shown */
-    z-index: 1000;
+    z-index: 1004;
     pointer-events: none;
     transition: opacity 0.1s ease-in-out;
 }
@@ -307,8 +331,6 @@ button:hover + .custom-tooltip {
 
 /* Ensure the tooltip stays within the viewport horizontally */
 @media screen and (max-width: 768px) {
-    .custom-tooltip {
-    }
 
     /* Position it below the button on smaller screens */
     button[data-title]:hover + .custom-tooltip {
@@ -329,7 +351,7 @@ button:hover + .custom-tooltip {
 
 /* The track (background of the scrollbar) */
 ::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Track color */
+    background-color: #f0f0f000; /* Track color */
     border-radius: 10px; /* Round the track */
 }
 
@@ -338,18 +360,9 @@ button:hover + .custom-tooltip {
     background-color: #004d67; /* Darken the thumb when hovering */
 }
 
-/* Firefox */
-html {
-    scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #00759c #f0f0f0; /* Thumb color and track color */
-}
 /* Style for Firefox */
 html {
     scrollbar-width: thin; /* Thin scrollbar */
     scrollbar-color: #00759c #f0f0f000; /* Thumb color and track color */
-}
-* {
-    -moz-appearance: none;
-    border-radius: 10px;
-    overflow: auto;
+    overflow-x: hidden;
 }

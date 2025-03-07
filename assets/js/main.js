@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const filterButtons = document.querySelectorAll(".filter-btn");
     const projectTiles = document.querySelectorAll(".project-tile");
     const projectCount = document.getElementById("project-count");
+    const filterDrawer = document.getElementById("filter-drawer");
 
     if (!filterDropdown || !filterMenu) return;
 
@@ -14,6 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
     filterDropdown.addEventListener("click", (event) => {
         event.stopPropagation();
         filterMenu.classList.toggle("open");
+    });
+    filterDropdown.addEventListener("click", function () {
+        filterDrawer.classList.toggle("open");
     });
 
     document.addEventListener("click", (event) => {
@@ -37,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        projectCount.textContent = `Showing ${visibleCount} projects`;
+        projectCount.textContent = `${visibleCount}`;
     }
 
     filterButtons.forEach(button => {
@@ -93,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Adjust the tooltip's vertical position if it's too far top
         if (tooltipTop < 0) {
-            tooltipTop = rect.bottom + 5; // Position it below the button if above the viewport
+            tooltipTop = rect.bottom + 25; // Position it below the button if above the viewport
         }
 
         // Set the tooltip's final position

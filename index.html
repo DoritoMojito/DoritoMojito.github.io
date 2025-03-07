@@ -16,43 +16,45 @@
 
 <body>
 	<div class="body-grid">
-		<div class="filter-dropdown-container">
-			<button id="filter-dropdown" class="filter-dropdown">Filter Projects ▼</button>		
-			<div id="filter-menu" style="text-align: center; margin-top: 10px;" class="filter-menu">
-				<button class="filter-btn" data-filter="all">All</button>
-				<button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
-				<button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
-				<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
-				<button class="filter-btn" data-filter="CAD">CAD</button>
-				<button class="filter-btn" data-filter="3DP">3D Printing</button>
-				<!-- Add more filter buttons as needed -->
-				
+		<div class="filter-drawer">
+			<button id="filter-dropdown" class="filter-dropdown"><i class="fas fa-filter"></i>
+				<div id="project-count">X</div></button>					
+				<div id="filter-menu" style="text-align: center; margin-top: 10px;" class="filter-menu">					
+				<div class="filter-buttons">
+					<button class="filter-btn" data-filter="all">All</button>
+					<button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
+					<button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
+					<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
+					<button class="filter-btn" data-filter="CAD">CAD</button>
+					<button class="filter-btn" data-filter="3DP">3D Printing</button>
+					<!-- Add more filter buttons as needed -->
+				</div>
 			</div>
 		</div>
-		<div id="project-count" style="text-align: center; margin-top: 10px;">Showing X projects</div>
+	
 		<div class="project-grid">
 			<div class="project-tile" data-tags="3DP,CAD" data-modified="2025-02-20" data-url="/projects/L13 Cell biology.md">
 				<img src="assets/images/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 1" class="project-image">
 				<div class="overlay">
-					<h3>Splitbox - an ergonomic arcade controller</h3>
+					<h3>Splitbox - an ergonomic arcade stick</h3>
 					<p class="last-modified">Loading...</p>
-					<span class="status finished">✔</span>
+					<span class="status finished"><i class="fas fa-check"></i></span>
 				</div>
 			</div>
 			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="https://en.wikipedia.org/wiki/Scope_creep">
 				<img src="assets/images/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
 				<div class="overlay">
-					<h3>Test</h3>
+					<h3>Cancelled</h3>
 					<p class="last-modified">Loading...</p>
-					<span class="status finished">✔</span>
+					<span class="status cancelled">✖</span>
 				</div>
 			</div>
 			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="https://en.wikipedia.org/wiki/Scope_creep">
 				<img src="assets/images/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
 				<div class="overlay">
-					<h3>Test</h3>
+					<h3>WIP</h3>
 					<p class="last-modified">Loading...</p>
-					<span class="status finished">✔</span>
+					<span class="status wip"><i class="fas fa-wrench"></i></span>
 				</div>
 			</div>
 			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="https://en.wikipedia.org/wiki/Scope_creep">
