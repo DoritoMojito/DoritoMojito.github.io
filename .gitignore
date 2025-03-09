@@ -2,3 +2,6 @@
 *.json
 *.sqlite
 /.vs/DoritoMojito.github.io
+drawer test/index.html
+drawer test/assets/css/main.css
+drawer test/assets/js/main.js
