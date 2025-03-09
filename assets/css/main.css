@@ -35,13 +35,15 @@ body {
 
 .drawer {
     position: relative;
-    right: -220px; /* Starts off-screen */
+    right: -204px; /* -(width + 2(padding) */
     width: 200px;
-    background: #333;
+    height: 150px;
+    background: #ababab;
     color: white;
-    padding: 10px;
+    padding: 2px;
     border-radius: 0 0 0 10px;
     transition: right 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
 .drawer-toggle {
@@ -60,10 +62,19 @@ body {
     border-radius: 5px 0 0 5px;
     font-size: 18px;
     transition: left 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+#project-count {
+    font-size: auto;
+}
+
+#toggle-label {
+    rotate: 270deg;
+    margin-top: 55px;
 }
 
 .drawer-toggle:hover {
-    background-color: rgba(32, 32, 32, 0.475);
+    background-color: rgb(139, 139, 139);
 }
 #drawer-toggle:checked ~ .drawer {
     right: 0;
@@ -75,7 +86,6 @@ body {
 
 .filter-menu.open {
     visibility: visible; /* Show the dropdown when 'open' class is added */
-    background: rgba(0, 0, 0, 0.387);
     box-shadow: 0,0,10,#ff0000;
     border-radius: 0,0,5px,0;
     right: 0;
@@ -84,8 +94,10 @@ body {
 
 .filter-buttons {
     display: flex;
+    padding: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    overflow-y: scroll;
     gap: 5px;
 }
 
@@ -106,14 +118,14 @@ body {
 }
 
 .filter-btn:hover {
-    background: #004d67;
+    background: #00bfff;
 }
 
 .project-grid {
     flex: 1;
 	position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	/* justify-self: auto; */
 	gap: 15px;
     padding: 20px;
