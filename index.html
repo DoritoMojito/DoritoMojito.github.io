@@ -17,17 +17,20 @@
 <body>
 	<div class="body-grid">
 		<div class="filter-drawer">
-			<button id="filter-dropdown" class="filter-dropdown"><i class="fas fa-filter"></i>
-				<div id="project-count">X</div></button>					
+			<input type="checkbox" id="drawer-toggle" hidden>
+			<div class="drawer">
+			<label for="drawer-toggle" class="drawer-toggle"><i class="fas fa-filter"></i>
+				<div id="project-count">X</div></label>
 				<div id="filter-menu" class="filter-menu">					
-				<div class="filter-buttons">
-					<button class="filter-btn" data-filter="all">All</button>
-					<button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
-					<button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
-					<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
-					<button class="filter-btn" data-filter="CAD">CAD</button>
-					<button class="filter-btn" data-filter="3DP">3D Printing</button>
-					<!-- Add more filter buttons as needed -->
+					<div class="filter-buttons">
+						<button class="filter-btn" data-filter="all">All</button>
+						<button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
+						<button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
+						<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
+						<button class="filter-btn" data-filter="CAD">CAD</button>
+						<button class="filter-btn" data-filter="3DP">3D Printing</button>
+						<!-- Add more filter buttons as needed -->
+					</div>
 				</div>
 			</div>
 		</div>

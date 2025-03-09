@@ -22,53 +22,55 @@ body {
 }
 
 .filter-drawer {
-    position: absolute;
-    z-index: 1003;
-    top: 20%;
-    right: -0; /* Hidden off-screen */
-    width: 180px;
-    height: auto;
-    border-radius: 8px 0 0 8px;
-    overflow: show;
-    transition: left 0.3s ease-in-out;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);    
+    z-index: 1002;
 }
 
 .filter-drawer.open {
     right: 0;
 }
 
-.filter-dropdown {
+.drawer {
+    position: relative;
+    right: -220px; /* Starts off-screen */
+    width: 200px;
+    background: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 0 0 0 10px;
+    transition: right 0.3s ease-in-out;
+  }
+
+.drawer-toggle {
     position: absolute;
     right: 0;
-    top: 40%;
-    width: 30px;
+    top: 0%;
+    left: -30px;
+    width: 20px;
     height: auto;
+    text-align: center;
     padding: 5px;
     background: #007bff;
-    z-index: 1000;
     border: none;
     color: white;
     cursor: pointer;
     border-radius: 5px 0 0 5px;
     font-size: 18px;
+    transition: left 0.3s ease-in-out;
 }
 
-
-.filter-dropdown:hover {
+.drawer-toggle:hover {
     background-color: rgba(32, 32, 32, 0.475);
 }
-
+#drawer-toggle:checked ~ .drawer {
+    right: 0;
+  }
+  
 .filter-menu {
     padding: 10px;
-    right: -180px;
-    height: 150px;
-    visibility: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: left 0.3s ease-in-out;
-    overflow-y: scroll;
-    gap: 5px;
 }
 
 .filter-menu.open {
@@ -131,7 +133,7 @@ body {
 
 .project-tile:hover {
     transform: scale(1.05);
-    z-index: 1002;
+    z-index: 1001;
 }
 
 .project-tile .tags span {
@@ -280,7 +282,7 @@ body {
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 1001; /* Ensure it's above the iframe */
+    z-index: 1003; /* Ensure it's above the iframe */
     display: flex;
     justify-content: center;
     align-items: center;

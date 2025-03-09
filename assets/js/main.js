@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Custom Tooltip JS Loaded!");
 
-    const filterDropdown = document.getElementById("filter-dropdown");
+    const filterDropdown = document.getElementById("drawer-toggle");
     const filterMenu = document.getElementById("filter-menu");
     const filterButtons = document.querySelectorAll(".filter-btn");
     const projectTiles = document.querySelectorAll(".project-tile");
