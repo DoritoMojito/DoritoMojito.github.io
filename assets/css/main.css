@@ -44,6 +44,7 @@ body {
     border-radius: 0 0 0 10px;
     transition: right 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
   }
 
 .drawer-toggle {
@@ -180,6 +181,7 @@ body {
     transform: translateY(100%);
     transition: transform 0.3s ease;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
 }
 
 .project-tile:hover .overlay {
@@ -219,11 +221,13 @@ body {
 	opacity: 0; /* Start with it invisible */
 	transform: scale(1); /* Start with it smaller */
     transition: opacity 0.5s ease, transform 0.3s ease; /* Only apply opacity transition to the background */
+    
 }
 
 .expanded-view.show {
     opacity: 1; /* Fade to fully visible */
 	transform: scale(1); /* Grow the background to full size */
+    backdrop-filter: blur(5px);
 }
 
 .expanded-wrapper {
