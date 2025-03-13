@@ -251,19 +251,13 @@ body {
     height: 100%;
     border-radius: 8px;
     border: none;
-}
-
-.expanded-view iframe {
-    border-radius: 10px;
-    border: none;
-    background: white;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-	transform: scale(0.9); /* Start with the iframe slightly smaller */
-    transition: transform 0.5s ease; /* Apply smooth scaling transition only to the iframe */
+    background-color: none;
+    transition: background-color .5s ease;
 }
 
 .expanded-view.show iframe {
     transform: scale(1); /* Grow iframe to normal size */
+    background-color: #ffffff;
 }
 
 .close-btn {

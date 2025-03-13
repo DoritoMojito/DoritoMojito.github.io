@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, true);  // Use capture phase to ensure it works with dynamically added buttons
 
     projectTiles.forEach(tile => {
-        tile.addEventListener("click", function () {
+        tile.addEventListener("click", async function () {
             const projectUrl = tile.getAttribute("data-url");
             if (!projectUrl) return;
     
@@ -153,13 +153,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="expanded-content">
                         <button class="close-btn" data-title="Close">✖</button>
                         <button class="new-tab-btn" data-title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
-                        <iframe src="${projectUrl}"></iframe>
+                        <iframe id="project-iframe" src="${projectUrl}"></iframe>
                     </div>
                 </div>
             `;
     
             document.body.appendChild(expandedView);
-    
             setTimeout(() => expandedView.classList.add("show"), 10);
     
             expandedView.addEventListener("click", (e) => {
@@ -173,8 +172,43 @@ document.addEventListener("DOMContentLoaded", function () {
             expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
                 window.open(projectUrl, "_blank");
             });
+    
+            // 🔹 If it's a Markdown file, render it using Marked.js
+            if (projectUrl.endsWith(".md")) {
+                const iframe = document.getElementById("project-iframe");
+    
+                try {
+                    const response = await fetch(projectUrl);
+                    const markdownText = await response.text();
+                    
+                    const htmlContent = `
+                        <html>
+                        <head>
+                            <title>Markdown Viewer</title>
+                            <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+                                h1, h2, h3 { color: #333; }
+                            </style>
+                        </head>
+                        <body>
+                            <div id="content"></div>
+                            <script>
+                                document.getElementById('content').innerHTML = marked.parse(\`${markdownText}\`);
+                            </script>
+                        </body>
+                        </html>
+                    `;
+    
+                    const blob = new Blob([htmlContent], { type: "text/html" });
+                    iframe.src = URL.createObjectURL(blob);
+                } catch (error) {
+                    console.error("Error loading Markdown:", error);
+                }
+            }
         });
     });
+    
 
     function sortFilterButtons() {
         const buttonsArray = Array.from(filterButtons);
