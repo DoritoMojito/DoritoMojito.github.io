@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 .body-grid {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -12,6 +13,7 @@ body {
 	max-width: 100%;
 	margin: auto;
 }
+
 .content-wrapper {
     display: flex;
 	justify-self: center;
@@ -27,6 +29,7 @@ body {
     right: 0;
     transform: translateY(-50%);    
     z-index: 1002;
+    pointer-events: none;
 }
 
 .filter-drawer.open {
@@ -45,7 +48,7 @@ body {
     transition: right 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-  }
+}  
 
 .drawer-toggle {
     position: absolute;
@@ -64,7 +67,9 @@ body {
     font-size: 18px;
     transition: left 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    pointer-events: all;
 }
+
 #project-count {
     font-size: auto;
 }
@@ -77,9 +82,10 @@ body {
 .drawer-toggle:hover {
     background-color: rgb(139, 139, 139);
 }
+
 #drawer-toggle:checked ~ .drawer {
     right: 0;
-  }
+}
   
 .filter-menu {
     padding: 10px;
@@ -91,6 +97,8 @@ body {
     border-radius: 0,0,5px,0;
     right: 0;
 	width: 100%;
+    height: 142px; /* Padding + drawer height + drawer padding */
+    pointer-events: all;
 }
 
 .filter-buttons {
@@ -126,7 +134,7 @@ body {
     flex: 1;
 	position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	/* justify-self: auto; */
 	gap: 15px;
     padding: 20px;
@@ -240,7 +248,7 @@ body {
     background: none;
     border-radius: 8px;
     width: 80vw;
-    height: 70vh;
+    height: 80vh;
     display: block;
     flex-direction: column;
     align-items: center;
@@ -252,33 +260,34 @@ body {
     border-radius: 8px;
     border: none;
     background-color: none;
-    transition: background-color .5s ease;
 }
 
 .expanded-view.show iframe {
     transform: scale(1); /* Grow iframe to normal size */
-    background-color: #ffffff;
 }
 
 .close-btn {
     position: absolute;
-    top: 5px;
+    top: 10px;
     right: 10px;
-    background: none; /* Transparent background */
-    /*color: white;*/
+    background: #820000;
+    color: white;
     border: none;
-    font-size: 20px; /* Make the X larger */
+    font-size: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
     cursor: pointer;
-	color: #ff0000;
     z-index: 1003; /* Ensure it's above the iframe */
     display: flex;
-    padding: 10px;
-    /*padding: 5px;
-    font-weight: bold;*/
+    justify-content: center;
+    align-items: center;
 }
 
 .close-btn:hover {
-    color: #840101; /* Optional: Change color when hovering */
+    color: #000000; /* Optional: Change color when hovering */
 }
 
 .new-tab-btn {

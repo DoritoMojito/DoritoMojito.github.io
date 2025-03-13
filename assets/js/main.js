@@ -33,8 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!drawer.contains(e.target) && e.target !== checkbox) {
           checkbox.checked = false;
         }
-    });
-      
+    });  
 
     function updateProjectVisibility() {
         let visibleCount = 0;
@@ -107,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Adjust the tooltip's vertical position if it's too far top
         if (tooltipTop < 0) {
-            tooltipTop = rect.bottom + 25; // Position it below the button if above the viewport
+            tooltipTop = rect.bottom + 5; // Position it below the button if above the viewport
         }
 
         // Set the tooltip's final position
@@ -124,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
             tooltip.remove();  // Remove tooltip when the mouse leaves
         }
     }
-
     // Event delegation for mouseenter and mouseleave events
     document.body.addEventListener('mouseenter', function (event) {
         if (event.target && event.target.matches('button[data-title]')) {
@@ -133,6 +131,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }, true);  // Use capture phase to ensure it works with dynamically added buttons
 
     document.body.addEventListener('mouseleave', function (event) {
+        if (event.target && event.target.matches('button[data-title]')) {
+            removeTooltip();
+        }
+    }, true);  // Use capture phase to ensure it works with dynamically added buttons
+
+    document.body.addEventListener('click', function (event) {
         if (event.target && event.target.matches('button[data-title]')) {
             removeTooltip();
         }
@@ -187,8 +191,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             <title>Markdown Viewer</title>
                             <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
                             <style>
-                                body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
-                                h1, h2, h3 { color: #333; }
+                                
+                                body { font-family: Arial, sans-serif; padding: 20px; max-width: 90%; background-color: #f8f9fa; margin: auto; }
+                                h1, h2, h3 { color: #333;}
                             </style>
                         </head>
                         <body>
