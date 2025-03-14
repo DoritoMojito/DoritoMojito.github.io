@@ -93,22 +93,29 @@ document.addEventListener("DOMContentLoaded", function () {
         const tooltipWidth = tooltip.offsetWidth;
         const tooltipHeight = tooltip.offsetHeight;
 
-        // Calculate the position of the tooltip to ensure it stays within the viewport
-        let tooltipLeft = rect.left + rect.width / 2 - tooltipWidth / 2;
-        let tooltipTop = rect.top - tooltipHeight - 5;
+        let tooltipLeft, tooltipTop;
 
-        // Adjust the tooltip's position if it's too far right or left
+        // Check if the button is a close button (adjust tooltip alignment)
+        if (button.classList.contains('close-btn')) {
+            tooltipLeft = rect.right - tooltipWidth; // Align with the right side of the button
+            tooltipTop = rect.top - tooltipHeight - 5; // Slightly above the button
+        } else {
+            tooltipLeft = rect.left + rect.width / 2 - tooltipWidth / 2; // Centered (default)
+            tooltipTop = rect.top - tooltipHeight - 5; // Slightly above the button
+        }
+    
+        // Adjust the tooltip's position to ensure it stays within the viewport
         if (tooltipLeft + tooltipWidth > window.innerWidth) {
             tooltipLeft = window.innerWidth - tooltipWidth - 10;
         } else if (tooltipLeft < 0) {
             tooltipLeft = 10;
         }
-
-        // Adjust the tooltip's vertical position if it's too far top
+    
+        // If tooltip is too high, move it below the button
         if (tooltipTop < 0) {
-            tooltipTop = rect.bottom + 5; // Position it below the button if above the viewport
+            tooltipTop = rect.bottom + 5;
         }
-
+    
         // Set the tooltip's final position
         tooltip.style.top = `${tooltipTop}px`;
         tooltip.style.left = `${tooltipLeft}px`;
