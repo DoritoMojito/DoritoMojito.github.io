@@ -1,4 +1,4 @@
-body {
+body, #markdown-content {
     font-family: Arial, sans-serif;
     background-color: #393939;
 	color: white;
@@ -88,7 +88,7 @@ body {
 }
   
 .filter-menu {
-    padding: 10px;
+    padding: 5px;
 }
 
 .filter-menu.open {
@@ -99,15 +99,6 @@ body {
 	width: 100%;
     height: 142px; /* Padding + drawer height + drawer padding */
     pointer-events: all;
-}
-
-.filter-buttons {
-    display: flex;
-    padding: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow-y: scroll;
-    gap: 5px;
 }
 
 .filter-btn {
@@ -157,19 +148,31 @@ body {
     z-index: 1001;
 }
 
-.project-tile .tags span {
-	background-color: #333;
-	border-radius: 5px;
-	margin-top: 10px;
-	font-size: 14px;
-	color: #555;
+.project-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;    
+    z-index: 2;
 }
-  
-.project-tile .tags span {
-	background-color: #f0f0f0;
-	border-radius: 5px;
-	padding: 5px 10px;
-	margin-right: 5px;
+
+.project-tags span {
+    background: rgba(0, 0, 0, 0.41);
+    color: rgb(255, 255, 255);
+    text-shadow: #000000 0 0 2px, #000000 0 0 2px, #000000 0 0 2px;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.project-tile:hover .project-tags {
+    opacity: 1;
 }
 
 .project-image {
@@ -180,7 +183,7 @@ body {
 
 .overlay {
     position: absolute;
-    bottom: -1px;
+    bottom: -3px;
     left: 0;
 	padding-inline-start: 2%;
     width: 100%;
@@ -189,7 +192,31 @@ body {
     transform: translateY(100%);
     transition: transform 0.3s ease;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
     backdrop-filter: blur(2px);
+    z-index: -1; /* Push it behind the text */
+}
+
+.overlay h3 {
+    white-space: nowrap;
+    overflow: show;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%; /* Ensure it takes up full width */
+}
+/* Enable scrolling animation if needed */
+.scroll-text {
+    animation: scrollText 5s linear infinite;
+}
+
+@keyframes scrollText {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
 }
 
 .project-tile:hover .overlay {
@@ -198,8 +225,8 @@ body {
 
 .status {
     position: absolute;
-    top: 10px;
-    right: 4%;
+    bottom: 15px;
+    right: 20px;
     font-size: 20px;
 }
 
@@ -264,6 +291,15 @@ body {
 
 .expanded-view.show iframe {
     transform: scale(1); /* Grow iframe to normal size */
+}
+
+#markdown-content{
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: auto;
+    margin: auto;
+    background: white;
+    color: #393939;
 }
 
 .close-btn {

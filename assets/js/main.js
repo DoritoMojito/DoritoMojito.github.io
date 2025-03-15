@@ -181,7 +181,11 @@ document.addEventListener("DOMContentLoaded", function () {
             expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
     
             expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
+                if (projectUrl.endsWith(".md")) {
+                    window.open(`viewer.html?file=${encodeURIComponent(projectUrl)}`, "_blank");
+                } else {                
                 window.open(projectUrl, "_blank");
+            }
             });
     
             // 🔹 If it's a Markdown file, render it using Marked.js
@@ -197,8 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <head>
                             <title>Markdown Viewer</title>
                             <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-                            <style>
-                                
+                            <style>                                
                                 body { font-family: Arial, sans-serif; padding: 20px; max-width: 90%; background-color: #f8f9fa; margin: auto; }
                                 h1, h2, h3 { color: #333;}
                             </style>
@@ -265,3 +268,37 @@ async function updateProjectDates() {
 }
 
 document.addEventListener("DOMContentLoaded", updateProjectDates);
+
+document.addEventListener("DOMContentLoaded", function () {
+    
+    function checkScrollingText() {
+        document.querySelectorAll(".overlay h3").forEach(h3 => {
+            if (h3.scrollWidth > h3.clientWidth) {
+                h3.classList.add("scroll-text");
+            } else {
+                h3.classList.remove("scroll-text");
+            }
+        });
+    }
+    // Initial check on DOMContentLoaded
+    checkScrollingText();
+
+    // Add event listener for window resize to dynamically check scroll requirement
+    window.addEventListener("resize", function () {
+        checkScrollingText();
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".project-tile").forEach(tile => {
+        const tagsContainer = tile.querySelector(".project-tags");
+        const tags = tile.getAttribute("data-tags").split(",");
+
+        tags.forEach(tag => {
+            const tagElement = document.createElement("span");
+            tagElement.textContent = tag.trim();
+            tagsContainer.appendChild(tagElement);
+        });
+    });
+});
