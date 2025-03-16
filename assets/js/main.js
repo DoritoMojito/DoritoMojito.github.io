@@ -149,9 +149,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, true);  // Use capture phase to ensure it works with dynamically added buttons
 
-    projectTiles.forEach(tile => {
+    document.querySelectorAll(".project-tile").forEach(tile => {
         tile.addEventListener("click", async function () {
             const projectUrl = tile.getAttribute("data-url");
+            const projectTitle = encodeURIComponent(tile.getAttribute("data-title") || tile.querySelector("h3").textContent.trim());
+            
             if (!projectUrl) return;
     
             document.querySelector(".expanded-view")?.remove();
@@ -182,10 +184,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
             expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
                 if (projectUrl.endsWith(".md")) {
-                    window.open(`viewer.html?file=${encodeURIComponent(projectUrl)}`, "_blank");
+                    window.open(`viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`, "_blank");
                 } else {                
-                window.open(projectUrl, "_blank");
-            }
+                    window.open(projectUrl, "_blank");
+                }
             });
     
             // 🔹 If it's a Markdown file, render it using Marked.js
@@ -199,11 +201,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     const htmlContent = `
                         <html>
                         <head>
-                            <title>Markdown Viewer</title>
+                            <title>${decodeURIComponent(projectTitle)}</title>
                             <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
                             <style>                                
                                 body { font-family: Arial, sans-serif; padding: 20px; max-width: 90%; background-color: #f8f9fa; margin: auto; }
-                                h1, h2, h3 { color: #333;}
+                                h1, h2, h3 { color: #333; }
                             </style>
                         </head>
                         <body>
@@ -223,6 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+    
     
 
     function sortFilterButtons() {

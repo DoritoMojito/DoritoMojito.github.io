@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Viewer</title>
+    <title>Loading...</title> <!-- Default title before JS sets it -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/main.css"> <!-- Use same styles as the main page -->
+    <script>
+        function setPageTitleFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const projectTitle = params.get("title");
+
+            if (projectTitle) {
+                document.title = decodeURIComponent(projectTitle) + ": Details";
+            } else {
+                document.title = "Project Details";
+            }
+        }
+    </script>
 </head>
-<body>
-    <div id="markdown-content">Loading...</div>
+<body onload="setPageTitleFromURL()">
+    <div id="content">Loading...</div>
 
     <script>
         async function loadMarkdown() {
             const params = new URLSearchParams(window.location.search);
             const file = params.get("file");
-            
+
             if (!file) {
-                document.getElementById("markdown-content").innerText = "No file specified.";
+                document.getElementById("content").innerHTML = "<p>Error: No file provided.</p>";
                 return;
             }
 
             try {
                 const response = await fetch(file);
-                if (!response.ok) throw new Error("Failed to load file");
-
-                const text = await response.text();
-                document.getElementById("markdown-content").innerHTML = marked.parse(text);
+                if (!response.ok) throw new Error("Failed to load file.");
+                const markdownText = await response.text();
+                document.getElementById("content").innerHTML = marked.parse(markdownText);
             } catch (error) {
-                document.getElementById("markdown-content").innerText = "Error loading Markdown file.";
+                console.error("Error loading Markdown:", error);
+                document.getElementById("content").innerHTML = "<p>Error loading the document.</p>";
             }
         }
 
-        loadMarkdown();
+        document.addEventListener("DOMContentLoaded", loadMarkdown);
     </script>
 </body>
 </html>

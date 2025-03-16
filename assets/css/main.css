@@ -103,6 +103,7 @@ body, #markdown-content {
 
 .filter-btn {
     padding: 5px 10px;
+    margin: 2px;
     font-size: 14px;
     color: #ffffff;
     background: #393939;

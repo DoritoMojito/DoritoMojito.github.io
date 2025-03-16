@@ -17,9 +17,9 @@
 		- Both have DNA
 - Cells come in many different shapes and sizes
 	- A. Neuron from a mammalian brain
-		- ![[89cce57c-0022-448e-a5fb-296175ec8599.PNG]]
+		- ![1](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)
 	- B. Paramecium - giant, single celled organism
-		- ![[Pasted image 20230902121103.png]]
+		- ![](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)
 	- C. Chlamydomonas - algae
 		- ![[Pasted image 20230902121127.png]]
 	- D. Saccharomyces cerevisiae - yeast
