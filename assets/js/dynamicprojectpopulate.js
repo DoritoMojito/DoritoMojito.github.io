@@ -1,95 +1,108 @@
-async function fetchMarkdownFiles() {
-    const projectFolder = 'projects/'; // Folder containing Markdown files
-    
+function createProjectTile({ title, tags, modified, url, image, status }) {
+    const projectTile = document.createElement("div");
+    projectTile.classList.add("project-tile");
+    projectTile.setAttribute("data-tags", Array.isArray(tags) ? tags.join(", ") : tags);
+    projectTile.setAttribute("data-url", url);
+    projectTile.setAttribute("data-modified", modified);
+
+    projectTile.innerHTML = `
+        <img src="${image}" alt="${title}" class="project-image">
+        <div class="project-tags">
+            ${(Array.isArray(tags) ? tags : [tags]).map(tag => `<span>${tag.trim()}</span>`).join(" ")}
+        </div>
+        <div class="overlay">
+            <h3>${title}</h3>
+            <p class="last-modified">${modified}</p>
+            <span class="status ${status.toLowerCase()}"><i class="fas fa-check"></i> ${status}</span>
+        </div>
+    `;
+
+    return projectTile;
+}
+
+
+
+async function fetchProjectFiles() {
+    const projectContainer = document.querySelector(".project-grid");
+    if (!projectContainer) {
+        console.error("Project container not found");
+        return;
+    }
+
     try {
-        const response = await fetch(projectFolder);
-        if (!response.ok) throw new Error('Failed to fetch project list');
-        
-        const text = await response.text();
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(text, 'text/html');
-        const links = [...htmlDoc.querySelectorAll('a')]
-            .map(a => a.href)
-            .filter(href => href.endsWith('.md'));
-        
-        const projectData = await Promise.all(links.map(fetchAndParseMarkdown));
-        displayProjects(projectData);
+        const response = await fetch("project_files.json");
+        const fileList = await response.json();
+
+        for (const file of fileList) {
+            const filePath = `projects/${file}`;
+            console.log(`Fetching file: ${filePath}`);
+
+            const fileResponse = await fetch(filePath);
+            const fileText = await fileResponse.text();
+
+            const yamlMatch = fileText.match(/^---\n([\s\S]+?)\n---/);
+            if (!yamlMatch) {
+                console.warn(`No YAML front matter found in ${file}`);
+                continue;
+            }
+
+            const yamlData = yamlMatch[1];
+            const metadata = parseYAML(yamlData);
+
+            if (!metadata["project-title"] || !metadata["project-status"]) {
+                console.warn(`Skipping ${file} due to missing metadata`);
+                continue;
+            }
+
+            let imagePath = metadata["project-image"]?.trim() || "";
+            const imageMatch = imagePath.match(/!\[\]\((.*?)\)/);
+            imagePath = imageMatch ? imageMatch[1] : "assets/images/default.png";
+
+            const projectTile = createProjectTile({
+                title: metadata["project-title"],
+                tags: metadata["project-tags"] || "",
+                modified: metadata["project-modified"] || "Not available",
+                url: filePath,
+                image: imagePath,
+                status: metadata["project-status"]
+            });
+
+            projectContainer.appendChild(projectTile);
+        }
+
     } catch (error) {
-        console.error('Error fetching Markdown files:', error);
+        console.error("Error fetching projects:", error);
     }
 }
 
-async function fetchAndParseMarkdown(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Failed to fetch ${url}`);
-        
-        const text = await response.text();
-        return parseMarkdown(text, url);
-    } catch (error) {
-        console.error(`Error fetching Markdown file ${url}:`, error);
-        return null;
-    }
-}
 
-function parseMarkdown(markdown, url) {
-    const yamlMatch = markdown.match(/---\n([\s\S]+?)\n---/);
-    if (!yamlMatch) return null;
+// Helper function to parse YAML correctly
+function parseYAML(yamlString) {
+    const metadata = {};
+    const lines = yamlString.split("\n");
+    let currentKey = null;
 
-    const yamlText = yamlMatch[1];
-    const yamlData = Object.fromEntries(yamlText.split('\n')
-        .map(line => line.split(/:(.+)/).map(s => s.trim()))
-        .filter(parts => parts.length === 2));
+    for (let line of lines) {
+        const match = line.match(/^([\w-]+):\s*(.*)$/);
+        if (match) {
+            currentKey = match[1].trim();
+            let value = match[2].trim();
 
-    let image = 'assets/default.jpg';
-    if (yamlData.image) {
-        const obsidianImageMatch = yamlData.image.match(/!\[\[(.*?)\]\]/);
-        image = obsidianImageMatch ? `assets/${obsidianImageMatch[1]}` : `assets/${yamlData.image}`;
+            // Handle lists (tags, etc.)
+            if (value === "") {
+                metadata[currentKey] = [];
+            } else if (value.startsWith("-")) {
+                metadata[currentKey] = [value.replace("- ", "").trim()];
+            } else {
+                metadata[currentKey] = value;
+            }
+        } else if (currentKey && line.startsWith("  -")) {
+            metadata[currentKey].push(line.replace("  - ", "").trim());
+        }
     }
 
-    // Use `marked.parse()` to render Markdown content
-    const content = marked.parse(markdown.replace(yamlMatch[0], '').trim());
-
-    return {
-        title: yamlData.title || 'Untitled Project',
-        status: yamlData.status || 'Unknown',
-        image,
-        url,
-        content
-    };
+    console.log("Parsed YAML:", metadata);
+    return metadata;
 }
 
-
-
-function displayProjects(projects) {
-    const container = document.getElementById('project-container');
-    container.innerHTML = '';
-
-    projects.forEach(project => {
-        if (!project) return;
-
-        const tile = document.createElement('div');
-        tile.classList.add('project-tile');
-        tile.dataset.url = project.url;
-
-        tile.innerHTML = `
-            <img src="${project.image}" alt="${project.title}">
-            <div class="project-info">
-                <h3>${project.title}</h3>
-                <p>Status: ${project.status}</p>
-                <div class="project-content">${project.content}</div>
-            </div>
-        `;
-
-        tile.addEventListener('click', () => openProjectPage(project.url));
-        container.appendChild(tile);
-    });
-}
-
-
-
-function openProjectPage(url) {
-    window.open(url, '_blank');
-}
-
-document.addEventListener('DOMContentLoaded', fetchMarkdownFiles);
+document.addEventListener("DOMContentLoaded", fetchProjectFiles);
