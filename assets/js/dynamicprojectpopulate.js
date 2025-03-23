@@ -3,11 +3,10 @@ function createProjectTile({ title, tags, modified, url, image, status }) {
     projectTile.classList.add("project-tile");
     projectTile.setAttribute("data-title", title);
     projectTile.setAttribute("data-tags", Array.isArray(tags) ? tags.join(", ") : tags);
-    projectTile.setAttribute("data-modified", modified);
+    projectTile.setAttribute("data-modified", modified); // Add data-modified
     projectTile.setAttribute("data-url", "/" + url);
     projectTile.setAttribute("style", "display: block;");
     
-
     projectTile.innerHTML = `
         <img src="${image}" alt="${title}" class="project-image">
         <div class="project-tags">
@@ -22,8 +21,6 @@ function createProjectTile({ title, tags, modified, url, image, status }) {
 
     return projectTile;
 }
-
-
 
 async function fetchProjectFiles() {
     const projectContainer = document.querySelector(".project-grid");
@@ -61,10 +58,12 @@ async function fetchProjectFiles() {
             const imageMatch = imagePath.match(/!\[\]\((.*?)\)/);
             imagePath = imageMatch ? imageMatch[1] : "assets/images/default.png";
 
+            const modifiedDate = metadata["project-modified"] || "Not available"; // Ensure modified date
+
             const projectTile = createProjectTile({
                 title: metadata["project-title"],
                 tags: metadata["project-tags"] || "",
-                modified: metadata["project-modified"] || "Not available",
+                modified: modifiedDate, // Pass modified date
                 url: filePath,
                 image: imagePath,
                 status: metadata["project-status"]
@@ -77,7 +76,6 @@ async function fetchProjectFiles() {
         console.error("Error fetching projects:", error);
     }
 }
-
 
 // Helper function to parse YAML correctly
 function parseYAML(yamlString) {
@@ -108,4 +106,9 @@ function parseYAML(yamlString) {
     return metadata;
 }
 
-document.addEventListener("DOMContentLoaded", fetchProjectFiles);
+document.addEventListener("DOMContentLoaded", function () {
+    fetchProjectFiles().then(() => {
+        updateProjectVisibility(); // Update visibility after tiles are added
+    });
+});
+

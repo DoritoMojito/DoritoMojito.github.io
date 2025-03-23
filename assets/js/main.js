@@ -37,11 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateProjectVisibility() {
         let visibleCount = 0;
-
+    
+        const projectTiles = document.querySelectorAll(".project-tile"); // Get all tiles, including dynamically added
+    
         projectTiles.forEach(tile => {
             const tags = tile.dataset.tags ? tile.dataset.tags.split(",") : [];
             const matches = [...activeFilters].some(filter => tags.includes(filter));
-
+    
             if (activeFilters.size === 0 || matches) {
                 tile.style.display = "block";
                 visibleCount++;
@@ -49,9 +51,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 tile.style.display = "none";
             }
         });
-
+    
         projectCount.textContent = `${visibleCount}`;
     }
+    
 
     filterButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -149,85 +152,87 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, true);  // Use capture phase to ensure it works with dynamically added buttons
 
-    document.querySelectorAll(".project-tile").forEach(tile => {
-        tile.addEventListener("click", async function () {
-            const projectUrl = tile.getAttribute("data-url");
-            const projectTitle = encodeURIComponent(tile.getAttribute("data-title") || tile.querySelector("h3").textContent.trim());
-            
-            if (!projectUrl) {
-                console.log("No project URL found");
-                return;
-            }
+    document.addEventListener("click", async function (event) {
+        const tile = event.target.closest(".project-tile");
+        if (!tile) return;
     
-            document.querySelector(".expanded-view")?.remove();
+        const projectUrl = tile.getAttribute("data-url");
+        const projectTitle = encodeURIComponent(tile.getAttribute("data-title") || tile.querySelector("h3").textContent.trim());
     
-            const expandedView = document.createElement("div");
-            expandedView.classList.add("expanded-view");
+        if (!projectUrl) {
+            console.log("No project URL found");
+            return;
+        }
     
-            expandedView.innerHTML = `
-                <div class="expanded-wrapper">
-                    <div class="expanded-content">
-                        <button class="close-btn" data-title="Close">✖</button>
-                        <button class="new-tab-btn" data-title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
-                        <iframe id="project-iframe" src="${projectUrl}"></iframe>
-                    </div>
+        document.querySelector(".expanded-view")?.remove();
+    
+        const expandedView = document.createElement("div");
+        expandedView.classList.add("expanded-view");
+    
+        expandedView.innerHTML = `
+            <div class="expanded-wrapper">
+                <div class="expanded-content">
+                    <button class="close-btn" data-title="Close">✖</button>
+                    <button class="new-tab-btn" data-title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
+                    <iframe id="project-iframe" src="${projectUrl}"></iframe>
                 </div>
-            `;
+            </div>
+        `;
     
-            document.body.appendChild(expandedView);
-            setTimeout(() => expandedView.classList.add("show"), 10);
+        document.body.appendChild(expandedView);
+        setTimeout(() => expandedView.classList.add("show"), 10);
     
-            expandedView.addEventListener("click", (e) => {
-                if (!expandedView.querySelector(".expanded-content").contains(e.target)) {
-                    expandedView.remove();
-                }
-            });
-    
-            expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
-    
-            expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
-                if (projectUrl.endsWith(".md")) {
-                    window.open(`viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`, "_blank");
-                } else {                
-                    window.open(projectUrl, "_blank");
-                }
-            });
-    
-            // 🔹 If it's a Markdown file, render it using Marked.js
-            if (projectUrl.endsWith(".md")) {
-                const iframe = document.getElementById("project-iframe");
-    
-                try {
-                    const response = await fetch(projectUrl);
-                    const markdownText = await response.text();
-                    
-                    const htmlContent = `
-                        <html>
-                        <head>
-                            <title>${decodeURIComponent(projectTitle)}</title>
-                            <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-                            <style>                                
-                                body { font-family: Arial, sans-serif; padding: 20px; max-width: 90%; background-color: #f8f9fa; margin: auto; }
-                                h1, h2, h3 { color: #333; }
-                            </style>
-                        </head>
-                        <body>
-                            <div id="content"></div>
-                            <script>
-                                document.getElementById('content').innerHTML = marked.parse(\`${markdownText}\`);
-                            </script>
-                        </body>
-                        </html>
-                    `;
-    
-                    const blob = new Blob([htmlContent], { type: "text/html" });
-                    iframe.src = URL.createObjectURL(blob);
-                } catch (error) {
-                    console.error("Error loading Markdown:", error);
-                }
+        expandedView.addEventListener("click", (e) => {
+            if (!expandedView.querySelector(".expanded-content").contains(e.target)) {
+                expandedView.remove();
             }
         });
+    
+        expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
+    
+        expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
+            if (projectUrl.endsWith(".md")) {
+                window.open(`viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`, "_blank");
+            } else {                
+                window.open(projectUrl, "_blank");
+            }
+        });
+    
+        // 🔹 If it's a Markdown file, render it using Marked.js
+        if (projectUrl.endsWith(".md")) {
+            const iframe = document.getElementById("project-iframe");
+    
+            try {
+                const response = await fetch(projectUrl);
+                const markdownText = await response.text();
+                
+                const htmlContent = `
+                    <html>
+                    <head>
+                        <title>${decodeURIComponent(projectTitle)}</title>
+                        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+                        <style>                                
+                            body { font-family: Arial, sans-serif; padding: 20px; max-width: 90%; background-color: #f8f9fa; margin: auto; }
+                            h1, h2, h3 { color: #333; }
+                        </style>
+                    </head>
+                    <body>
+                        <div id="content"></div>
+                        <script>
+                            document.getElementById('content').innerHTML = marked.parse(\`${markdownText}\`);
+                        </script>
+                    </body>
+                    </html>
+                `;
+    
+                const blob = new Blob([htmlContent], { type: "text/html" });
+                iframe.src = URL.createObjectURL(blob);
+            } catch (error) {
+                console.error("Error loading Markdown:", error);
+            }
+        }
     });
+    
     
     
 
@@ -275,9 +280,8 @@ async function updateProjectDates() {
 
 document.addEventListener("DOMContentLoaded", updateProjectDates);
 
-document.addEventListener("DOMContentLoaded", function () {
-    
-    function checkScrollingText() {
+function checkScrollingText() {
+    requestAnimationFrame(() => {
         document.querySelectorAll(".overlay h3").forEach(h3 => {
             if (h3.scrollWidth > h3.clientWidth) {
                 h3.classList.add("scroll-text");
@@ -285,15 +289,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 h3.classList.remove("scroll-text");
             }
         });
-    }
-    // Initial check on DOMContentLoaded
-    checkScrollingText();
-
-    // Add event listener for window resize to dynamically check scroll requirement
-    window.addEventListener("resize", function () {
-        checkScrollingText();
     });
+}
+
+// Ensure check runs **after** all assets (images/fonts) are fully loaded
+window.addEventListener("load", () => {
+    setTimeout(checkScrollingText, 100); // Small delay to let fonts render
 });
+
+// Also run on resize for dynamic updates
+window.addEventListener("resize", checkScrollingText);
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
