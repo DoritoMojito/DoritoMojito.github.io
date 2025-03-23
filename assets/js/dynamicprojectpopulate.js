@@ -1,9 +1,12 @@
 function createProjectTile({ title, tags, modified, url, image, status }) {
     const projectTile = document.createElement("div");
     projectTile.classList.add("project-tile");
+    projectTile.setAttribute("data-title", title);
     projectTile.setAttribute("data-tags", Array.isArray(tags) ? tags.join(", ") : tags);
-    projectTile.setAttribute("data-url", url);
     projectTile.setAttribute("data-modified", modified);
+    projectTile.setAttribute("data-url", "/" + url);
+    projectTile.setAttribute("style", "display: block;");
+    
 
     projectTile.innerHTML = `
         <img src="${image}" alt="${title}" class="project-image">
@@ -13,7 +16,7 @@ function createProjectTile({ title, tags, modified, url, image, status }) {
         <div class="overlay">
             <h3>${title}</h3>
             <p class="last-modified">${modified}</p>
-            <span class="status ${status.toLowerCase()}"><i class="fas fa-check"></i> ${status}</span>
+            <span class="status ${status.toLowerCase()}"><i class="fas fa-check"></i></span>
         </div>
     `;
 

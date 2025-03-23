@@ -361,11 +361,10 @@ body, #markdown-content {
     color: white;
     padding: 5px;
     border-radius: 5px;
-    opacity: 0;
+    opacity: 1;
     visibility: visible; /* Ensure it's visible when shown */
     z-index: 1004;
     pointer-events: none;
-    transition: opacity 0.1s ease-in-out;
 }
 
 button[data-title]:hover + .custom-tooltip {

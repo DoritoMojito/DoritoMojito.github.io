@@ -154,7 +154,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const projectUrl = tile.getAttribute("data-url");
             const projectTitle = encodeURIComponent(tile.getAttribute("data-title") || tile.querySelector("h3").textContent.trim());
             
-            if (!projectUrl) return;
+            if (!projectUrl) {
+                console.log("No project URL found");
+                return;
+            }
     
             document.querySelector(".expanded-view")?.remove();
     
@@ -305,3 +308,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
