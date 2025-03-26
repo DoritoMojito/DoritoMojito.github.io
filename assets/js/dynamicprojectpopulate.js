@@ -1,12 +1,19 @@
+let allTags = new Set();  // This will store all the unique tags
+
 function createProjectTile({ title, tags, modified, url, image, status }) {
     const projectTile = document.createElement("div");
     projectTile.classList.add("project-tile");
+    
+    // Ensure tags are properly trimmed and formatted
+    const tagString = Array.isArray(tags) ? tags.join(", ").trim() : tags.trim();
+    
     projectTile.setAttribute("data-title", title);
-    projectTile.setAttribute("data-tags", Array.isArray(tags) ? tags.join(", ") : tags);
-    projectTile.setAttribute("data-modified", modified); // Add data-modified
+    projectTile.setAttribute("data-tags", tagString);  // Store trimmed and formatted tags
+    projectTile.setAttribute("data-modified", modified); 
     projectTile.setAttribute("data-url", "/" + url);
     projectTile.setAttribute("style", "display: block;");
     
+    // Create project tile HTML with proper tag handling
     projectTile.innerHTML = `
         <img src="${image}" alt="${title}" class="project-image">
         <div class="project-tags">
@@ -18,7 +25,7 @@ function createProjectTile({ title, tags, modified, url, image, status }) {
             <span class="status ${status.toLowerCase()}"><i class="fas fa-check"></i></span>
         </div>
     `;
-
+    
     return projectTile;
 }
 
@@ -54,16 +61,25 @@ async function fetchProjectFiles() {
                 continue;
             }
 
+            // Collect tags and add them to the allTags set
+            if (Array.isArray(metadata["project-tags"])) {
+                metadata["project-tags"].forEach(tag => allTags.add(tag.trim()));
+            }
+
             let imagePath = metadata["project-image"]?.trim() || "";
             const imageMatch = imagePath.match(/!\[\]\((.*?)\)/);
             imagePath = imageMatch ? imageMatch[1] : "assets/images/default.png";
 
-            const modifiedDate = metadata["project-modified"] || "Not available"; // Ensure modified date
+            let modifiedDate = metadata["project-modified"] || null; // First, check YAML metadata
+
+            if (!modifiedDate) {
+                modifiedDate = await getLastModified(filePath); // Fetch from server if not found in metadata
+            }
 
             const projectTile = createProjectTile({
                 title: metadata["project-title"],
-                tags: metadata["project-tags"] || "",
-                modified: modifiedDate, // Pass modified date
+                tags: metadata["project-tags"] || [],
+                modified: "Last Modified: " + modifiedDate, // Now uses either YAML or server last-modified date
                 url: filePath,
                 image: imagePath,
                 status: metadata["project-status"]
@@ -72,9 +88,38 @@ async function fetchProjectFiles() {
             projectContainer.appendChild(projectTile);
         }
 
+        // Now populate the filter options after all projects are loaded
+        populateFilters();
+        updateProjectVisibility(); // Ensure filtering is applied after loading
     } catch (error) {
         console.error("Error fetching projects:", error);
     }
+}
+
+// Function to populate the filter options dynamically
+function populateFilters() {
+    const filterContainer = document.querySelector(".filter-buttons"); // Assuming you have a container for filters
+    if (!filterContainer) {
+        console.error("Filter container not found");
+        return;
+    }
+
+    // Clear any existing filters
+    filterContainer.innerHTML = "";
+
+    // Add 'All' option for clearing filters
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All Tags";
+    filterContainer.appendChild(allOption);
+
+    // Create filter options based on the collected tags
+    allTags.forEach(tag => {
+        const option = document.createElement("option");
+        option.value = tag;
+        option.textContent = tag;
+        filterContainer.appendChild(option);
+    });
 }
 
 // Helper function to parse YAML correctly
@@ -106,9 +151,28 @@ function parseYAML(yamlString) {
     return metadata;
 }
 
+// Update visibility based on active filters
+function updateProjectVisibility() {
+    let visibleCount = 0;
+    const projectTiles = document.querySelectorAll(".project-tile");
+
+    projectTiles.forEach(tile => {
+        const tags = tile.dataset.tags ? tile.dataset.tags.split(",").map(tag => tag.trim()) : [];
+        const matches = [...activeFilters].some(filter => tags.includes(filter));  // Check against all tags
+
+        if (activeFilters.size === 0 || matches) {
+            tile.style.display = "block";
+            visibleCount++;
+        } else {
+            tile.style.display = "none";
+        }
+    });
+
+    projectCount.textContent = `${visibleCount}`;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     fetchProjectFiles().then(() => {
         updateProjectVisibility(); // Update visibility after tiles are added
     });
 });
-

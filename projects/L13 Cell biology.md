@@ -3,7 +3,7 @@ project-title: A very long test title for testing scrolling
 project-status: wip
 project-image: "![](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)"
 project-tags:
-
+  - Test
 last-modified:
 ---
 

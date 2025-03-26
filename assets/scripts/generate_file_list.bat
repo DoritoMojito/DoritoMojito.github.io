@@ -2,14 +2,14 @@
 setlocal enabledelayedexpansion
 
 :: Define output file
-set OUTPUT=project_files.json
+set OUTPUT=../data/project_files.json
 echo [ > %OUTPUT%
 
 :: Initialize first element flag
 set FIRST=1
 
 :: Loop through Markdown files
-for %%F in (projects\*.md) do (
+for %%F in (../../projects/*.md) do (
     if !FIRST! == 1 (
         set FIRST=0
         echo   "%%~nxF" >> %OUTPUT%
