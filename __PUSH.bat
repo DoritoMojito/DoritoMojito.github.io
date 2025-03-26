@@ -2,8 +2,8 @@
 setlocal
 
 :: Run individual batch files
-call extract_filters.bat
-call another_script.bat
+call assets\data\project_filters.bat
+call assets\data\project_files.bat
 
 :: GitHub update
 cd /d "%~dp0"  :: Change to the script's directory
