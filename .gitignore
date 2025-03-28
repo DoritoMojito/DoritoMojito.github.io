@@ -5,3 +5,5 @@
 drawer test/index.html
 drawer test/assets/css/main.css
 drawer test/assets/js/main.js
+error_log.txt
+pushscripts/debug_log.txt
