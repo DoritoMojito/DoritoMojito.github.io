@@ -1,9 +1,6 @@
 *.vsidx
-*.json
 *.sqlite
-/.vs/DoritoMojito.github.io
-drawer test/index.html
-drawer test/assets/css/main.css
-drawer test/assets/js/main.js
+/.vs
+/drawer test
 error_log.txt
 pushscripts/debug_log.txt
