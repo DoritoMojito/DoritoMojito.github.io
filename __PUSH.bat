@@ -51,10 +51,10 @@ for %%F in ("%script_dir%\*.bat") do (
     echo. >> "%~dp0error_log.txt"
     echo.  
 )
+
 cd /d "%~dp0"  :: Change to the script's directory
 git add .
 git commit -m "Automated update"
 git push origin main
-
 echo Update pushed to GitHub!
 pause
