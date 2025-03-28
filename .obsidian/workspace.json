@@ -1,0 +1,189 @@
+{
+  "main": {
+    "id": "f08cf950372e8b97",
+    "type": "split",
+    "children": [
+      {
+        "id": "6d69161074e77b08",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "225eb93f9bd8c87a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/L13 Cell biology.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "L13 Cell biology"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b56b65c12586a911",
+    "type": "split",
+    "children": [
+      {
+        "id": "8da22e9bbd47b623",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7c7519ae8af5b2ee",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "cb3f62f533589469",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "96c05d5a7c0007f9",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "c0dfaf813882b78a",
+    "type": "split",
+    "children": [
+      {
+        "id": "8411a21f0abe4b81",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "68fac62d444175a2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "7a2028871fef13ec",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "a2af902e32619d28",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "3ed3b5c93bfd9ed0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "225eb93f9bd8c87a",
+  "lastOpenFiles": [
+    "pushscripts/debug_log.txt",
+    "pushscripts/generate_filter_list.bat",
+    "pushscripts/generate_file_list.bat",
+    "pushscripts",
+    "_pushscripts/generate_filter_list.bat",
+    "_pushscripts/generate_file_list.bat",
+    "_pushscripts/debug_log.txt",
+    "_pushscripts",
+    "debug_log.txt",
+    "New folder",
+    "assets/data/project_filters.json",
+    "projects/!image.png.md",
+    "projects/L13 Cell biology.md",
+    "projects/Test.md",
+    "assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG",
+    "projects/Untitled.md",
+    "templates/Untitled.md",
+    "projects/Lab Conclusion.md"
+  ]
+}

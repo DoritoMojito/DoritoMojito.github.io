@@ -1,0 +1,47 @@
+/* Drawer container (for positioning) */
+.filter-drawer {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    
+  }
+  
+  /* Drawer (hidden by default) */
+  .drawer {
+    position: relative;
+    right: -220px; /* Starts off-screen */
+    width: 200px;
+    background: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 10px 0 0 10px;
+    transition: right 0.3s ease-in-out;
+  }
+  
+  /* Tag button (attached to drawer) */
+  .drawer-toggle {
+    position: absolute;
+    top: 50%;
+    left: -50px; /* Keeps the tag visible */
+    width: 50px;
+    height: 30px;
+    background: #444;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    border-radius: 5px 0 0 5px;
+    transition: left 0.3s ease-in-out;
+  }
+  
+  /* Drawer content */
+  .filter-menu {
+    padding: 10px;
+  }
+  
+  /* When checkbox is checked, slide the drawer out */
+  #drawer-toggle:checked ~ .drawer {
+    right: 0;
+  }
+  
