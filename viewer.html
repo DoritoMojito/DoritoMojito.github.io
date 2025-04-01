@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title> <!-- Default title before JS sets it -->
+    <title>Loading...</title>
+    <script src="assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="assets/css/main.css"> <!-- Use same styles as the main page -->
+    <link rel="stylesheet" href="assets/css/main.css">
     <script>
         function setPageTitleFromURL() {
             const params = new URLSearchParams(window.location.search);
@@ -20,6 +21,7 @@
     </script>
 </head>
 <body onload="setPageTitleFromURL()">
+    <div id="viewer">
     <div id="content">Loading...</div>
 
     <script>
@@ -45,5 +47,6 @@
 
         document.addEventListener("DOMContentLoaded", loadMarkdown);
     </script>
+    </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-body, #markdown-content {
+body{
     font-family: Arial, sans-serif;
     background-color: #393939;
 	color: white;
@@ -293,13 +293,17 @@ body, #markdown-content {
     transform: scale(1); /* Grow iframe to normal size */
 }
 
-#markdown-content{
+#viewer, #project-iframe{
     padding: 20px;
     font-family: Arial, sans-serif;
     max-width: auto;
     margin: auto;
     background: white;
     color: #393939;
+}
+
+#viewer h1 h2 h3, #project-iframe h1 h2 h3 {
+    color: #333;
 }
 
 .close-btn {

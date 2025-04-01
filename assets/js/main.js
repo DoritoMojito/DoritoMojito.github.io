@@ -240,9 +240,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     <head>
                         <title>${decodeURIComponent(projectTitle)}</title>
                         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-                        <style>                                
-                            body { font-family: Arial, sans-serif; padding: 20px; max-width: 90%; background-color: #f8f9fa; margin: auto; }
-                            h1, h2, h3 { color: #333; }
+                        <link rel="stylesheet" href="assets/css/main.css">
+                        <style>
+                            body { font-family: Arial, sans-serif; }
                         </style>
                     </head>
                     <body>
