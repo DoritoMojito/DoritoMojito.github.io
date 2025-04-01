@@ -246,10 +246,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         </style>
                     </head>
                     <body>
-                        <div id="content"></div>
+                        <div id="content">
                         <script>
                             document.getElementById('content').innerHTML = marked.parse(\`${markdownText}\`);
                         </script>
+                        </div>
                     </body>
                     </html>
                 `;
@@ -260,10 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Error loading Markdown:", error);
             }
         }
-    });
-    
-    
-    
+    });    
 
     function sortFilterButtons() {
         const buttonsArray = Array.from(filterButtons);
