@@ -198,6 +198,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const expandedView = document.createElement("div");
         expandedView.classList.add("expanded-view");
     
+        // Apply dark mode if it's active
+        if (document.body.classList.contains("dark-mode")) {
+            expandedView.classList.add("dark-mode");
+        }
+    
         expandedView.innerHTML = `
             <div class="expanded-wrapper">
                 <div class="expanded-content">
@@ -229,9 +234,10 @@ document.addEventListener("DOMContentLoaded", function () {
     
         if (projectUrl.endsWith(".md")) {
             const iframe = document.getElementById("project-iframe");
-            iframe.src = `viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`;
+            iframe.src = `viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}&theme=${localStorage.getItem("theme")}`;
         }        
-    });    
+    });
+    
 
     function sortFilterButtons() {
         const buttonsArray = Array.from(filterButtons);
@@ -274,6 +280,8 @@ async function updateProjectDates() {
         }
     });
 }
+
+
 
 document.addEventListener("DOMContentLoaded", updateProjectDates);
 
@@ -530,21 +538,34 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById("darkModeToggle");
     const body = document.body;
 
-    // Load saved theme from localStorage
-    if (localStorage.getItem("theme") === "dark") {
+    function applyDarkMode() {
         body.classList.add("dark-mode");
+        document.querySelectorAll(".expanded-view").forEach(view => {
+            view.classList.add("dark-mode");
+        });
+        localStorage.setItem("theme", "dark");
         toggleButton.innerHTML = '<span class="icon">🌙</span>';
     }
 
-    toggleButton.addEventListener("click", function () {
-        body.classList.toggle("dark-mode");
+    function removeDarkMode() {
+        body.classList.remove("dark-mode");
+        document.querySelectorAll(".expanded-view").forEach(view => {
+            view.classList.remove("dark-mode");
+        });
+        localStorage.setItem("theme", "light");
+        toggleButton.innerHTML = '<span class="icon">☀️</span>';
+    }
 
+    // Load saved theme from localStorage
+    if (localStorage.getItem("theme") === "dark") {
+        applyDarkMode();
+    }
+
+    toggleButton.addEventListener("click", function () {
         if (body.classList.contains("dark-mode")) {
-            toggleButton.innerHTML = '<span class="icon">🌙</span>';
-            localStorage.setItem("theme", "dark");
+            removeDarkMode();
         } else {
-            toggleButton.innerHTML = '<span class="icon">☀️</span>';
-            localStorage.setItem("theme", "light");
+            applyDarkMode();
         }
     });
 });

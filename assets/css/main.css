@@ -332,7 +332,11 @@ body{
     transform: scale(1); /* Grow iframe to normal size */
 }
 
-#viewer, #project-iframe{
+#project-iframe{
+    backdrop-filter: blur(5px);
+}
+
+#viewer{
     font-family: Arial, sans-serif;
     max-width: auto;
     margin: auto;
@@ -340,7 +344,7 @@ body{
     color: #333;
 }
 
-#viewer img, #project-iframe img {
+#viewer img{
     max-width: 100%;
 }
 
