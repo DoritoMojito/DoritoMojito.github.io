@@ -227,40 +227,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     
-        // 🔹 If it's a Markdown file, render it using Marked.js
         if (projectUrl.endsWith(".md")) {
             const iframe = document.getElementById("project-iframe");
-    
-            try {
-                const response = await fetch(projectUrl);
-                const markdownText = await response.text();
-                
-                const htmlContent = `
-                    <html>
-                    <head>
-                        <title>${decodeURIComponent(projectTitle)}</title>
-                        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-                        <link rel="stylesheet" href="assets/css/main.css">
-                        <style>
-                            body { font-family: Arial, sans-serif; }
-                        </style>
-                    </head>
-                    <body>
-                        <div id="content">
-                        <script>
-                            document.getElementById('content').innerHTML = marked.parse(\`${markdownText}\`);
-                        </script>
-                        </div>
-                    </body>
-                    </html>
-                `;
-    
-                const blob = new Blob([htmlContent], { type: "text/html" });
-                iframe.src = URL.createObjectURL(blob);
-            } catch (error) {
-                console.error("Error loading Markdown:", error);
-            }
-        }
+            iframe.src = `viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`;
+        }        
     });    
 
     function sortFilterButtons() {
@@ -554,4 +524,27 @@ document.addEventListener("DOMContentLoaded", () => {
             loadFilters();
         }
     }, 100); // Check every 100ms
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById("darkModeToggle");
+    const body = document.body;
+
+    // Load saved theme from localStorage
+    if (localStorage.getItem("theme") === "dark") {
+        body.classList.add("dark-mode");
+        toggleButton.innerHTML = '<span class="icon">🌙</span>';
+    }
+
+    toggleButton.addEventListener("click", function () {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+            toggleButton.innerHTML = '<span class="icon">🌙</span>';
+            localStorage.setItem("theme", "dark");
+        } else {
+            toggleButton.innerHTML = '<span class="icon">☀️</span>';
+            localStorage.setItem("theme", "light");
+        }
+    });
 });
