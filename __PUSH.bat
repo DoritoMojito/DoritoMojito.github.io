@@ -54,6 +54,7 @@ git push origin main
 
 echo Update pushed to GitHub!
 pause
-timeout /t 2 /nobreak >nul
-start "opening deployments" "https://github.com/DoritoMojito/DoritoMojito.github.io/deployments"
+echo Opening Deployments in 2 seconds.
+timeout /t 2 /nobreak
+start "" "https://github.com/DoritoMojito/DoritoMojito.github.io/deployments"
 
