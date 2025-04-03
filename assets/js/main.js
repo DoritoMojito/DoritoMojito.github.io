@@ -540,21 +540,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function applyDarkMode() {
         body.classList.add("dark-mode");
-        document.querySelectorAll(".expanded-view").forEach(view => {
+        document.querySelectorAll(".expanded-view, #viewer").forEach(view => {
             view.classList.add("dark-mode");
         });
+    
+        // Update all dark mode toggle buttons
+        document.querySelectorAll("#darkModeToggle").forEach(btn => {
+            btn.innerHTML = '<i id="darkMode" class="fas fa-moon"></i>';
+        });
+    
         localStorage.setItem("theme", "dark");
-        toggleButton.innerHTML = '<span class="icon">🌙</span>';
     }
-
+    
     function removeDarkMode() {
         body.classList.remove("dark-mode");
-        document.querySelectorAll(".expanded-view").forEach(view => {
+        document.querySelectorAll(".expanded-view, #viewer").forEach(view => {
             view.classList.remove("dark-mode");
         });
+    
+        // Update all dark mode toggle buttons
+        document.querySelectorAll("#darkModeToggle").forEach(btn => {
+            btn.innerHTML = '<i id="lightMode" class="fas fa-sun"></i>';
+        });
+    
         localStorage.setItem("theme", "light");
-        toggleButton.innerHTML = '<span class="icon">☀️</span>';
     }
+    
 
     // Load saved theme from localStorage
     if (localStorage.getItem("theme") === "dark") {

@@ -7,6 +7,7 @@
     <script src="assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="assets/css/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">	
     <script>
         function setPageTitleFromURL() {
             const params = new URLSearchParams(window.location.search);
@@ -19,11 +20,12 @@
             }
         }
     </script>
-    <button id="darkModeToggle" class="dark-mode-toggle">
-		<span class="icon">☀️</span>  <!-- Default sun icon -->
-	</button>	
+    	
 </head>
 <body id="viewer" onload="setPageTitleFromURL()" style="padding: 20px;">
+    <button id="darkModeToggle" class="dark-mode-toggle">
+		<i id="lightMode" class="fas fa-sun"></i>
+	</button>
     <div id="content">Loading...</div>
 
     <script>
