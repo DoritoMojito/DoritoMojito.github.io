@@ -54,4 +54,5 @@ git push origin main
 
 echo Update pushed to GitHub!
 pause
+start "" "https://github.com/DoritoMojito/DoritoMojito.github.io/deployments"
 
