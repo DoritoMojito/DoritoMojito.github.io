@@ -22,7 +22,7 @@
     </script>
     	
 </head>
-<body id="viewer" onload="setPageTitleFromURL()" style="padding: 20px;">
+<body id="viewer" onload="setPageTitleFromURL()" style="padding-left: 20px; padding-right: 20px; padding-bottom: 20px;">
     <button id="darkModeToggle" class="dark-mode-toggle">
 		<i id="lightMode" class="fas fa-sun"></i>
 	</button>
@@ -32,24 +32,44 @@
         async function loadMarkdown() {
             const params = new URLSearchParams(window.location.search);
             const file = params.get("file");
-
+    
             if (!file) {
                 document.getElementById("content").innerHTML = "<p>Error: No file provided.</p>";
                 return;
             }
-
+    
             try {
                 const response = await fetch(file);
                 if (!response.ok) throw new Error("Failed to load file.");
-                const markdownText = await response.text();
-                document.getElementById("content").innerHTML = marked.parse(markdownText);
+                let markdownText = await response.text();
+    
+                // Extract YAML front matter
+                const yamlMatch = markdownText.match(/^---\n([\s\S]+?)\n---\n*/);
+                let title = "Project Details"; // Default title
+    
+                if (yamlMatch) {
+                    const yamlContent = yamlMatch[1];
+                    const titleMatch = yamlContent.match(/^project-title:\s*(.+)$/m);
+                    if (titleMatch) {
+                        title = titleMatch[1].trim();
+                    }
+    
+                    // Remove YAML front matter completely, ensuring no blank lines remain
+                    markdownText = markdownText.replace(yamlMatch[0], '').trim();
+                }
+    
+                // Set document title and add a formatted header with a horizontal line
+                document.title = title + " - Details";
+                document.getElementById("content").innerHTML = `<h1 class="project-header">${title}</h1><hr>\n` + marked.parse(markdownText);
             } catch (error) {
                 console.error("Error loading Markdown:", error);
                 document.getElementById("content").innerHTML = "<p>Error loading the document.</p>";
             }
         }
-
+    
         document.addEventListener("DOMContentLoaded", loadMarkdown);
     </script>
+    
+    
 </body>
 </html>

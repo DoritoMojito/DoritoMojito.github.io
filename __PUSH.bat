@@ -55,7 +55,7 @@ git push origin main
 echo Update pushed to GitHub!
 pause
 echo.
-echo Opening Deployments in 2 seconds.
-timeout /t 2 /nobreak
+echo Opening Deployments in 3 seconds.
+timeout /t 3 /nobreak
 start "" "https://github.com/DoritoMojito/DoritoMojito.github.io/deployments"
 

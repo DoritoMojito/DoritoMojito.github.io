@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
         expandedView.innerHTML = `
             <div class="expanded-wrapper">
                 <div class="expanded-content">
-                    <button class="close-btn" data-title="Close">✖</button>
+                    <button class="close-btn" data-title="Close"><i class="fas fa-times-circle"></i></button>
                     <button class="new-tab-btn" data-title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
                     <iframe id="project-iframe" src="${projectUrl}"></iframe>
                 </div>
@@ -288,22 +288,55 @@ document.addEventListener("DOMContentLoaded", updateProjectDates);
 function checkScrollingText() {
     requestAnimationFrame(() => {
         document.querySelectorAll(".overlay h3").forEach(h3 => {
-            if (h3.scrollWidth > h3.clientWidth) {
+            const containerWidth = h3.parentElement.clientWidth; // Container width (in pixels)
+            const textWidth = h3.scrollWidth; // Text width (in pixels)
+            const offset = containerWidth*.08; // Padding offset (in pixels)
+
+            // Calculate the available space for the text inside the container
+            const availableSpace = containerWidth - offset;
+
+            h3.addEventListener("mouseover", () => {
+                console.log("");
+                console.log("Container Width: " + containerWidth + "px");
+                console.log("Text Width: " + textWidth + "px");
+                console.log("Available Space: "+ availableSpace + "px")
+            });
+
+
+            // Check if the text width exceeds the available space in the container
+            if (textWidth > availableSpace) {
+                // Set the scroll speed in pixels per second (constant speed)
+                const scrollSpeed = 60; // Speed in pixels per second
+                const distanceToScroll = textWidth + containerWidth - 250; // Total scroll distance (text width + container width)
+
+                // Calculate the duration based on the distance and scroll speed
+                const duration = distanceToScroll / scrollSpeed;
+
+                // Set dynamic values for the animation duration and scroll distance
+                h3.style.setProperty('--animation-duration', `${duration}s`);
+                h3.style.setProperty('--scroll-distance', `-${distanceToScroll}px`);
+
+                // Add the class to initiate the scroll animation
                 h3.classList.add("scroll-text");
             } else {
+                // If text fits within the available space, stop scrolling
                 h3.classList.remove("scroll-text");
+                h3.style.setProperty('--animation-duration', ''); // Reset animation duration
+                h3.style.setProperty('--scroll-distance', ''); // Reset scroll distance
             }
         });
     });
 }
 
-// Ensure check runs **after** all assets (images/fonts) are fully loaded
+// Ensure the check runs after the page has loaded
 window.addEventListener("load", () => {
-    setTimeout(checkScrollingText, 100); // Small delay to let fonts render
+    setTimeout(checkScrollingText, 100); // Delay to ensure fonts are fully loaded
 });
 
-// Also run on resize for dynamic updates
+// Also run on window resize for dynamic updates
 window.addEventListener("resize", checkScrollingText);
+
+
 
 async function loadFilters() {
     try {
@@ -370,16 +403,26 @@ document.addEventListener("DOMContentLoaded", function () {
     function createProjectTile({ title, tags, modified, url, image, status }) {
         const projectTile = document.createElement("div");
         projectTile.classList.add("project-tile");
-        
-        // Ensure tags are properly trimmed and formatted
+    
         const tagString = Array.isArray(tags) ? tags.join(", ").trim() : tags.trim();
-        
+    
         projectTile.setAttribute("data-title", title);
         projectTile.setAttribute("data-tags", tagString);
         projectTile.setAttribute("data-modified", modified);
         projectTile.setAttribute("data-url", "/" + url);
         projectTile.setAttribute("style", "display: block;");
-        
+    
+        // Define status icon mapping
+        const statusIcons = {
+            finished: "fas fa-check",  // Green check
+            wip: "fas fa-wrench",             // Wrench for work-in-progress
+            cancelled: "fas fa-times-circle" // Red X for cancelled
+        };
+    
+        // Determine the appropriate icon (default to a generic icon if unknown status)
+        const statusClass = status.toLowerCase();
+        const iconClass = statusIcons[statusClass] || "fas fa-question"; // Question mark for unknown status
+    
         // Create project tile HTML
         projectTile.innerHTML = `
             <img src="${image}" alt="${title}" class="project-image">
@@ -389,12 +432,13 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="overlay">
                 <h3>${title}</h3>
                 <p class="last-modified">${modified}</p>
-                <span class="status ${status.toLowerCase()}"><i class="fas fa-check"></i></span>
+                <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
             </div>
         `;
-        
+    
         return projectTile;
     }
+    
 
     async function fetchProjectFiles() {
         const projectContainer = document.querySelector(".project-grid");

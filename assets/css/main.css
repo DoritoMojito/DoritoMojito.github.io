@@ -31,7 +31,7 @@ body.dark-mode .dark-mode-toggle {
 }
 
 .dark-mode-toggle #lightMode {
-    color: #ff8400;
+    color: #000000;
 }
 
 .dark-mode-toggle #darkMode {
@@ -49,6 +49,20 @@ body{
     margin: 0;
     padding: 0;
 }
+
+.project-header {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid #444;
+    width: 60%;
+    margin: 0 auto 20px auto;
+}
+
 
 .body-grid {
 	display: grid;
@@ -229,7 +243,7 @@ body{
     position: absolute;
     bottom: -3px;
     left: 0;
-	padding-inline-start: 2%;
+	text-indent: 3%;
     width: 100%;
     background: rgba(0, 0, 0, 0.5);
     color: white;
@@ -239,30 +253,35 @@ body{
     -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
     mask-image: radial-gradient(circle, white 100%, transparent 100%);
 }
+.overlay h3 {
+    white-space: nowrap;
+    overflow: show;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: auto; /* Ensure it takes up full width */
+    text-align: left;
+}
 
 .overlay::before {
     content: "";
     position: absolute;
     inset: 0;
-    backdrop-filter: blur(2px);
+    /*backdrop-filter: blur(2px); disabled for now due to errors */
     z-index: -1; /* Push it behind the text */
 }
 
-.overlay h3 {
-    white-space: nowrap;
-    overflow: show;
-    text-overflow: ellipsis;
-    display: block;
-    width: 100%; /* Ensure it takes up full width */
-}
-/* Enable scrolling animation if needed */
+
 .scroll-text {
-    animation: scrollText 5s linear infinite;
+    animation: scrollText var(--animation-duration) linear infinite;
 }
 
 @keyframes scrollText {
-    from { transform: translateX(100%); }
-    to { transform: translateX(-100%); }
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(var(--scroll-distance));
+    }
 }
 
 .project-tile:hover .overlay {
@@ -272,7 +291,8 @@ body{
 .status {
     position: absolute;
     bottom: 15px;
-    right: 20px;
+    right: 2%;
+    padding-right: 5px;
     font-size: 20px;
 }
 
@@ -355,35 +375,9 @@ body{
     max-width: 100%;
 }
 
-.close-btn {
+.new-tab-btn, .close-btn {
     position: absolute;
     top: 10px;
-    right: 15px;
-    background: #820000;
-    color: white;
-    border: none;
-    font-size: 20px;
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    z-index: 1003; /* Ensure it's above the iframe */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.close-btn:hover {
-    color: #000000; /* Optional: Change color when hovering */
-}
-
-.new-tab-btn {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #007bff;
     color: white;
     border: none;
     font-size: 20px;
@@ -396,8 +390,18 @@ body{
     align-items: center;
 }
 
-.new-tab-btn i {
-    font-size: 18px;
+.close-btn {
+    right: 15px;
+    background: #820000;
+}
+
+.close-btn:hover {
+    background-color: #5c0101; /* Optional: Change color when hovering */
+}
+
+.new-tab-btn {
+    left: 15px;
+    background: #007bff;
 }
 
 .new-tab-btn:hover {
