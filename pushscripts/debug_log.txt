@@ -16,6 +16,171 @@ Line: ---
 Exiting YAML block 
 Line: --- 
 Entering YAML block 
+Line: project-title: A very long test title for testing scrolling 
+Line: project-status: wip 
+Line: project-image: "[](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - Test 
+Checking line for tag: - Test 
+Extracted tag: Test 
+Line: last-modified: 
+Checking line for tag: last-modified: 
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: A very long test title for testing scrolling 
+Line: project-status: wip 
+Line: project-image: "[](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - Test 
+Checking line for tag: - Test 
+Extracted tag: Test 
+Line: last-modified: 
+Checking line for tag: last-modified: 
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: A very long test title for testing scrolling 
+Line: project-status: wip 
+Line: project-image: "[](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - Test 
+Checking line for tag: - Test 
+Extracted tag: Test 
+Line: last-modified: 
+Checking line for tag: last-modified: 
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: A very long test title for testing scrolling 
+Line: project-status: wip 
+Line: project-image: "[](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - Test 
+Checking line for tag: - Test 
+Extracted tag: Test 
+Line: last-modified: 
+Checking line for tag: last-modified: 
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: A very long test title for testing scrolling 
+Line: project-status: wip 
+Line: project-image: "[](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - Test 
+Checking line for tag: - Test 
+Extracted tag: Test 
+Line: last-modified: 
+Checking line for tag: last-modified: 
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: [PH] 
+Line: project-status: cancelled 
+Line: project-image: "//images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixid=M3wxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0MjAzMDg0NXw&ixlib=rb-4.0.3&q=85&w=1920)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - CAD 
+Checking line for tag: - CAD 
+Extracted tag: CAD 
+Line:   - MetalWorking 
+Checking line for tag: - MetalWorking 
+Extracted tag: MetalWorking 
+Line: last-modified:  
+Checking line for tag: last-modified:  
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: [PH] 
+Line: project-status: cancelled 
+Line: project-image: "//images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixid=M3wxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0MjAzMDg0NXw&ixlib=rb-4.0.3&q=85&w=1920)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - CAD 
+Checking line for tag: - CAD 
+Extracted tag: CAD 
+Line:   - MetalWorking 
+Checking line for tag: - MetalWorking 
+Extracted tag: MetalWorking 
+Line: last-modified:  
+Checking line for tag: last-modified:  
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: [PH] 
+Line: project-status: cancelled 
+Line: project-image: "//images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixid=M3wxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0MjAzMDg0NXw&ixlib=rb-4.0.3&q=85&w=1920)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - CAD 
+Checking line for tag: - CAD 
+Extracted tag: CAD 
+Line:   - MetalWorking 
+Checking line for tag: - MetalWorking 
+Extracted tag: MetalWorking 
+Line: last-modified:  
+Checking line for tag: last-modified:  
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: [PH] 
+Line: project-status: cancelled 
+Line: project-image: "//images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixid=M3wxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0MjAzMDg0NXw&ixlib=rb-4.0.3&q=85&w=1920)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - CAD 
+Checking line for tag: - CAD 
+Extracted tag: CAD 
+Line:   - MetalWorking 
+Checking line for tag: - MetalWorking 
+Extracted tag: MetalWorking 
+Line: last-modified:  
+Checking line for tag: last-modified:  
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
+Line: project-title: [PH] 
+Line: project-status: cancelled 
+Line: project-image: "//images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixid=M3wxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0MjAzMDg0NXw&ixlib=rb-4.0.3&q=85&w=1920)" 
+Line: project-tags: 
+Found project-tags section 
+Checking line for tag: project-tags: 
+Line:   - CAD 
+Checking line for tag: - CAD 
+Extracted tag: CAD 
+Line:   - MetalWorking 
+Checking line for tag: - MetalWorking 
+Extracted tag: MetalWorking 
+Line: last-modified:  
+Checking line for tag: last-modified:  
+Line: --- 
+Exiting YAML block 
+Line: --- 
+Entering YAML block 
 Line: project-title: [PH] 
 Line: project-status: cancelled 
 Line: project-image: "//images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?ixid=M3wxMTI1OHwwfDF8cmFuZG9tfHx8fHx8fHx8MTc0MjAzMDg0NXw&ixlib=rb-4.0.3&q=85&w=1920)" 
