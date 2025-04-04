@@ -153,6 +153,8 @@ hr {
     right: 0;
 	width: 100%;
     height: 142px; /* Padding + drawer height + drawer padding */
+    overflow-y: scroll;
+    scrollbar-width: 20px;
     pointer-events: all;
 }
 
@@ -238,6 +240,7 @@ hr {
 
 .overlay {
     position: absolute;
+    overflow: hidden;
     bottom: -3px;
     left: 0;
 	text-indent: 3%;
@@ -250,14 +253,6 @@ hr {
     -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
     mask-image: radial-gradient(circle, white 100%, transparent 100%);
 }
-.overlay h3 {
-    white-space: nowrap;
-    overflow: show;
-    text-overflow: ellipsis;
-    display: inline-block;
-    max-width: auto; /* Ensure it takes up full width */
-    text-align: left;
-}
 
 .overlay::before {
     content: "";
@@ -267,19 +262,63 @@ hr {
     z-index: -1; /* Push it behind the text */
 }
 
-
-.scroll-text {
-    animation: scrollText var(--animation-duration) linear infinite;
+.overlay h3 {
+    white-space: nowrap;
+    position: relative;
+    left: 0;
+    transform: translateX(0);
+    overflow: show;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: auto; /* Ensure it takes up full width */
+    text-align: left;
+    transition: transform 0.3s ease-out;
 }
 
-@keyframes scrollText {
+
+
+.overlay h3.scroll-text {
+    animation: scrollText var(--scroll-duration) linear infinite;
+    will-change: transform;
+  }
+  
+  .overlay h3.scroll-duplicate {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    visibility: hidden;
+  }
+
+  .overlay h3.scroll-text.scroll-duplicate {
+    visibility: visible;
+  }
+
+  .overlay:hover h3.scroll-text {
+    animation-play-state: paused;
+  }
+  @keyframes scrollText {
     from {
-        transform: translateX(100%);
+        transform: translateX(0);
     }
     to {
         transform: translateX(var(--scroll-distance));
     }
 }
+
+.scroll-text {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    backface-visibility: hidden;
+    animation: scrollText var(--animation-duration) linear infinite;
+    animation-play-state: running;
+}
+
+
+
+.overlay:hover .scroll-text {
+    animation-play-state: paused;
+  }
 
 .project-tile:hover .overlay {
     transform: translateY(0);

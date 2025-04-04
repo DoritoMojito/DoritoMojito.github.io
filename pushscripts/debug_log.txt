@@ -1,4 +1,5 @@
 --- Debug Log --- 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\L13 Cell biology - Copy (2).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: A very long test title for testing scrolling 
@@ -10,10 +11,12 @@ Checking line for tag: project-tags:
 Line:   - Test 
 Checking line for tag: - Test 
 Extracted tag: Test 
+Added new tag: Test 
 Line: last-modified: 
 Checking line for tag: last-modified: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\L13 Cell biology - Copy (3).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: A very long test title for testing scrolling 
@@ -25,10 +28,12 @@ Checking line for tag: project-tags:
 Line:   - Test 
 Checking line for tag: - Test 
 Extracted tag: Test 
+Added new tag: Test 
 Line: last-modified: 
 Checking line for tag: last-modified: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\L13 Cell biology - Copy (4).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: A very long test title for testing scrolling 
@@ -40,10 +45,12 @@ Checking line for tag: project-tags:
 Line:   - Test 
 Checking line for tag: - Test 
 Extracted tag: Test 
+Added new tag: Test 
 Line: last-modified: 
 Checking line for tag: last-modified: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\L13 Cell biology - Copy (5).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: A very long test title for testing scrolling 
@@ -55,10 +62,12 @@ Checking line for tag: project-tags:
 Line:   - Test 
 Checking line for tag: - Test 
 Extracted tag: Test 
+Added new tag: Test 
 Line: last-modified: 
 Checking line for tag: last-modified: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\L13 Cell biology - Copy.md 
 Line: --- 
 Entering YAML block 
 Line: project-title: A very long test title for testing scrolling 
@@ -70,10 +79,12 @@ Checking line for tag: project-tags:
 Line:   - Test 
 Checking line for tag: - Test 
 Extracted tag: Test 
+Added new tag: Test 
 Line: last-modified: 
 Checking line for tag: last-modified: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\L13 Cell biology.md 
 Line: --- 
 Entering YAML block 
 Line: project-title: A very long test title for testing scrolling 
@@ -85,10 +96,12 @@ Checking line for tag: project-tags:
 Line:   - Test 
 Checking line for tag: - Test 
 Extracted tag: Test 
+Added new tag: Test 
 Line: last-modified: 
 Checking line for tag: last-modified: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Test - Copy (2).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: [PH] 
@@ -100,13 +113,16 @@ Checking line for tag: project-tags:
 Line:   - CAD 
 Checking line for tag: - CAD 
 Extracted tag: CAD 
+Added new tag: CAD 
 Line:   - MetalWorking 
 Checking line for tag: - MetalWorking 
 Extracted tag: MetalWorking 
+Added new tag: MetalWorking 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Test - Copy (3).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: [PH] 
@@ -118,13 +134,16 @@ Checking line for tag: project-tags:
 Line:   - CAD 
 Checking line for tag: - CAD 
 Extracted tag: CAD 
+Added new tag: CAD 
 Line:   - MetalWorking 
 Checking line for tag: - MetalWorking 
 Extracted tag: MetalWorking 
+Added new tag: MetalWorking 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Test - Copy (4).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: [PH] 
@@ -136,13 +155,16 @@ Checking line for tag: project-tags:
 Line:   - CAD 
 Checking line for tag: - CAD 
 Extracted tag: CAD 
+Added new tag: CAD 
 Line:   - MetalWorking 
 Checking line for tag: - MetalWorking 
 Extracted tag: MetalWorking 
+Added new tag: MetalWorking 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Test - Copy (5).md 
 Line: --- 
 Entering YAML block 
 Line: project-title: [PH] 
@@ -154,13 +176,16 @@ Checking line for tag: project-tags:
 Line:   - CAD 
 Checking line for tag: - CAD 
 Extracted tag: CAD 
+Added new tag: CAD 
 Line:   - MetalWorking 
 Checking line for tag: - MetalWorking 
 Extracted tag: MetalWorking 
+Added new tag: MetalWorking 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Test - Copy.md 
 Line: --- 
 Entering YAML block 
 Line: project-title: [PH] 
@@ -172,13 +197,16 @@ Checking line for tag: project-tags:
 Line:   - CAD 
 Checking line for tag: - CAD 
 Extracted tag: CAD 
+Added new tag: CAD 
 Line:   - MetalWorking 
 Checking line for tag: - MetalWorking 
 Extracted tag: MetalWorking 
+Added new tag: MetalWorking 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Test.md 
 Line: --- 
 Entering YAML block 
 Line: project-title: [PH] 
@@ -190,19 +218,23 @@ Checking line for tag: project-tags:
 Line:   - CAD 
 Checking line for tag: - CAD 
 Extracted tag: CAD 
+Added new tag: CAD 
 Line:   - MetalWorking 
 Checking line for tag: - MetalWorking 
 Extracted tag: MetalWorking 
+Added new tag: MetalWorking 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\Untitled.md 
 Line: --- 
 Entering YAML block 
 Line: status: wip 
 Line: tags: 
 Line: --- 
 Exiting YAML block 
+Processing file: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\projects\yamltemplate.md 
 Line: --- 
 Entering YAML block 
 Line: project-title:  
@@ -214,11 +246,13 @@ Checking line for tag: project-tags:
 Line:   - Tag1 
 Checking line for tag: - Tag1 
 Extracted tag: Tag1 
+Added new tag: Tag1 
 Line:   - Tag2 
 Checking line for tag: - Tag2 
 Extracted tag: Tag2 
+Added new tag: Tag2 
 Line: last-modified:  
 Checking line for tag: last-modified:  
 Line: --- 
 Exiting YAML block 
-Removing duplicates and sorting tags 
+Filter extraction complete. Output saved to: C:\Users\apxrr\OneDrive\Documents\Github\DoritoMojito.github.io\pushscripts\..\assets\data\project_filters.json 

@@ -338,3 +338,11 @@ The system cannot find the drive specified.
 Exit Code: 0 
 Finished: generate_filter_list.bat 
  
+Running: generate_file_list.bat 
+Exit Code: 0 
+Finished: generate_file_list.bat 
+ 
+Running: generate_filter_list.bat 
+Exit Code: 0 
+Finished: generate_filter_list.bat 
+ 

@@ -7,6 +7,7 @@ set "projects_dir=%script_dir%..\projects"
 set "output_dir=%script_dir%..\assets\data"
 set "output_file=%output_dir%\project_filters.json"
 set "tempfile=%temp%\tags.tmp"
+set "uniquetags=%temp%\uniquetags.tmp"
 set "debug_log=%script_dir%debug_log.txt"
 
 :: Ensure required directories exist
@@ -20,21 +21,22 @@ if not exist "%output_dir%" (
 
 :: Clear temporary and debug files
 if exist "%tempfile%" del "%tempfile%"
+if exist "%uniquetags%" del "%uniquetags%"
 if exist "%debug_log%" del "%debug_log%"
 
 echo --- Debug Log --- > "%debug_log%"
+echo. > "%uniquetags%"  :: Create empty file initially
 
 :: Loop through markdown files
 for %%F in ("%projects_dir%\*.md") do (
-    ::echo Processing file: %%F >> "%debug_log%"
-    ::echo Processing file: %%F
+    echo Processing file: %%F >> "%debug_log%"
     set "inside_yaml=0"
     set "reading_tags=0"
     set "stop_processing=0"
 
     for /f "usebackq delims=" %%A in ("%%F") do (
         if !stop_processing! equ 1 (
-            rem If stop_processing flag is set, simply skip processing this line.
+            rem Skip processing if we're done with YAML
         ) else (
             set "line=%%A"
             echo Line: !line! >> "%debug_log%"
@@ -59,23 +61,30 @@ for %%F in ("%projects_dir%\*.md") do (
                     echo Found project-tags section >> "%debug_log%"
                 )
                 if !reading_tags! equ 1 (
-                    :: Trim leading spaces using a for /f trick
+                    :: Trim leading spaces
                     for /f "tokens=* delims= " %%X in ("!line!") do set "trimmed_line=%%X"
                     echo Checking line for tag: !trimmed_line! >> "%debug_log%"
                     if /i not "!trimmed_line!"=="project-tags:" (
                         if "!trimmed_line:~0,2!"=="- " (
                             set "tag=!trimmed_line:~2!"
 
-                            rem Remove leading spaces (already done with the previous trim)
-                            for /f "tokens=* delims= " %%G in ("!tag!") do set "tag=%%G"
-
-                            rem Now remove trailing spaces
+                            :: Remove all spaces (both leading and trailing)
                             set "tag=!tag: =!"
-                            for %%H in (!tag!) do set "tag=%%H"
+                            
+                            :: Additional trim to handle any remaining whitespace
+                            for /f "tokens=* delims= " %%G in ("!tag!") do set "tag=%%G"
 
                             if not "!tag!"=="" (
                                 echo Extracted tag: !tag! >> "%debug_log%"
-                                echo !tag! >> "%tempfile%"
+                                
+                                :: Check if tag already exists in unique tags file
+                                findstr /i /x /c:"!tag!" "%uniquetags%" >nul 2>&1
+                                if errorlevel 1 (
+                                    echo !tag! >> "%uniquetags%"
+                                    echo Added new tag: !tag! >> "%debug_log%"
+                                ) else (
+                                    echo Tag already exists: !tag! >> "%debug_log%"
+                                )
                             ) else (
                                 echo Ignored empty tag >> "%debug_log%"
                             )
@@ -87,9 +96,17 @@ for %%F in ("%projects_dir%\*.md") do (
     )
 )
 
-:: Remove duplicate tags and sort
-echo Removing duplicates and sorting tags >> "%debug_log%"
-sort "%tempfile%" /o "%tempfile%"
+:: Check if we found any tags
+for /f %%i in ('type "%uniquetags%" ^| find /c /v ""') do set "linecount=%%i"
+if "!linecount!"=="0" (
+    echo No tags found in any project files. >> "%debug_log%"
+    echo No tags found in any project files.
+    del "%uniquetags%"
+    exit /b
+)
+
+:: Sort the unique tags
+sort "%uniquetags%" /o "%uniquetags%"
 
 :: Write JSON structure
 (
@@ -98,7 +115,7 @@ sort "%tempfile%" /o "%tempfile%"
 ) > "%output_file%"
 
 set "first_line=1"
-for /f "tokens=*" %%T in (%tempfile%) do (
+for /f "tokens=*" %%T in (%uniquetags%) do (
     if defined first_line (
         echo     "%%T" >> "%output_file%"
         set "first_line="
@@ -112,7 +129,9 @@ for /f "tokens=*" %%T in (%tempfile%) do (
     echo }
 ) >> "%output_file%"
 
-del "%tempfile%"
-::echo Filter extraction complete. Output saved to: %output_file% >> "%debug_log%"
-::echo Filter extraction complete. Output saved to: %output_file%"
-echo Filter extraction complete.
+:: Clean up
+if exist "%tempfile%" del "%tempfile%"
+if exist "%uniquetags%" del "%uniquetags%"
+echo Filter extraction complete. Output saved to: %output_file% >> "%debug_log%"
+echo Filter extraction complete. Output saved to: %output_file%
+pause

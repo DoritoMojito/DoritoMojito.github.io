@@ -2,10 +2,11 @@
 // Constants and Configs
 // ======================
 const CONFIG = {
-    scrollSpeed: 60, // pixels per second
+    scrollSpeed: 100,
     defaultImage: "assets/images/default.png",
     projectFilesPath: "assets/data/project_files.json",
-    filtersPath: "assets/data/project_filters.json"
+    filtersPath: "assets/data/project_filters.json",
+    debounceDelay: 100
   };
   
   // ======================
@@ -28,24 +29,27 @@ const CONFIG = {
   // ======================
   const State = {
     activeFilters: new Set(),
+    activeFiltersLower: new Set(),
     theme: localStorage.getItem("theme") || "light",
-    
+    pendingRender: false,
+  
     init() {
-      if (this.theme === "dark") {
-        Theme.applyDarkMode();
-      }
+      if (this.theme === "dark") Theme.applyDarkMode();
     },
-    
+  
     addFilter(filter) {
       this.activeFilters.add(filter);
+      this.activeFiltersLower.add(filter.toLowerCase());
     },
-    
+  
     removeFilter(filter) {
       this.activeFilters.delete(filter);
+      this.activeFiltersLower.delete(filter.toLowerCase());
     },
-    
+  
     clearFilters() {
       this.activeFilters.clear();
+      this.activeFiltersLower.clear();
     }
   };
   
@@ -53,6 +57,21 @@ const CONFIG = {
   // Utility Functions
   // ======================
   const Utils = {
+    debounce(func, wait, immediate = false) {
+      let timeout;
+      return function(...args) {
+        const context = this;
+        const later = () => {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    },
+  
     async getLastModified(url) {
       try {
         const response = await fetch(url, { method: 'HEAD' });
@@ -88,14 +107,6 @@ const CONFIG = {
       }
   
       return metadata;
-    },
-  
-    debounce(func, wait) {
-      let timeout;
-      return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-      };
     }
   };
   
@@ -103,6 +114,19 @@ const CONFIG = {
   // Project Management
   // ======================
   const Projects = {
+    tagCache: new Map(),
+  
+    initProjectTagCache() {
+      this.tagCache.clear();
+      DOM.projectTiles.forEach(tile => {
+        const tagString = tile.dataset.tags || "";
+        this.tagCache.set(tile, {
+          original: tagString.split(",").map(tag => tag.trim()),
+          lowercase: tagString.toLowerCase().split(",").map(tag => tag.trim())
+        });
+      });
+    },
+  
     async fetchProjects() {
       if (!DOM.projectGrid) {
         console.error("Project container not found");
@@ -114,10 +138,10 @@ const CONFIG = {
         const fileList = await response.json();
   
         for (const file of fileList) {
-          const filePath = `projects/${file}`;
-          await this.processProjectFile(filePath);
+          await this.processProjectFile(`projects/${file}`);
         }
-        
+  
+        this.initProjectTagCache();
         Visibility.updateProjectVisibility();
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -135,9 +159,7 @@ const CONFIG = {
           return;
         }
   
-        const yamlData = yamlMatch[1];
-        const metadata = Utils.parseYAML(yamlData);
-  
+        const metadata = Utils.parseYAML(yamlMatch[1]);
         if (!metadata["project-title"] || !metadata["project-status"]) {
           console.warn(`Skipping ${filePath} due to missing metadata`);
           return;
@@ -157,7 +179,7 @@ const CONFIG = {
   
         DOM.projectGrid.appendChild(projectTile);
       } catch (error) {
-        console.error(`Error processing project file ${filePath}:`, error);
+        console.error(`Error processing ${filePath}:`, error);
       }
     },
   
@@ -171,7 +193,11 @@ const CONFIG = {
       const projectTile = document.createElement("div");
       projectTile.classList.add("project-tile");
   
-      const tagString = Array.isArray(tags) ? tags.join(", ").trim() : tags.trim();
+      const processedTags = Array.isArray(tags) 
+        ? tags.map(tag => tag.trim())
+        : tags.split(',').map(tag => tag.trim());
+      const tagString = processedTags.join(", ");
+  
       const statusClass = status.toLowerCase();
       const iconClass = this.getStatusIcon(statusClass);
   
@@ -184,7 +210,7 @@ const CONFIG = {
       projectTile.innerHTML = `
         <img src="${image}" alt="${title}" class="project-image">
         <div class="project-tags">
-          ${(Array.isArray(tags) ? tags : [tags]).map(tag => `<span>${tag.trim()}</span>`).join(" ")}
+          ${processedTags.map(tag => `<span>${tag}</span>`).join(" ")}
         </div>
         <div class="overlay">
           <h3>${title}</h3>
@@ -203,22 +229,6 @@ const CONFIG = {
         cancelled: "fas fa-times-circle"
       };
       return statusIcons[status] || "fas fa-question";
-    },
-  
-    async updateProjectDates() {
-      const projectTiles = document.querySelectorAll(".project-tile");
-  
-      for (const tile of projectTiles) {
-        const projectUrl = tile.getAttribute("data-url");
-        if (!projectUrl) continue;
-  
-        const lastModifiedDate = await Utils.getLastModified(projectUrl);
-        const dateElement = tile.querySelector(".last-modified");
-        
-        if (dateElement) {
-          dateElement.textContent = `Last Modified: ${lastModifiedDate}`;
-        }
-      }
     }
   };
   
@@ -226,48 +236,213 @@ const CONFIG = {
   // Visibility Management
   // ======================
   const Visibility = {
-    updateProjectVisibility() {
+    pendingUpdates: new Map(),
+    updateScheduled: false,
+    scrollingElements: new Map(), // Tracks scrolling elements
+  
+    updateProjectVisibility: Utils.debounce(function() {
+      if (!Projects.tagCache || Projects.tagCache.size !== DOM.projectTiles.length) {
+        Projects.initProjectTagCache();
+      }
+  
+      const hasFilters = State.activeFiltersLower.size > 0;
       let visibleCount = 0;
-      const tiles = DOM.projectTiles;
   
-      tiles.forEach(tile => {
-        const tags = tile.dataset.tags ? tile.dataset.tags.split(",").map(tag => tag.trim()) : [];
-        const matches = [...State.activeFilters].some(filter => tags.includes(filter));
+      DOM.projectTiles.forEach(tile => {
+        const { lowercase } = Projects.tagCache.get(tile);
+        const tagSet = new Set(lowercase);
+        const isVisible = !hasFilters || 
+                         [...State.activeFiltersLower].some(filter => tagSet.has(filter));
   
-        if (State.activeFilters.size === 0 || matches) {
-          tile.style.display = "block";
-          visibleCount++;
-        } else {
-          tile.style.display = "none";
-        }
+        this.pendingUpdates.set(tile, isVisible);
+        if (isVisible) visibleCount++;
       });
   
-      if (DOM.projectCount) {
-        DOM.projectCount.textContent = `${visibleCount}`;
+      this.scheduleDOMUpdate(visibleCount);
+    }, CONFIG.debounceDelay),
+  
+    scheduleDOMUpdate(visibleCount) {
+      if (this.updateScheduled) return;
+      this.updateScheduled = true;
+  
+      requestAnimationFrame(() => {
+        this.pendingUpdates.forEach((isVisible, tile) => {
+          tile.style.display = isVisible ? "block" : "none";
+          this.handleOverlayScroll(tile, isVisible); // Manage scrolling per tile
+        });
+  
+        if (DOM.projectCount) {
+          DOM.projectCount.textContent = `${visibleCount}`;
+        }
+  
+        this.pendingUpdates.clear();
+        this.updateScheduled = false;
+      });
+    },
+  
+    handleOverlayScroll(tile, isVisible) {
+      const overlay = tile.querySelector('.overlay');
+      if (!overlay) return;
+  
+      const h3 = overlay.querySelector('h3');
+      if (!h3) return;
+  
+      // Reset animation state when visibility changes
+      h3.classList.remove("scroll-text");
+      h3.style.removeProperty('--animation-duration');
+      h3.style.removeProperty('--scroll-distance');
+      h3.style.removeProperty('transform');
+  
+      if (isVisible) {
+        // Only calculate scrolling if element is visible
+        requestAnimationFrame(() => {
+          const containerWidth = overlay.clientWidth;
+          const textWidth = h3.scrollWidth;
+          const offset = containerWidth * 0.08;
+          const availableSpace = containerWidth - offset;
+  
+          if (textWidth > availableSpace) {
+            const scrollDistance = textWidth; - availableSpace;
+            const duration = (scrollDistance + containerWidth) / CONFIG.scrollSpeed;
+  
+            // Store original position
+            this.scrollingElements.set(h3, {
+              originalTransform: window.getComputedStyle(h3).transform
+            });
+  
+            h3.style.setProperty('--animation-duration', `${duration}s`);
+            h3.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
+            h3.classList.add("scroll-text");
+          }
+        });
       }
     },
   
     checkScrollingText() {
-      document.querySelectorAll(".overlay h3").forEach(h3 => {
-        const containerWidth = h3.parentElement.clientWidth;
-        const textWidth = h3.scrollWidth;
-        const offset = containerWidth * 0.08;
-        const availableSpace = containerWidth - offset;
+      DOM.projectTiles.forEach(tile => {
+        if (tile.style.display !== 'none') {
+          const h3 = tile.querySelector('.overlay h3');
+          if (h3) {
+            // Reset and recalculate
+            h3.classList.remove("scroll-text");
+            h3.style.removeProperty('--animation-duration');
+            h3.style.removeProperty('--scroll-distance');
+            
+            const containerWidth = tile.querySelector('.overlay').clientWidth;
+            const textWidth = h3.scrollWidth;
+            const offset = containerWidth * 0.08;
+            const availableSpace = containerWidth - offset;
   
-        if (textWidth > availableSpace) {
-          const distanceToScroll = textWidth + containerWidth - 250;
-          const duration = distanceToScroll / CONFIG.scrollSpeed;
+            if (textWidth > availableSpace) {
+              const scrollDistance = textWidth - availableSpace;
+              const duration = (scrollDistance + containerWidth) / CONFIG.scrollSpeed;
   
-          h3.style.setProperty('--animation-duration', `${duration}s`);
-          h3.style.setProperty('--scroll-distance', `-${distanceToScroll}px`);
-          h3.classList.add("scroll-text");
-        } else {
-          h3.classList.remove("scroll-text");
-          h3.style.removeProperty('--animation-duration');
-          h3.style.removeProperty('--scroll-distance');
+              h3.style.setProperty('--animation-duration', `${duration}s`);
+              h3.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
+              h3.classList.add("scroll-text");
+            }
+          }
         }
       });
-    }
+    },
+  
+    initScrollingText() {
+        // Set up MutationObserver to handle dynamic content
+        const mutationObserver = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.classList && node.classList.contains('overlay')) {
+                this.setupInfiniteScroll(node.querySelector('h3'));
+              }
+            });
+          });
+        });
+    
+        // Observe the project grid for changes
+        if (DOM.projectGrid) {
+          mutationObserver.observe(DOM.projectGrid, {
+            childList: true,
+            subtree: true
+          });
+        }
+    
+        // Set up IntersectionObserver
+        const intersectionObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const h3 = entry.target.querySelector('h3');
+            if (!h3) return;
+    
+            if (entry.isIntersecting) {
+              this.startInfiniteScroll(h3);
+            } else {
+              this.stopInfiniteScroll(h3);
+            }
+          });
+        }, { threshold: 0.1 });
+    
+        // Initialize all existing overlays
+        document.querySelectorAll('.overlay').forEach(overlay => {
+          intersectionObserver.observe(overlay);
+          this.setupInfiniteScroll(overlay.querySelector('h3'));
+        });
+    
+        // Optimized resize handler
+        const resizeHandler = Utils.debounce(() => {
+          document.querySelectorAll('.overlay h3').forEach(h3 => {
+            this.stopInfiniteScroll(h3);
+            this.setupInfiniteScroll(h3);
+          });
+        }, 100);
+        window.addEventListener('resize', resizeHandler);
+      },
+    
+      setupInfiniteScroll(h3) {
+        if (!h3 || h3.dataset.scrollSetup === 'true') return;
+        
+        const container = h3.parentElement;
+        const containerWidth = container.clientWidth;
+        const textWidth = h3.scrollWidth;
+        const padding = containerWidth * 0.08;
+        const availableSpace = containerWidth - padding;
+    
+        if (textWidth > availableSpace) {
+          // Create the duplicate text element for seamless looping
+          const duplicate = h3.cloneNode(true);
+          duplicate.classList.add('scroll-duplicate');
+          h3.parentElement.appendChild(duplicate);
+    
+          // Calculate animation parameters
+          const scrollDistance = textWidth;
+          const duration = scrollDistance / (CONFIG.scrollSpeed); // Adjust speed factor
+    
+          // Set CSS properties
+          h3.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
+          h3.style.setProperty('--scroll-duration', `${duration}s`);
+          duplicate.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
+          duplicate.style.setProperty('--scroll-duration', `${duration}s`);
+    
+          // Mark as setup
+          h3.dataset.scrollSetup = 'true';
+        }
+      },
+    
+      startInfiniteScroll(h3) {
+        if (!h3 || h3.dataset.scrollSetup !== 'true') return;
+        h3.classList.add('scroll-text');
+        const duplicate = h3.nextElementSibling;
+        if (duplicate && duplicate.classList.contains('scroll-duplicate')) {
+          duplicate.classList.add('scroll-text');
+        }
+      },
+    
+      stopInfiniteScroll(h3) {
+        if (!h3) return;
+        h3.classList.remove('scroll-text');
+        const duplicate = h3.nextElementSibling;
+        if (duplicate && duplicate.classList.contains('scroll-duplicate')) {
+          duplicate.classList.remove('scroll-text');
+        }
+      },
   };
   
   // ======================
@@ -295,19 +470,17 @@ const CONFIG = {
   
       DOM.filterMenu.innerHTML = "";
   
-      // Add 'All' button
       const allButton = document.createElement("button");
       allButton.className = "filter-btn";
       allButton.textContent = "All";
       allButton.dataset.filter = "all";
       DOM.filterMenu.appendChild(allButton);
   
-      // Add other filters
       filters.forEach(filter => {
         const button = document.createElement("button");
         button.className = "filter-btn";
         button.textContent = filter;
-        button.dataset.filter = filter;
+        button.dataset.filter = filter.toLowerCase();
         DOM.filterMenu.appendChild(button);
       });
     },
@@ -340,9 +513,10 @@ const CONFIG = {
     },
   
     handleFilterClick(button) {
-      const filter = button.dataset.filter;
+      const filter = button.dataset.filter.trim();
+      const filterLower = filter.toLowerCase();
   
-      if (filter === "all") {
+      if (filterLower === "all") {
         State.clearFilters();
         DOM.filterButtons.forEach(btn => btn.classList.remove("active"));
       } else {
@@ -380,10 +554,9 @@ const CONFIG = {
     create(button) {
       if (!button.hasAttribute('data-title')) return;
   
-      const tooltipText = button.getAttribute('data-title');
       const tooltip = document.createElement('div');
       tooltip.classList.add('custom-tooltip');
-      tooltip.textContent = tooltipText;
+      tooltip.textContent = button.getAttribute('data-title');
       document.body.appendChild(tooltip);
   
       const rect = button.getBoundingClientRect();
@@ -406,27 +579,20 @@ const CONFIG = {
     },
   
     remove() {
-      const tooltip = document.querySelector('.custom-tooltip');
-      tooltip?.remove();
+      document.querySelector('.custom-tooltip')?.remove();
     },
   
     init() {
       document.body.addEventListener('mouseenter', (event) => {
-        if (event.target?.matches('button[data-title]')) {
-          this.create(event.target);
-        }
+        if (event.target?.matches('button[data-title]')) this.create(event.target);
       }, true);
       
       document.body.addEventListener('mouseleave', (event) => {
-        if (event.target?.matches('button[data-title]')) {
-          this.remove();
-        }
+        if (event.target?.matches('button[data-title]')) this.remove();
       }, true);
       
       document.body.addEventListener('click', (event) => {
-        if (event.target?.matches('button[data-title]')) {
-          this.remove();
-        }
+        if (event.target?.matches('button[data-title]')) this.remove();
       }, true);
     }
   };
@@ -437,21 +603,16 @@ const CONFIG = {
   const ExpandedView = {
     create(tile) {
       const projectUrl = tile.getAttribute("data-url");
-      const projectTitle = encodeURIComponent(tile.getAttribute("data-title") || tile.querySelector("h3").textContent.trim());
+      const projectTitle = encodeURIComponent(tile.getAttribute("data-title") || 
+                    tile.querySelector("h3").textContent.trim());
   
-      if (!projectUrl) {
-        console.log("No project URL found");
-        return;
-      }
+      if (!projectUrl) return;
   
       this.removeExisting();
   
       const expandedView = document.createElement("div");
       expandedView.classList.add("expanded-view");
-      
-      if (State.theme === "dark") {
-        expandedView.classList.add("dark-mode");
-      }
+      if (State.theme === "dark") expandedView.classList.add("dark-mode");
   
       expandedView.innerHTML = `
         <div class="expanded-wrapper">
@@ -465,7 +626,6 @@ const CONFIG = {
   
       document.body.appendChild(expandedView);
       setTimeout(() => expandedView.classList.add("show"), 10);
-  
       this.setupEventListeners(expandedView, projectUrl, projectTitle);
     },
   
@@ -483,11 +643,12 @@ const CONFIG = {
       expandedView.querySelector(".close-btn").addEventListener("click", () => expandedView.remove());
   
       expandedView.querySelector(".new-tab-btn").addEventListener("click", () => {
-        if (projectUrl.endsWith(".md")) {
-          window.open(`viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`, "_blank");
-        } else {                
-          window.open(projectUrl, "_blank");
-        }
+        window.open(
+          projectUrl.endsWith(".md") 
+            ? `viewer.html?file=${encodeURIComponent(projectUrl)}&title=${projectTitle}`
+            : projectUrl,
+          "_blank"
+        );
       });
   
       if (projectUrl.endsWith(".md")) {
@@ -513,11 +674,9 @@ const CONFIG = {
       document.querySelectorAll(".expanded-view, #viewer").forEach(view => {
         view.classList.add("dark-mode");
       });
-      
       document.querySelectorAll("#darkModeToggle").forEach(btn => {
         btn.innerHTML = '<i id="darkMode" class="fas fa-moon"></i>';
       });
-      
       localStorage.setItem("theme", "dark");
       State.theme = "dark";
     },
@@ -527,11 +686,9 @@ const CONFIG = {
       document.querySelectorAll(".expanded-view, #viewer").forEach(view => {
         view.classList.remove("dark-mode");
       });
-      
       document.querySelectorAll("#darkModeToggle").forEach(btn => {
         btn.innerHTML = '<i id="lightMode" class="fas fa-sun"></i>';
       });
-      
       localStorage.setItem("theme", "light");
       State.theme = "light";
     },
@@ -555,30 +712,19 @@ const CONFIG = {
   document.addEventListener("DOMContentLoaded", function() {
     console.log("Custom Tooltip JS Loaded!");
     
-    // Initialize state
     State.init();
-    
-    // Initialize modules
     Tooltip.init();
     ExpandedView.init();
     Theme.init();
     
-    // Load and setup filters
     Filters.load().then(() => {
       Filters.sortFilterButtons();
     });
     
-    // Load projects
-    Projects.fetchProjects();
-    
-    // Setup visibility and scrolling checks
-    setTimeout(() => {
-      Visibility.updateProjectVisibility();
-      Visibility.checkScrollingText();
-    }, 100);
-    
-    // Setup window resize listener
-    window.addEventListener("resize", Utils.debounce(Visibility.checkScrollingText, 100));
+    Projects.fetchProjects().then(() => {
+      // Initialize scrolling text after projects load
+      Visibility.initScrollingText();
+    });
   });
   
   // Check for filter container existence
@@ -586,7 +732,6 @@ const CONFIG = {
     const checkExist = setInterval(() => {
       if (DOM.filterMenu) {
         clearInterval(checkExist);
-        Projects.updateProjectDates();
       }
     }, 100);
   });
