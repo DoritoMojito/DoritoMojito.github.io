@@ -15,6 +15,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Existing event listeners and functions here...
 
+    function updateProjectVisibility() {
+        let visibleCount = 0;
+        const projectTiles = document.querySelectorAll(".project-tile");
+
+        projectTiles.forEach(tile => {
+            const tags = tile.dataset.tags ? tile.dataset.tags.split(",").map(tag => tag.trim()) : [];
+            const matches = [...activeFilters].some(filter => tags.includes(filter));
+
+            if (activeFilters.size === 0 || matches) {
+                tile.style.display = "block";
+                visibleCount++;
+            } else {
+                tile.style.display = "none";
+            }
+        });
+
+        projectCount.textContent = `${visibleCount}`;
+    }
     // Tooltip handling code
     function createTooltip(button) {
         const tooltipText = button.getAttribute('data-title');
@@ -83,24 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    function updateProjectVisibility() {
-        let visibleCount = 0;
-        const projectTiles = document.querySelectorAll(".project-tile");
-
-        projectTiles.forEach(tile => {
-            const tags = tile.dataset.tags ? tile.dataset.tags.split(",").map(tag => tag.trim()) : [];
-            const matches = [...activeFilters].some(filter => tags.includes(filter));
-
-            if (activeFilters.size === 0 || matches) {
-                tile.style.display = "block";
-                visibleCount++;
-            } else {
-                tile.style.display = "none";
-            }
-        });
-
-        projectCount.textContent = `${visibleCount}`;
-    }
 
     filterButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -295,12 +295,12 @@ function checkScrollingText() {
             // Calculate the available space for the text inside the container
             const availableSpace = containerWidth - offset;
 
-            h3.addEventListener("mouseover", () => {
+            /*h3.addEventListener("mouseover", () => {
                 console.log("");
                 console.log("Container Width: " + containerWidth + "px");
                 console.log("Text Width: " + textWidth + "px");
                 console.log("Available Space: "+ availableSpace + "px")
-            });
+            });*/
 
 
             // Check if the text width exceeds the available space in the container
@@ -336,6 +336,29 @@ window.addEventListener("load", () => {
 // Also run on window resize for dynamic updates
 window.addEventListener("resize", checkScrollingText);
 
+async function attachFilterButtonListeners() {
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    filterButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const filter = button.dataset.filter;
+
+            if (filter === "all") {
+                activeFilters.clear();
+                filterButtons.forEach(btn => btn.classList.remove("active"));
+            } else {
+                if (activeFilters.has(filter)) {
+                    activeFilters.delete(filter);
+                    button.classList.remove("active");
+                } else {
+                    activeFilters.add(filter);
+                    button.classList.add("active");
+                }
+            }
+
+            updateProjectVisibility();
+        });
+    });
+}
 
 
 async function loadFilters() {
@@ -370,11 +393,15 @@ async function loadFilters() {
             filterContainer.appendChild(button);
         });
 
+        // ✅ Add event listeners here
+        attachFilterButtonListeners();
+
         console.log("Filters loaded:", data.filters);
     } catch (error) {
         console.error("Error loading filters:", error);
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".project-tile").forEach(tile => {
@@ -496,6 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 projectContainer.appendChild(projectTile);
+                
             }
             updateProjectVisibility();
         } catch (error) {
@@ -540,28 +568,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return metadata;
     }
 
-    function updateProjectVisibility() {
-        let visibleCount = 0;
-        const projectTiles = document.querySelectorAll(".project-tile");
-    
-        projectTiles.forEach(tile => {
-            const tags = tile.dataset.tags ? tile.dataset.tags.split(",").map(tag => tag.trim()) : [];
-            const matches = [...activeFilters].some(filter => tags.includes(filter));
-    
-            if (activeFilters.size === 0 || matches) {
-                tile.style.display = "block";
-                visibleCount++;
-            } else {
-                tile.style.display = "none";
-            }
-        });
-    
-        // Make sure projectCount exists before updating
-        if (projectCount) {
-            projectCount.textContent = `${visibleCount}`;
-        }
-    }
-
     fetchProjectFiles().then(() => {
         updateProjectVisibility();
     });
@@ -574,9 +580,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (filterContainer) {
             clearInterval(checkExist);
             loadFilters();
+            updateProjectDates();
         }
     }, 100); // Check every 100ms
 });
+
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById("darkModeToggle");

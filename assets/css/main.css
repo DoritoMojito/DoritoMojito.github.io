@@ -5,6 +5,8 @@
 
 .dark-mode-toggle {
     position: fixed;
+    font-size: 20px;
+    padding-bottom: 1.5px;
     top: 10px;
     right: 10px;
     width: 30px;
@@ -19,11 +21,6 @@
     transition: background-color 0.3s, transform 0.3s;
     box-shadow: 0px 0px 10px #00000065, 0px 0px 1px #00000057;
     z-index: 1002;
-}
-
-.dark-mode-toggle {
-    font-size: 20px;
-    padding-bottom: 1.5px;
 }
 
 body.dark-mode .dark-mode-toggle {
