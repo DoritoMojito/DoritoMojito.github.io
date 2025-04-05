@@ -135,7 +135,7 @@ hr {
 }
 
 .drawer-toggle:hover {
-    background-color: rgb(139, 139, 139);
+    background-color: #0067d6;
 }
 
 #drawer-toggle:checked ~ .drawer {
@@ -144,6 +144,7 @@ hr {
   
 .filter-menu {
     padding: 5px;
+    overflow: hidden;
 }
 
 .filter-menu.open {
@@ -152,10 +153,13 @@ hr {
     border-radius: 0,0,5px,0;
     right: 0;
 	width: 100%;
-    height: 142px; /* Padding + drawer height + drawer padding */
-    overflow-y: scroll;
+    overflow-y: auto;
     scrollbar-width: 20px;
     pointer-events: all;
+}
+
+.filter-menu, .filter-menu.open {
+    height: 142px; /* Padding + drawer height + drawer padding */
 }
 
 .filter-btn {
