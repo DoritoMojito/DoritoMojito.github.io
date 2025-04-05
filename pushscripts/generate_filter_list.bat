@@ -1,7 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Define paths
+:: ===== CONFIGURATION =====
+:: Set to 1 to enable debug mode
+set "DEBUG=0"
+
+:: ===== PATHS =====
 set "script_dir=%~dp0"
 set "projects_dir=%script_dir%..\projects"
 set "output_dir=%script_dir%..\assets\data"
@@ -10,26 +14,33 @@ set "tempfile=%temp%\tags.tmp"
 set "uniquetags=%temp%\uniquetags.tmp"
 set "debug_log=%script_dir%debug_log.txt"
 
+:: ===== INITIALIZATION =====
+if %DEBUG% equ 1 (
+    echo [DEBUG] Debug mode enabled
+    if exist "%debug_log%" del "%debug_log%"
+    echo --- Debug Log --- > "%debug_log%"
+)
+
 :: Ensure required directories exist
 if not exist "%projects_dir%" (
     echo Error: Projects directory not found: %projects_dir%
-    exit /b
+    exit /b 1
 )
 if not exist "%output_dir%" (
     mkdir "%output_dir%"
 )
 
-:: Clear temporary and debug files
+:: Clear temporary files
 if exist "%tempfile%" del "%tempfile%"
 if exist "%uniquetags%" del "%uniquetags%"
-if exist "%debug_log%" del "%debug_log%"
 
-echo --- Debug Log --- > "%debug_log%"
-echo. > "%uniquetags%"  :: Create empty file initially
-
-:: Loop through markdown files
+:: ===== PROCESS FILES =====
 for %%F in ("%projects_dir%\*.md") do (
-    echo Processing file: %%F >> "%debug_log%"
+    if %DEBUG% equ 1 (
+        echo [DEBUG] Processing file: %%F >> "%debug_log%"
+        echo [DEBUG] Processing file: %%F
+    )
+    
     set "inside_yaml=0"
     set "reading_tags=0"
     set "stop_processing=0"
@@ -39,15 +50,15 @@ for %%F in ("%projects_dir%\*.md") do (
             rem Skip processing if we're done with YAML
         ) else (
             set "line=%%A"
-            echo Line: !line! >> "%debug_log%"
+            if %DEBUG% equ 1 echo [DEBUG] Line: !line! >> "%debug_log%"
 
             :: Detect YAML front matter start/end
             if "!line!"=="---" (
                 if !inside_yaml! equ 0 (
                     set "inside_yaml=1"
-                    echo Entering YAML block >> "%debug_log%"
+                    if %DEBUG% equ 1 echo [DEBUG] Entering YAML block >> "%debug_log%"
                 ) else (
-                    echo Exiting YAML block >> "%debug_log%"
+                    if %DEBUG% equ 1 echo [DEBUG] Exiting YAML block >> "%debug_log%"
                     set "inside_yaml=0"
                     set "reading_tags=0"
                     set "stop_processing=1"
@@ -56,38 +67,22 @@ for %%F in ("%projects_dir%\*.md") do (
 
             if !inside_yaml! equ 1 (
                 :: When we see the project-tags: line, enable reading tags
-                if /i "!line!"=="project-tags:" (
+                if "!line!"=="project-tags:" (
                     set "reading_tags=1"
-                    echo Found project-tags section >> "%debug_log%"
+                    if %DEBUG% equ 1 echo [DEBUG] Found project-tags section >> "%debug_log%"
                 )
                 if !reading_tags! equ 1 (
-                    :: Trim leading spaces
+                    :: Trim leading/trailing spaces and remove list marker
                     for /f "tokens=* delims= " %%X in ("!line!") do set "trimmed_line=%%X"
-                    echo Checking line for tag: !trimmed_line! >> "%debug_log%"
-                    if /i not "!trimmed_line!"=="project-tags:" (
-                        if "!trimmed_line:~0,2!"=="- " (
-                            set "tag=!trimmed_line:~2!"
-
-                            :: Remove all spaces (both leading and trailing)
-                            set "tag=!tag: =!"
-                            
-                            :: Additional trim to handle any remaining whitespace
-                            for /f "tokens=* delims= " %%G in ("!tag!") do set "tag=%%G"
-
-                            if not "!tag!"=="" (
-                                echo Extracted tag: !tag! >> "%debug_log%"
-                                
-                                :: Check if tag already exists in unique tags file
-                                findstr /i /x /c:"!tag!" "%uniquetags%" >nul 2>&1
-                                if errorlevel 1 (
-                                    echo !tag! >> "%uniquetags%"
-                                    echo Added new tag: !tag! >> "%debug_log%"
-                                ) else (
-                                    echo Tag already exists: !tag! >> "%debug_log%"
-                                )
-                            ) else (
-                                echo Ignored empty tag >> "%debug_log%"
+                    if "!trimmed_line:~0,2!"=="- " (
+                        set "tag=!trimmed_line:~2!"
+                        for /f "tokens=* delims= " %%G in ("!tag!") do set "tag=%%G"
+                        
+                        if not "!tag!"=="" (
+                            if %DEBUG% equ 1 (
+                                echo [DEBUG] Extracted tag: !tag! >> "%debug_log%"
                             )
+                            echo !tag!>>"%tempfile%"
                         )
                     )
                 )
@@ -96,42 +91,57 @@ for %%F in ("%projects_dir%\*.md") do (
     )
 )
 
-:: Check if we found any tags
-for /f %%i in ('type "%uniquetags%" ^| find /c /v ""') do set "linecount=%%i"
-if "!linecount!"=="0" (
-    echo No tags found in any project files. >> "%debug_log%"
-    echo No tags found in any project files.
-    del "%uniquetags%"
-    exit /b
-)
-
-:: Sort the unique tags
-sort "%uniquetags%" /o "%uniquetags%"
-
-:: Write JSON structure
-(
-    echo {
-    echo   "filters": [
-) > "%output_file%"
-
-set "first_line=1"
-for /f "tokens=*" %%T in (%uniquetags%) do (
-    if defined first_line (
-        echo     "%%T" >> "%output_file%"
-        set "first_line="
-    ) else (
-        echo     ,"%%T" >> "%output_file%"
+:: ===== PROCESS TAGS =====
+if exist "%tempfile%" (
+    if %DEBUG% equ 1 (
+        echo [DEBUG] Processing extracted tags >> "%debug_log%"
+        echo [DEBUG] Sorting and removing duplicates
+    )
+    sort "%tempfile%" /o "%tempfile%"
+    
+    set "prev_tag="
+    for /f "tokens=* delims= " %%T in (%tempfile%) do (
+        set "current_tag=%%T"
+        if /i not "!current_tag!"=="!prev_tag!" (
+            echo !current_tag!>>"%uniquetags%"
+            set "prev_tag=!current_tag!"
+        )
     )
 )
 
-(
-    echo   ]
-    echo }
-) >> "%output_file%"
+:: ===== GENERATE OUTPUT =====
+if exist "%uniquetags%" (
+    if %DEBUG% equ 1 (
+        echo [DEBUG] Generating JSON output >> "%debug_log%"
+    )
+    (
+        echo {
+        echo   "filters": [
+        set "first=1"
+        for /f "tokens=* delims= " %%T in (%uniquetags%) do (
+            if defined first (
+                echo     "%%T"
+                set "first="
+            ) else (
+                echo     ,"%%T"
+            )
+        )
+        echo   ]
+        echo }
+    ) > "%output_file%"
+    
+    echo Successfully created: %output_file%
+    if %DEBUG% equ 1 type "%output_file%"
+) else (
+    echo No tags found in any project files.
+    exit /b 1
+)
 
-:: Clean up
+:: ===== CLEAN UP =====
 if exist "%tempfile%" del "%tempfile%"
 if exist "%uniquetags%" del "%uniquetags%"
-echo Filter extraction complete. Output saved to: %output_file% >> "%debug_log%"
-echo Filter extraction complete. Output saved to: %output_file%
-pause
+
+if %DEBUG% equ 1 (
+    echo [DEBUG] Script completed
+    pause
+)
