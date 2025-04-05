@@ -124,15 +124,27 @@ hr {
     transition: left 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0px 0px 1px #00000057;
     pointer-events: all;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
 }
 
 #project-count {
     font-size: auto;
+    padding-top: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
 }
 
 #toggle-label {
     rotate: 270deg;
-    margin-top: 55px;
+    margin-top: 56px;
+    margin-left: 1px;
 }
 
 .drawer-toggle:hover {
