@@ -4,7 +4,8 @@ setlocal
 :: Change to the script's directory
 cd /d "%~dp0"
 
-echo > "%~dp0error_log.txt"
+echo Running pushscripts > "%~dp0error_log.txt"
+echo. > "%~dp0error_log.txt"
 
 :: Define the scripts folder
 set "script_dir=%~dp0pushscripts"
