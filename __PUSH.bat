@@ -56,6 +56,7 @@ git commit -m "Automated update" || echo No changes to commit. >> "%~dp0error_lo
 git push origin main
 
 echo Update pushed to GitHub!
+echo. Update pushed to GitHub! >> "%~dp0error_log.txt"
 pause
 echo.
 echo Opening Deployments in 3 seconds.
