@@ -45,7 +45,7 @@ for %%F in ("%script_dir%\*.bat") do (
     echo. >> "%~dp0error_log.txt"
     echo.  
 )
-pause
+
 :: Ensure Git detects all changes
 cd /d "%~dp0"
 git add --all
