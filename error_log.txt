@@ -1,3 +1,4 @@
+Running pushscripts 
  
 Running: generate_file_list.bat 
 Exit Code: 0 
