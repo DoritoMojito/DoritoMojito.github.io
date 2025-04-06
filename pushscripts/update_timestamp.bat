@@ -1,6 +1,23 @@
 @echo off
 setlocal enabledelayedexpansion
 
+:: Define project and output directory based on the script location
+set "script_dir=%~dp0"
+set "projects_dir=%script_dir%..\projects"
+set "output_dir=%script_dir%..\assets\data"
+set "output_file=%output_dir%\last_updated.json"
+
+:: Ensure the projects directory exists
+if not exist "%projects_dir%" (
+    echo Error: Projects directory not found: %projects_dir%
+    exit /b
+)
+
+:: Ensure output directory exists
+if not exist "%output_dir%" (
+    mkdir "%output_dir%"
+)
+
 :: Get current date in consistent format (MM/DD/YYYY)
 for /f "tokens=1-3 delims=/ " %%a in ('wmic os get LocalDateTime ^| find "."') do (
     set datetime=%%a
@@ -28,6 +45,6 @@ set minute=!datetime:~10,2!
 set timestamp=!monthabbr! !day! !year!, !hour!:!minute!
 
 :: Write to JSON file
-echo {"last_updated":"!timestamp!"} > ..\assets\data\last_updated.json
+echo {"last_updated":"!timestamp!"} > "%output_file%"
 
 exit /b 0
