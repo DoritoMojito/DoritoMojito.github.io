@@ -6,7 +6,8 @@ const CONFIG = {
     defaultImage: "assets/images/default.png",
     projectFilesPath: "assets/data/project_files.json",
     filtersPath: "assets/data/project_filters.json",
-    debounceDelay: 100
+    debounceDelay: 100,
+    timestampPath: "assets/data/last_updated.json"
   };
   
   // ======================
@@ -107,9 +108,60 @@ const CONFIG = {
       }
   
       return metadata;
+    },
+    async getLastUpdatedTimestamp() {
+        try {
+            const response = await fetch(CONFIG.timestampPath);
+            const data = await response.json();
+            
+            // Parse the custom format (e.g., "Apr 6 2025, 13:58")
+            const parts = data.last_updated.match(/(\w{3}) (\d{1,2}) (\d{4}), (\d{1,2}):(\d{2})/);
+            if (parts) {
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const monthIndex = monthNames.indexOf(parts[1]);
+                const day = parseInt(parts[2], 10);
+                const year = parseInt(parts[3], 10);
+                const hours = parseInt(parts[4], 10);
+                const minutes = parseInt(parts[5], 10);
+                
+                return new Date(year, monthIndex, day, hours, minutes);
+            }
+            return new Date(document.lastModified); // Fallback if parsing fails
+        } catch (error) {
+            console.error("Error fetching timestamp:", error);
+            return new Date(document.lastModified); // Fallback
+        }
     }
   };
-  
+
+// ======================
+// Timestamp Management
+// ======================
+const Timestamp = {
+    async display() {
+        try {
+            const date = await Utils.getLastUpdatedTimestamp();
+            const element = document.getElementById('last-updated-date');
+            
+            if (element) {
+                // Format exactly like the batch file output
+                const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const month = monthNames[date.getMonth()];
+                const day = date.getDate();
+                const year = date.getFullYear();
+                const hours = date.getHours();
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                
+                element.textContent = `${month} ${day} ${year}, ${hours}:${minutes}`;
+            }
+        } catch (error) {
+            console.error("Error displaying timestamp:", error);
+        }
+    }
+};
+
   // ======================
   // Project Management
   // ======================
@@ -716,16 +768,16 @@ const CONFIG = {
     Tooltip.init();
     ExpandedView.init();
     Theme.init();
+    Timestamp.display();
     
     Filters.load().then(() => {
-      Filters.sortFilterButtons();
+        Filters.sortFilterButtons();
     });
     
     Projects.fetchProjects().then(() => {
-      // Initialize scrolling text after projects load
-      Visibility.initScrollingText();
+        Visibility.initScrollingText();
     });
-  });
+});
   
   // Check for filter container existence
   document.addEventListener("DOMContentLoaded", () => {
