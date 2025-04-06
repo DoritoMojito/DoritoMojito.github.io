@@ -6,7 +6,7 @@
 .dark-mode-toggle {
     position: fixed;
     font-size: 20px;
-    padding-bottom: 1.5px;
+    padding-bottom: 0;
     top: 10px;
     right: 10px;
     width: 30px;
