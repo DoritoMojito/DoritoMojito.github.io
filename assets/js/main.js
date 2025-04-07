@@ -7,7 +7,19 @@ const CONFIG = {
     projectFilesPath: "assets/data/project_files.json",
     filtersPath: "assets/data/project_filters.json",
     debounceDelay: 100,
-    timestampPath: "assets/data/last_updated.json"
+    timestampPath: "assets/data/last_updated.json",
+
+    localBackground: "rgba(255, 200, 200, 0.2)",
+    localText: "DEV MODE",
+    localTextColor: "#ff0000",
+
+    devHostnames: [
+        "127.0.0.1",
+        "localhost",
+        "0.0.0.0",
+        "192.168.",
+        "10.0."
+    ]
   };
   
   // ======================
@@ -163,6 +175,56 @@ const CONFIG = {
             console.error("Error fetching timestamp:", error);
             return new Date(document.lastModified); // Fallback
         }
+    },
+    isDevEnvironment() {
+        // Check for file protocol
+        if (window.location.protocol === 'file:') return true;
+        
+        // Check for localhost or specific IP addresses
+        const hostname = window.location.hostname;
+        return CONFIG.devHostnames.some(devHost => 
+          hostname === devHost || 
+          hostname.startsWith(devHost)
+        );
+    },
+    
+  };
+  const DevIndicator = {
+    init() {
+      if (!Utils.isDevEnvironment()) return;
+      
+      // Add corner ribbon with more detailed info
+      const ribbon = document.createElement('div');
+      ribbon.classList.add("ribbon");
+      /*ribbon.style.position = 'fixed';
+      ribbon.style.bottom = '10px';
+      ribbon.style.right = '10px';
+      ribbon.style.padding = '5px 10px';
+      ribbon.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+      ribbon.style.border = `2px solid ${CONFIG.localTextColor}`;
+      ribbon.style.borderRadius = '5px';
+      ribbon.style.color = CONFIG.localTextColor;
+      ribbon.style.fontWeight = 'bold';
+      ribbon.style.fontSize = '12px';
+      ribbon.style.display = 'flex';
+      ribbon.style.alignItems = 'center';
+      ribbon.style.gap = '8px';*/
+      
+      // Add icon and text
+      ribbon.innerHTML = `
+        <i class="fas fa-code" style="font-size: 14px;"></i>
+        <span>${CONFIG.localText} (${window.location.hostname || 'local file'})</span>
+      `;
+      
+      document.body.appendChild(ribbon);
+      
+      // Enhanced console warning
+      console.log(
+        '%c⚠️ RUNNING IN DEVELOPMENT MODE ⚠️\n' +
+        `%cThis is a development environment`,
+        `color: ${CONFIG.localTextColor}; font-size: 16px; font-weight: bold;`,
+        'color: #999; font-size: 12px;'
+      );
     }
   };
 
@@ -973,6 +1035,7 @@ const Timestamp = {
   document.addEventListener("DOMContentLoaded", function() {
     console.log("Custom Tooltip JS Loaded!");
     
+    DevIndicator.init();
     State.init();
     Tooltip.init();
     ExpandedView.init();
@@ -986,7 +1049,7 @@ const Timestamp = {
     Projects.fetchProjects().then(() => {
         Visibility.initScrollingText();
     });
-});
+  });
   
   // Check for filter container existence
   document.addEventListener("DOMContentLoaded", () => {
