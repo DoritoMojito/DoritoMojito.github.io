@@ -209,31 +209,96 @@ const Timestamp = {
         });
       });
     },
-    async getDisplayDate(yamlDate, filePath) {
-        // First try to parse YAML date
-        if (yamlDate) {
-          // Clean up the date string first
-          const cleanedDate = yamlDate.toString().trim();
-          
-          // Try different date formats
-          const formattedDate = this.formatYAMLDate(cleanedDate);
-          if (formattedDate && formattedDate !== cleanedDate) {
-            return formattedDate;
-          }
-        }
-      
-        // Then try file modification date
+    async processProjectFile(filePath) {
         try {
-          const lastModified = await Utils.getLastModified(filePath);
-          if (lastModified && lastModified !== "Unknown date") {
-            return lastModified;
+          const fileResponse = await fetch(filePath);
+          const fileText = await fileResponse.text();
+          const yamlMatch = fileText.match(/^---\n([\s\S]+?)\n---/);
+          
+          if (!yamlMatch) {
+            console.warn(`No YAML front matter found in ${filePath}`);
+            return;
           }
+    
+          const metadata = Utils.parseYAML(yamlMatch[1]);
+          if (!metadata["project-title"] || !metadata["project-status"]) {
+            console.warn(`Skipping ${filePath} due to missing metadata`);
+            return;
+          }
+    
+          // Get the display date (synchronously)
+          const modifiedDate = this.getDisplayDate(metadata["project-modified"]);
+          const imagePath = this.extractImagePath(metadata["project-image"]);
+    
+          const projectTile = this.createProjectTile({
+            title: metadata["project-title"],
+            tags: metadata["project-tags"] || [],
+            modified: modifiedDate,
+            url: filePath,
+            image: imagePath,
+            status: metadata["project-status"]
+          });
+    
+          DOM.projectGrid.appendChild(projectTile);
         } catch (error) {
-          console.error("Error getting file modification date:", error);
+          console.error(`Error processing ${filePath}:`, error);
         }
-      
-        // Final fallback
-        return "Date not available";
+      },
+    
+      // Synchronous date processing
+      getDisplayDate(yamlDate) {
+        if (!yamlDate) return "Date not specified";
+        
+        // Try to parse as direct date string first (for hosted environment)
+        const directDate = this.tryParseDate(yamlDate);
+        if (directDate) return directDate;
+        
+        // Try parsing various formats (for local environment)
+        const parsedDate = this.parseYAMLDate(yamlDate);
+        return parsedDate || yamlDate; // Fallback to raw string if parsing fails
+      },
+    
+      tryParseDate(dateString) {
+        try {
+          const date = new Date(dateString);
+          if (!isNaN(date.getTime())) {
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            return `${monthNames[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
+          }
+        } catch (e) {
+          return null;
+        }
+        return null;
+      },
+    
+      parseYAMLDate(dateString) {
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        
+        // Clean the string
+        dateString = dateString.toString().trim();
+        
+        // Try common formats
+        const formats = [
+          { regex: /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, parts: [1, 2, 3] }, // dd-mm-yyyy or dd/mm/yyyy
+          { regex: /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, parts: [3, 2, 1] }  // yyyy-mm-dd or yyyy/mm/dd
+        ];
+        
+        for (const format of formats) {
+          const match = dateString.match(format.regex);
+          if (match) {
+            const day = parseInt(match[format.parts[0]]);
+            const monthIndex = parseInt(match[format.parts[1]]) - 1;
+            const year = parseInt(match[format.parts[2]]);
+            
+            if (monthIndex >= 0 && monthIndex < 12 && day > 0 && day < 32) {
+              return `${monthNames[monthIndex]} ${day} ${year}`;
+            }
+          }
+        }
+        
+        return null;
       },
   
       formatYAMLDate(dateString) {
@@ -310,7 +375,7 @@ const Timestamp = {
           }
       
           // Get and format the date - properly await this call
-          const modifiedDate = await this.getDisplayDate(metadata["project-modified"], filePath);
+          const modifiedDate = await this.getDisplayDate(metadata["last-modified"], filePath);
           const imagePath = this.extractImagePath(metadata["project-image"]);
       
           const projectTile = this.createProjectTile({
