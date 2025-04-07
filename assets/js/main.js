@@ -74,14 +74,45 @@ const CONFIG = {
     },
   
     async getLastModified(url) {
-      try {
-        const response = await fetch(url, { method: 'HEAD' });
-        const lastModified = response.headers.get('Last-Modified');
-        return lastModified ? new Date(lastModified).toLocaleDateString() : "Unknown date";
-      } catch (error) {
-        console.error(`Error fetching last modified date for ${url}:`, error);
-        return "Unknown date";
-      }
+        try {
+          // First try HEAD request
+          const response = await fetch(url, { 
+            method: 'HEAD', 
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+          });
+          
+          if (response.ok) {
+            const lastModified = response.headers.get('Last-Modified');
+            if (lastModified) {
+              return this.formatDateFromString(lastModified);
+            }
+          }
+          
+          // Fallback for local files
+          const fullResponse = await fetch(url, {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+          });
+          const fallbackModified = fullResponse.headers.get('Last-Modified');
+          if (fallbackModified) {
+            return this.formatDateFromString(fallbackModified);
+          }
+          
+          return null;
+        } catch (error) {
+          console.error(`Error fetching last modified date for ${url}:`, error);
+          return null;
+        }
+      },
+      
+      formatDateFromString(dateString) {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return null;
+        
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        return `${monthNames[date.getMonth()]} ${date.getDate()} ${date.getFullYear()}`;
     },
   
     parseYAML(yamlString) {
@@ -178,6 +209,67 @@ const Timestamp = {
         });
       });
     },
+    async getDisplayDate(yamlDate, filePath) {
+        // First try to parse YAML date
+        if (yamlDate) {
+          // Clean up the date string first
+          const cleanedDate = yamlDate.toString().trim();
+          
+          // Try different date formats
+          const formattedDate = this.formatYAMLDate(cleanedDate);
+          if (formattedDate && formattedDate !== cleanedDate) {
+            return formattedDate;
+          }
+        }
+      
+        // Then try file modification date
+        try {
+          const lastModified = await Utils.getLastModified(filePath);
+          if (lastModified && lastModified !== "Unknown date") {
+            return lastModified;
+          }
+        } catch (error) {
+          console.error("Error getting file modification date:", error);
+        }
+      
+        // Final fallback
+        return "Date not available";
+      },
+  
+      formatYAMLDate(dateString) {
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      
+        // Remove any time portion and extra spaces
+        dateString = dateString.split(' ')[0].trim();
+      
+        // Try different date formats
+        const formatsToTry = [
+          // dd-mm-yyyy
+          { regex: /^(\d{1,2})-(\d{1,2})-(\d{4})$/, parts: [1, 2, 3] },
+          // mm/dd/yyyy
+          { regex: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, parts: [2, 1, 3] },
+          // yyyy-mm-dd
+          { regex: /^(\d{4})-(\d{1,2})-(\d{1,2})$/, parts: [3, 2, 1] }
+        ];
+      
+        for (const format of formatsToTry) {
+          const match = dateString.match(format.regex);
+          if (match) {
+            const day = parseInt(match[format.parts[0]], 10);
+            const monthIndex = parseInt(match[format.parts[1]], 10) - 1;
+            const year = parseInt(match[format.parts[2]], 10);
+      
+            if (!isNaN(day) && !isNaN(monthIndex) && !isNaN(year) &&
+                monthIndex >= 0 && monthIndex < 12) {
+              return `${monthNames[monthIndex]} ${day} ${year}`;
+            }
+          }
+        }
+      
+        // If no format matched, return the original string
+        return dateString;
+      },
   
     async fetchProjects() {
       if (!DOM.projectGrid) {
@@ -217,14 +309,8 @@ const Timestamp = {
             return;
           }
       
-          // Parse the date - prioritize YAML, fall back to file date
-          let modifiedDate = "Unknown date";
-          if (metadata["project-modified"]) {
-            modifiedDate = this.formatYAMLDate(metadata["project-modified"]);
-          } else {
-            modifiedDate = await Utils.getLastModified(filePath);
-          }
-      
+          // Get and format the date - properly await this call
+          const modifiedDate = await this.getDisplayDate(metadata["project-modified"], filePath);
           const imagePath = this.extractImagePath(metadata["project-image"]);
       
           const projectTile = this.createProjectTile({
@@ -239,32 +325,6 @@ const Timestamp = {
           DOM.projectGrid.appendChild(projectTile);
         } catch (error) {
           console.error(`Error processing ${filePath}:`, error);
-        }
-      },
-      
-      // Add this new method to the Projects object
-      formatYAMLDate(dateString) {
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        
-        try {
-          // Parse dd-mm-yyyy format
-          const parts = dateString.split('-');
-          if (parts.length === 3) {
-            const day = parseInt(parts[0], 10);
-            const monthIndex = parseInt(parts[1], 10) - 1;
-            const year = parseInt(parts[2], 10);
-            
-            if (!isNaN(day) && !isNaN(monthIndex) && !isNaN(year)) {
-              return `${monthNames[monthIndex]} ${day} ${year}`;
-            }
-          }
-          
-          // If parsing fails, return the original string
-          return dateString;
-        } catch (error) {
-          console.error("Error formatting date:", error);
-          return dateString;
         }
       },
   
