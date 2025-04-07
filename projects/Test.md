@@ -8,5 +8,4 @@ project-tags:
   - Metal Working
 last-modified: 07-04-27
 ---
-
-content
+![](assets/attachments/Pasted%20image%2020250407182438.png)
