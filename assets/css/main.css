@@ -243,11 +243,14 @@ hr {
 
 .project-tags {
     display: flex;
+    direction: ltr;
     gap: 5px;
     flex-wrap: wrap;
+    max-width: max-content;
+    padding: 5px;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    left: 0;
     opacity: 0;
     transition: opacity 0.3s ease;    
     z-index: 2;
