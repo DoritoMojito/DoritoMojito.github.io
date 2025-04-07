@@ -64,6 +64,7 @@ body{
 
 #viewer img {
     display: inline-flex;
+    border-radius: 8px;
 }
 
 .project-header {
@@ -112,12 +113,12 @@ hr {
 
 .drawer {
     position: relative;
-    right: -204px; /* -(width + 2(padding) */
+    right: -210px; /* -(width + 10(padding) */
     width: 200px;
     height: 150px;
     background: #00000075;
     color: white;
-    padding: 2px;
+    padding-right: 10px;
     border-radius: 0 0 0 10px;
     transition: right 0.3s ease-in-out;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0px 0px 1px #00000057;
@@ -146,7 +147,6 @@ hr {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
 }
 
 #project-count {
@@ -223,6 +223,7 @@ hr {
 	gap: 15px;
     padding: 20px;
     max-width: 100%;
+    max-height: fit-content;
 }
 
 .project-tile {
@@ -282,6 +283,7 @@ hr {
     left: 10px;
     width: fit-content;
     font-size: 12px;
+    font-weight: bold;
     color: white;
     background-color: #000000c4;
     padding: 4px 8px;
@@ -349,9 +351,9 @@ hr {
     visibility: visible;
   }
 
-  .overlay:hover h3.scroll-text {
+  /*.overlay:hover h3.scroll-text {
     animation-play-state: paused;
-  }
+  }*/
   @keyframes scrollText {
     from {
         transform: translateX(0);
@@ -370,11 +372,6 @@ hr {
     animation-play-state: running;
 }
 
-
-
-.overlay:hover .scroll-text {
-    animation-play-state: paused;
-  }
 
 .project-tile:hover .overlay {
     transform: translateY(0);
