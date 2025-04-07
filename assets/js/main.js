@@ -201,39 +201,72 @@ const Timestamp = {
     },
   
     async processProjectFile(filePath) {
-      try {
-        const fileResponse = await fetch(filePath);
-        const fileText = await fileResponse.text();
-        const yamlMatch = fileText.match(/^---\n([\s\S]+?)\n---/);
+        try {
+          const fileResponse = await fetch(filePath);
+          const fileText = await fileResponse.text();
+          const yamlMatch = fileText.match(/^---\n([\s\S]+?)\n---/);
+          
+          if (!yamlMatch) {
+            console.warn(`No YAML front matter found in ${filePath}`);
+            return;
+          }
+      
+          const metadata = Utils.parseYAML(yamlMatch[1]);
+          if (!metadata["project-title"] || !metadata["project-status"]) {
+            console.warn(`Skipping ${filePath} due to missing metadata`);
+            return;
+          }
+      
+          // Parse the date - prioritize YAML, fall back to file date
+          let modifiedDate = "Unknown date";
+          if (metadata["project-modified"]) {
+            modifiedDate = this.formatYAMLDate(metadata["project-modified"]);
+          } else {
+            modifiedDate = await Utils.getLastModified(filePath);
+          }
+      
+          const imagePath = this.extractImagePath(metadata["project-image"]);
+      
+          const projectTile = this.createProjectTile({
+            title: metadata["project-title"],
+            tags: metadata["project-tags"] || [],
+            modified: modifiedDate,
+            url: filePath,
+            image: imagePath,
+            status: metadata["project-status"]
+          });
+      
+          DOM.projectGrid.appendChild(projectTile);
+        } catch (error) {
+          console.error(`Error processing ${filePath}:`, error);
+        }
+      },
+      
+      // Add this new method to the Projects object
+      formatYAMLDate(dateString) {
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         
-        if (!yamlMatch) {
-          console.warn(`No YAML front matter found in ${filePath}`);
-          return;
+        try {
+          // Parse dd-mm-yyyy format
+          const parts = dateString.split('-');
+          if (parts.length === 3) {
+            const day = parseInt(parts[0], 10);
+            const monthIndex = parseInt(parts[1], 10) - 1;
+            const year = parseInt(parts[2], 10);
+            
+            if (!isNaN(day) && !isNaN(monthIndex) && !isNaN(year)) {
+              return `${monthNames[monthIndex]} ${day} ${year}`;
+            }
+          }
+          
+          // If parsing fails, return the original string
+          return dateString;
+        } catch (error) {
+          console.error("Error formatting date:", error);
+          return dateString;
         }
-  
-        const metadata = Utils.parseYAML(yamlMatch[1]);
-        if (!metadata["project-title"] || !metadata["project-status"]) {
-          console.warn(`Skipping ${filePath} due to missing metadata`);
-          return;
-        }
-  
-        const modifiedDate = metadata["project-modified"] || await Utils.getLastModified(filePath);
-        const imagePath = this.extractImagePath(metadata["project-image"]);
-  
-        const projectTile = this.createProjectTile({
-          title: metadata["project-title"],
-          tags: metadata["project-tags"] || [],
-          modified: modifiedDate,
-          url: filePath,
-          image: imagePath,
-          status: metadata["project-status"]
-        });
-  
-        DOM.projectGrid.appendChild(projectTile);
-      } catch (error) {
-        console.error(`Error processing ${filePath}:`, error);
-      }
-    },
+      },
   
     extractImagePath(imageMetadata) {
       if (!imageMetadata) return CONFIG.defaultImage;
