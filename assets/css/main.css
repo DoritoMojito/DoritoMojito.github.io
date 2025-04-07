@@ -48,6 +48,10 @@ body{
     padding: 0;
 }
 
+#viewer img {
+    display: inline-flex;
+}
+
 .project-header {
     text-align: center;
     font-size: 2em;

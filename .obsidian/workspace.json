@@ -20,8 +20,23 @@
               "icon": "lucide-file",
               "title": "L13 Cell biology"
             }
+          },
+          {
+            "id": "92171264f686d677",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/L13 Cell biology.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "L13 Cell biology"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -165,7 +180,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "225eb93f9bd8c87a",
+  "active": "92171264f686d677",
   "lastOpenFiles": [
     "pushscripts/debug_log.txt",
     "pushscripts/generate_filter_list.bat",
