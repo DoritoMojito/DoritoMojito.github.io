@@ -1,9 +1,12 @@
 {
   "filters": [
     "CAD"
-    ,"MetalWorking"
+    ,"Leather Working"
+    ,"Metal Working"
+    ,"Other Test"
     ,"Tag1"
     ,"Tag2"
     ,"Test"
+    ,"Wood Working"
   ]
 }

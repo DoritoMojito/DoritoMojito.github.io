@@ -336,26 +336,39 @@ const Timestamp = {
         return dateString;
       },
   
-    async fetchProjects() {
-      if (!DOM.projectGrid) {
-        console.error("Project container not found");
-        return;
-      }
-  
-      try {
-        const response = await fetch(CONFIG.projectFilesPath);
-        const fileList = await response.json();
-  
-        for (const file of fileList) {
-          await this.processProjectFile(`projects/${file}`);
-        }
-  
-        this.initProjectTagCache();
-        Visibility.updateProjectVisibility();
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    },
+     async fetchProjects() {
+    if (!DOM.projectGrid) {
+      console.error("Project container not found");
+      return;
+    }
+
+    try {
+      const response = await fetch(CONFIG.projectFilesPath);
+      const fileList = await response.json();
+      
+      // Process all files first
+      const projects = await Promise.all(
+        fileList.map(file => this.processProjectFile(`projects/${file}`))
+      );
+      
+      // Filter out nulls and sort by date (newest first)
+      const validProjects = projects.filter(p => p !== null);
+      validProjects.sort((a, b) => b.modified - a.modified);
+      
+      // Clear existing content
+      DOM.projectGrid.innerHTML = "";
+      
+      // Append sorted projects
+      validProjects.forEach(project => {
+        DOM.projectGrid.appendChild(project.element);
+      });
+      
+      this.initProjectTagCache();
+      Visibility.updateProjectVisibility();
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  },
   
     async processProjectFile(filePath) {
         try {
@@ -365,32 +378,70 @@ const Timestamp = {
           
           if (!yamlMatch) {
             console.warn(`No YAML front matter found in ${filePath}`);
-            return;
+            return null; // Return null for filtering
           }
-      
+    
           const metadata = Utils.parseYAML(yamlMatch[1]);
           if (!metadata["project-title"] || !metadata["project-status"]) {
             console.warn(`Skipping ${filePath} due to missing metadata`);
-            return;
+            return null;
           }
-      
-          // Get and format the date - properly await this call
-          const modifiedDate = await this.getDisplayDate(metadata["last-modified"], filePath);
+    
+          // Get last modified date (now checking both old and new field names)
+          const modifiedDate = this.getLastModifiedDisplay(
+            metadata["last-modified"] || metadata["project-modified"], // Check both field names
+            filePath
+          );
+    
           const imagePath = this.extractImagePath(metadata["project-image"]);
-      
-          const projectTile = this.createProjectTile({
-            title: metadata["project-title"],
-            tags: metadata["project-tags"] || [],
-            modified: modifiedDate,
-            url: filePath,
-            image: imagePath,
-            status: metadata["project-status"]
-          });
-      
-          DOM.projectGrid.appendChild(projectTile);
+    
+          return { // Return project data instead of immediately creating tile
+            element: this.createProjectTile({
+              title: metadata["project-title"],
+              tags: metadata["project-tags"] || [],
+              modified: modifiedDate,
+              url: filePath,
+              image: imagePath,
+              status: metadata["project-status"]
+            }),
+            modified: modifiedDate === "Unknown" ? new Date(0) : this.parseDateForSorting(modifiedDate),
+            filePath
+          };
         } catch (error) {
           console.error(`Error processing ${filePath}:`, error);
+          return null;
         }
+      },
+    
+      getLastModifiedDisplay(yamlDate, filePath) {
+        // If empty string or undefined/null
+        if (!yamlDate || yamlDate.toString().trim() === "") {
+          return "Unknown";
+        }
+        
+        const formattedDate = this.formatYAMLDate(yamlDate);
+        return formattedDate !== yamlDate ? formattedDate : yamlDate;
+      },
+    
+      parseDateForSorting(dateString) {
+        if (dateString === "Unknown") return new Date(0);
+        
+        // Try to parse various date formats
+        const formats = [
+          { regex: /(\w{3}) (\d{1,2}) (\d{4})/, fn: (m) => new Date(`${m[1]} ${m[2]}, ${m[3]}`) }, // "Apr 15 2025"
+          { regex: /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, fn: (m) => new Date(m[3], m[2]-1, m[1]) }, // "15-04-2025"
+          { regex: /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, fn: (m) => new Date(m[1], m[2]-1, m[3]) }  // "2025-04-15"
+        ];
+        
+        for (const format of formats) {
+          const match = dateString.match(format.regex);
+          if (match) {
+            const date = format.fn(match);
+            if (!isNaN(date.getTime())) return date;
+          }
+        }
+        
+        return new Date(0); // Fallback for unparseable dates
       },
   
     extractImagePath(imageMetadata) {
