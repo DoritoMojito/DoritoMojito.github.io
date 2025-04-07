@@ -1,3 +1,17 @@
+.ribbon{
+    position: fixed;
+    display: block;
+    width: max-content;
+    height: max-content;
+    color: rgba(0, 0, 0, 0.459);
+    font-weight: bold;
+    font-size: 75px;
+    top: 50vh;
+    left: 2vw;
+    rotate: 45deg;
+    z-index: -1;
+}
+
 #viewer.dark-mode, #project-iframe.dark-mode, .dark-mode {
     background-color: #393939;
     color: #ffffff;

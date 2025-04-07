@@ -5,6 +5,6 @@ project-image: "![](https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a
 project-tags:
   - CAD
   - Metal Working
-last-modified: 07-04-27
+last-modified: 2007-04-27
 ---
 ![](assets/attachments/Pasted%20image%2020250407182438.png)

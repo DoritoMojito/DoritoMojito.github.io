@@ -336,39 +336,39 @@ const Timestamp = {
         return dateString;
       },
   
-     async fetchProjects() {
-    if (!DOM.projectGrid) {
-      console.error("Project container not found");
-      return;
-    }
-
-    try {
-      const response = await fetch(CONFIG.projectFilesPath);
-      const fileList = await response.json();
-      
-      // Process all files first
-      const projects = await Promise.all(
-        fileList.map(file => this.processProjectFile(`projects/${file}`))
-      );
-      
-      // Filter out nulls and sort by date (newest first)
-      const validProjects = projects.filter(p => p !== null);
-      validProjects.sort((a, b) => b.modified - a.modified);
-      
-      // Clear existing content
-      DOM.projectGrid.innerHTML = "";
-      
-      // Append sorted projects
-      validProjects.forEach(project => {
-        DOM.projectGrid.appendChild(project.element);
-      });
-      
-      this.initProjectTagCache();
-      Visibility.updateProjectVisibility();
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  },
+      async fetchProjects() {
+        if (!DOM.projectGrid) {
+          console.error("Project container not found");
+          return;
+        }
+    
+        try {
+          const response = await fetch(CONFIG.projectFilesPath);
+          const fileList = await response.json();
+          
+          // Process all files first
+          const projects = await Promise.all(
+            fileList.map(file => this.processProjectFile(`projects/${file}`))
+          );
+          
+          // Filter out nulls and sort by date (newest first)
+          const validProjects = projects.filter(p => p !== null);
+          validProjects.sort((a, b) => b.modified - a.modified);
+          
+          // Clear existing content
+          DOM.projectGrid.innerHTML = "";
+          
+          // Append sorted projects
+          validProjects.forEach(project => {
+            DOM.projectGrid.appendChild(project.element);
+          });
+          
+          this.initProjectTagCache();
+          Visibility.updateProjectVisibility();
+        } catch (error) {
+          console.error("Error fetching projects:", error);
+        }
+      },
   
     async processProjectFile(filePath) {
         try {
