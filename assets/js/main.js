@@ -2,7 +2,7 @@
 // Constants and Configs
 // ======================
 const CONFIG = {
-    scrollSpeed: 100,
+    scrollSpeed: 150,
     defaultImage: "assets/images/default.png",
     projectFilesPath: "assets/data/project_files.json",
     filtersPath: "assets/data/project_filters.json",
@@ -723,49 +723,61 @@ const Timestamp = {
         if (!h3 || h3.dataset.scrollSetup === 'true') return;
         
         const container = h3.parentElement;
-        const containerWidth = container.clientWidth;
         const textWidth = h3.scrollWidth;
-        const padding = containerWidth * 0.08;
-        const availableSpace = containerWidth - padding;
-    
-        if (textWidth > availableSpace) {
-          // Create the duplicate text element for seamless looping
-          const duplicate = h3.cloneNode(true);
-          duplicate.classList.add('scroll-duplicate');
-          h3.parentElement.appendChild(duplicate);
-    
-          // Calculate animation parameters
-          const scrollDistance = textWidth;
-          const duration = scrollDistance / (CONFIG.scrollSpeed); // Adjust speed factor
-    
-          // Set CSS properties
-          h3.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
-          h3.style.setProperty('--scroll-duration', `${duration}s`);
-          duplicate.style.setProperty('--scroll-distance', `-${scrollDistance}px`);
-          duplicate.style.setProperty('--scroll-duration', `${duration}s`);
-    
-          // Mark as setup
-          h3.dataset.scrollSetup = 'true';
+        const containerWidth = container.clientWidth;
+        
+        if (textWidth > containerWidth) {
+            // Wrap h3 in a container div
+            const wrapper = document.createElement('div');
+            wrapper.className = 'scroll-container';
+            h3.parentNode.insertBefore(wrapper, h3);
+            wrapper.appendChild(h3);
+            
+            // Create duplicate
+            const duplicate = h3.cloneNode(true);
+            duplicate.classList.add('scroll-duplicate');
+            h3.classList.add('scroll-primary');
+            wrapper.appendChild(duplicate);
+            
+            // Calculate duration
+            const duration = (textWidth + 20) / CONFIG.scrollSpeed;
+            h3.style.setProperty('--scroll-duration', `${duration}s`);
+            
+            // Initial state
+            h3.style.animationPlayState = 'paused';
+            
+            h3.dataset.scrollSetup = 'true';
         }
-      },
+    },
     
-      startInfiniteScroll(h3) {
+    startInfiniteScroll(h3) {
         if (!h3 || h3.dataset.scrollSetup !== 'true') return;
-        h3.classList.add('scroll-text');
-        const duplicate = h3.nextElementSibling;
-        if (duplicate && duplicate.classList.contains('scroll-duplicate')) {
-          duplicate.classList.add('scroll-text');
-        }
-      },
+        
+        const wrapper = h3.parentElement;
+        if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
+        
+        // Reset positions
+        h3.style.transform = 'translateX(0)';
+        const duplicate = wrapper.querySelector('.scroll-duplicate');
+        if (duplicate) duplicate.style.transform = 'translateX(0)';
+        
+        // Start after delay
+        setTimeout(() => {
+            h3.style.animationPlayState = 'running';
+        }, 500);
+    },
     
-      stopInfiniteScroll(h3) {
+    stopInfiniteScroll(h3) {
         if (!h3) return;
-        h3.classList.remove('scroll-text');
-        const duplicate = h3.nextElementSibling;
-        if (duplicate && duplicate.classList.contains('scroll-duplicate')) {
-          duplicate.classList.remove('scroll-text');
-        }
-      },
+        
+        const wrapper = h3.parentElement;
+        if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
+        
+        h3.style.animationPlayState = 'paused';
+        h3.style.transform = 'translateX(0)';
+        const duplicate = wrapper.querySelector('.scroll-duplicate');
+        if (duplicate) duplicate.style.transform = 'translateX(0)';
+    }
   };
   
   // ======================
@@ -1029,6 +1041,84 @@ const Timestamp = {
     }
   };
   
+// ======================
+// Contact Form
+// ======================
+
+// Contact Form Functionality
+const ContactWidget = {
+    init() {
+      this.form = document.getElementById('contact-form');
+      this.formContainer = document.querySelector('.contact-form-container');
+      this.contactButton = document.getElementById('contact-button');
+      this.closeButton = document.querySelector('.close-form');
+      
+      if (!this.form) return;
+      
+      this.setupEventListeners();
+    },
+    
+    setupEventListeners() {
+      this.contactButton.addEventListener('click', () => {
+        this.toggleForm();
+      });
+      
+      this.closeButton.addEventListener('click', () => {
+        this.hideForm();
+      });
+      
+      this.form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await this.handleSubmit();
+      });
+    },
+    
+    toggleForm() {
+      this.formContainer.classList.toggle('show');
+    },
+    
+    hideForm() {
+      this.formContainer.classList.remove('show');
+    },
+    
+    async handleSubmit() {
+      const submitButton = this.form.querySelector('button[type="submit"]');
+      const originalText = submitButton.textContent;
+      
+      try {
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
+        const response = await fetch(this.form.action, {
+          method: 'POST',
+          body: new FormData(this.form),
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          this.form.reset();
+          submitButton.textContent = 'Sent! ✓';
+          setTimeout(() => {
+            this.hideForm();
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+          }, 1500);
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        submitButton.textContent = 'Error!';
+        setTimeout(() => {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }, 1500);
+      }
+    }
+  };
+
   // ======================
   // Initialization
   // ======================
@@ -1041,7 +1131,8 @@ const Timestamp = {
     ExpandedView.init();
     Theme.init();
     Timestamp.display();
-    
+    ContactWidget.init();
+
     Filters.load().then(() => {
         Filters.sortFilterButtons();
     });

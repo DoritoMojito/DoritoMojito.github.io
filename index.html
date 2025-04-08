@@ -98,6 +98,23 @@
 	<div id="last-updated" class="last-updated">
 		Last updated: <span id="last-updated-date"></span>
 	</div>		
+	<div class="contact-widget">
+		<button id="contact-button" class="contact-button">
+		<i class="fas fa-envelope"></i>
+		</button>
+		
+		<div class="contact-form-container">
+		<form id="contact-form" action="https://formspree.io/f/mnnpoyzl" method="POST">
+			<button type="button" class="close-form">&times;</button>
+			<h3>Send me a message</h3>
+			<input type="text" name="Sender Name" placeholder="Your Name" required>
+			<input type="email" name="Sender Email" placeholder="Your Email" required>
+			<textarea name="message" placeholder="Your Message" required></textarea>
+			<!-- <input type="hidden" name="_subject" value="New message from your portfolio"> -->
+			<button type="submit">Send</button>
+		</form>
+		</div>
+	</div>
 	<script src="assets/js/main.js" defer></script>	
 </body>
 </html>

@@ -6,8 +6,9 @@
     color: rgba(0, 0, 0, 0.459);
     font-weight: bold;
     font-size: 75px;
-    top: 50vh;
-    left: 2vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-37%,300%);
     rotate: 45deg;
     z-index: -1;
 }
@@ -97,6 +98,116 @@ hr {
     max-width: 90%;
     margin: auto;
 }
+
+.contact-widget {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1003;
+  }
+  
+  .contact-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    padding-bottom: 0.5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: flex;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .contact-button:hover {
+    background: #0069d9;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  
+  .contact-form-container {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 350px;
+    background: rgba(255, 255, 255, 0.495);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    padding: 20px;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+  
+  .contact-form-container.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .contact-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .contact-form-container input,
+  .contact-form-container textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .contact-form-container textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .contact-form-container button[type="submit"] {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .contact-form-container button[type="submit"]:hover {
+    background: #0069d9;
+  }
+  
+  .close-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #777;
+  }
+  
+  /* Dark mode support */
+  .dark-mode .contact-form-container {
+    background: #00000075;
+    color: white;
+  }
+  
+  .dark-mode .contact-form-container input,
+  .dark-mode .contact-form-container textarea {
+    background: #444;
+    color: white;
+    border-color: #555;
+  }
 
 .filter-drawer {
     position: fixed;
@@ -231,7 +342,7 @@ hr {
     overflow: hidden;
 /* 	max-width: 40vw; */
     border-radius: 10px;
-    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1),;
     transition: transform 0.3s ease;
     cursor: pointer;
 	background-color: rgba(22, 22, 22, 0.546);
@@ -320,51 +431,52 @@ hr {
     z-index: -1; /* Push it behind the text */
 }
 
-.overlay h3 {
-    white-space: nowrap;
+.scroll-container {
+    display: inline-flex;
     position: relative;
-    left: 0;
-    transform: translateX(0);
-    overflow: show;
-    text-overflow: ellipsis;
-    display: inline-block;
-    max-width: auto; /* Ensure it takes up full width */
-    text-align: left;
-    transition: transform 0.3s ease-out;
 }
 
+.overlay h3 {
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+    animation: none;
+    transform: translateX(0);
+}
 
-
-.overlay h3.scroll-text {
+.overlay h3.scroll-primary {
     animation: scrollText var(--scroll-duration) linear infinite;
-    will-change: transform;
-  }
-  
-  .overlay h3.scroll-duplicate {
+    animation-delay: 0.5s;
+    padding-right: 20px; /* gap between original and duplicate */
+}
+
+.project-tile:hover .overlay h3.scroll-text {
+    animation-play-state: running;
+}
+
+.overlay h3.scroll-duplicate {
     position: absolute;
     left: 100%;
     top: 0;
-    visibility: hidden;
-  }
+    padding-left: 20px; /* matching gap */
+}
 
-  .overlay h3.scroll-text.scroll-duplicate {
+.overlay h3.scroll-text.scroll-duplicate {
     visibility: visible;
-  }
+}
 
-  /*.overlay:hover h3.scroll-text {
-    animation-play-state: paused;
-  }*/
-  @keyframes scrollText {
-    from {
+@keyframes scrollText {
+    0% {
         transform: translateX(0);
     }
-    to {
-        transform: translateX(var(--scroll-distance));
+    100% {
+        transform: translateX(calc(-100% - 20px)); /* Scroll exactly one full width + gap */
     }
 }
 
 .scroll-text {
     display: inline-block;
+    left: -10px;
     white-space: nowrap;
     will-change: transform;
     backface-visibility: hidden;
