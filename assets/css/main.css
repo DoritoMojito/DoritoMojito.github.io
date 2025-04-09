@@ -572,7 +572,19 @@ hr {
     max-width: auto;
     margin: auto;
     background: rgb(255, 255, 255);
-    color: #333;
+    color: #333;    
+}
+
+#viewer pre{
+    box-sizing: content-box;
+    overflow-x: scroll;
+    background-color: #0000003e;
+    padding: 10px;
+    border-radius: 10px;
+}
+#viewer code{
+    box-sizing: content-box;
+    overflow-x: visible;
 }
 
 #viewer img{
@@ -584,9 +596,10 @@ hr {
     top: 10px;
     color: white;
     border: none;
-    font-size: 20px;
-    padding: 10px;
+    width: 40px;
+    height: 40px;
     border-radius: 5px;
+    font-size: 20px;
     cursor: pointer;
     z-index: 1003; /* Ensure it's above the iframe */
     display: flex;
@@ -594,17 +607,17 @@ hr {
     align-items: center;
 }
 
-.close-btn {
-    right: 15px;
+.close-btn{
+    right: 10px;
     background: #820000;
 }
 
-.close-btn:hover {
-    background-color: #5c0101; /* Optional: Change color when hovering */
+.close-btn:hover{
+    background-color: #5c0101;
 }
 
 .new-tab-btn {
-    left: 15px;
+    left: 10px;
     background: #007bff;
 }
 
@@ -624,7 +637,7 @@ hr {
     border-radius: 5px;
     opacity: 1;
     visibility: visible; /* Ensure it's visible when shown */
-    z-index: 1004;
+    z-index: 1006;
     pointer-events: none;
 }
 
@@ -683,3 +696,74 @@ html {
     scrollbar-color: #007bff #f0f0f000; /* Thumb color and track color */
     overflow-x: hidden;
 }
+
+/* Image Expanded View */
+.image-expanded-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.353);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1005;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .image-expanded-view.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .image-expanded-wrapper {
+    position: fixed;
+    max-width: 95vw;
+    max-height: 95vh;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.482);
+    border-radius: 25px;
+    backdrop-filter: blur(5px);
+    z-index: 1003;
+  }
+  
+  .expanded-image {
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .close-image-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #820000;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1006;
+    transition: all 0.2s ease;
+  }
+
+  .close-image-btn:hover {
+    background-color: #5c0101;
+    z-index: 1006;
+  }
+  
+  /* Make all images in viewer clickable */
+  #viewer img {
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }  
+  

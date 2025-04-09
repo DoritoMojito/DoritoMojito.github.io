@@ -3,6 +3,11 @@
 // ======================
 const CONFIG = {
     scrollSpeed: 150,
+    imageSizes: {
+        small: 500,   // For tiles < 300px
+        medium: 800,  // For tiles 300-600px
+        large: 1200   // For tiles > 600px
+    },
     defaultImage: "assets/images/default.png",
     projectFilesPath: "assets/data/project_files.json",
     filtersPath: "assets/data/project_filters.json",
@@ -530,8 +535,35 @@ const Timestamp = {
       projectTile.setAttribute("data-url", "/" + url);
       projectTile.setAttribute("style", "display: block;");
   
-      projectTile.innerHTML = `
-        <img src="${image}" alt="${title}" class="project-image">
+      const imgBase = image !== CONFIG.defaultImage ? 
+            image.substring(0, image.lastIndexOf('.')) : 
+            CONFIG.defaultImage.substring(0, CONFIG.defaultImage.lastIndexOf('.'));
+        const imgExt = image !== CONFIG.defaultImage ? 
+            image.substring(image.lastIndexOf('.')) : 
+            CONFIG.defaultImage.substring(CONFIG.defaultImage.lastIndexOf('.'));
+
+            const getResponsivePath = (imgPath, size) => {
+                if (imgPath === CONFIG.defaultImage) return imgPath;
+                
+                const baseName = imgPath.substring(0, imgPath.lastIndexOf('.'));
+                const ext = imgPath.substring(imgPath.lastIndexOf('.'));
+                const fileName = baseName.substring(baseName.lastIndexOf('/') + 1);
+                const dirPath = baseName.substring(0, baseName.lastIndexOf('/'));
+                
+                return `${dirPath}/processed/${fileName}/${fileName}-${size}${ext}`;
+            };
+
+        projectTile.innerHTML = `
+            <picture>
+                <source media="(max-width: 300px)" 
+                        srcset="${getResponsivePath(image, 'small')}">
+                <source media="(max-width: 600px)" 
+                        srcset="${getResponsivePath(image, 'medium')}">
+                <img src="${getResponsivePath(image, 'large')}" 
+                     alt="${title}" 
+                     class="project-image"
+                     loading="lazy">
+            </picture>
         <div class="project-tags">
           ${processedTags.map(tag => `<span>${tag}</span>`).join(" ")}
         </div>
@@ -952,7 +984,7 @@ const Timestamp = {
       expandedView.innerHTML = `
         <div class="expanded-wrapper">
           <div class="expanded-content">
-            <button class="close-btn" data-title="Close"><i class="fas fa-times-circle"></i></button>
+            <button class="close-btn" data-title="Close"><i class="fas fa-times"></i></button>
             <button class="new-tab-btn" data-title="Open in New Tab"><i class="fas fa-external-link-alt"></i></button>
             <iframe id="project-iframe" src="${projectUrl}"></iframe>
           </div>
@@ -999,6 +1031,7 @@ const Timestamp = {
       });
     }
   };
+  
   
   // ======================
   // Theme Management
@@ -1059,12 +1092,27 @@ const ContactWidget = {
     },
     
     setupEventListeners() {
-      this.contactButton.addEventListener('click', () => {
+      this.contactButton.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent immediate close when opening
         this.toggleForm();
       });
       
       this.closeButton.addEventListener('click', () => {
         this.hideForm();
+      });
+      
+      // Prevent clicks inside form from closing it
+      this.formContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+      
+      // Close when clicking anywhere outside
+      document.addEventListener('click', (e) => {
+        if (this.formContainer.classList.contains('show') && 
+            !this.formContainer.contains(e.target) && 
+            e.target !== this.contactButton) {
+          this.hideForm();
+        }
       });
       
       this.form.addEventListener('submit', async (e) => {
@@ -1120,6 +1168,59 @@ const ContactWidget = {
   };
 
   // ======================
+// Image Viewer Management
+// ======================
+const ImageViewer = {
+    init() {
+      this.viewer = document.querySelector('.image-expanded-view');
+      this.imgElement = document.querySelector('.expanded-image');
+      this.closeBtn = document.querySelector('.close-image-btn');
+      
+      // Initialize only if elements exist
+      if (this.viewer && this.imgElement && this.closeBtn) {
+        this.setupEventListeners();
+      }
+    },
+  
+    setupEventListeners() {
+      // Attach click handlers to all viewer images
+      document.querySelectorAll('#viewer img').forEach(img => {
+        img.addEventListener('click', (e) => this.openImage(e));
+      });
+  
+      // Close when clicking outside image
+      this.viewer.addEventListener('click', (e) => {
+        if (e.target === this.viewer) {
+          this.close();
+        }
+      });
+  
+      // Close with button
+      this.closeBtn.addEventListener('click', () => this.close());
+  
+      // Close with ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.viewer.classList.contains('show')) {
+          this.close();
+        }
+      });
+    },
+  
+    openImage(event) {
+      const clickedImg = event.target;
+      this.imgElement.src = clickedImg.src;
+      this.imgElement.alt = clickedImg.alt || 'Expanded view';
+      this.viewer.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    },
+  
+    close() {
+      this.viewer.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+  };
+
+  // ======================
   // Initialization
   // ======================
   document.addEventListener("DOMContentLoaded", function() {
@@ -1132,6 +1233,7 @@ const ContactWidget = {
     Theme.init();
     Timestamp.display();
     ContactWidget.init();
+    ImageViewer.init(); // Add this line
 
     Filters.load().then(() => {
         Filters.sortFilterButtons();
@@ -1140,7 +1242,7 @@ const ContactWidget = {
     Projects.fetchProjects().then(() => {
         Visibility.initScrollingText();
     });
-  });
+});
   
   // Check for filter container existence
   document.addEventListener("DOMContentLoaded", () => {
