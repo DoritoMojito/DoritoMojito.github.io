@@ -2,8 +2,9 @@
 setlocal disabledelayedexpansion
 
 :: Configuration
-set "source_dir=..\assets\attachments"
-set "output_dir=..\assets\attachments\processed"
+set "script_dir=%~dp0"
+set "source_dir=%script_dir%..\assets\attachments"
+set "output_dir=%script_dir%..\assets\attachments\processed"
 
 :: Verify ImageMagick
 where magick >nul 2>&1
