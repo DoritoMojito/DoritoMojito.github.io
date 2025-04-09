@@ -554,7 +554,7 @@ hr {
 .expanded-content iframe {
     width: 100%;
     height: 100%;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
     background-color: none;
 }
@@ -702,8 +702,8 @@ html {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.353);
     display: flex;
     justify-content: center;
