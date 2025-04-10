@@ -457,6 +457,11 @@ hr {
     animation-play-state: running;
 }
 
+.project-tile:not(:hover) .overlay h3.scroll-text {
+    animation-play-state: none;
+}
+
+
 .overlay h3.scroll-duplicate {
     position: absolute;
     left: 100%;
@@ -470,12 +475,18 @@ hr {
 
 @keyframes scrollText {
     0% {
-        transform: translateX(0);
+        transform: translateX(0%);
+      }
+      20% {
+        transform: translateX(0%);
+      }
+      90% {
+        transform: translateX(-50% + 1px);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
     }
-    100% {
-        transform: translateX(calc(-100% - 20px)); /* Scroll exactly one full width + gap */
-    }
-}
 
 .scroll-text {
     display: inline-block;
@@ -766,4 +777,3 @@ html {
     cursor: zoom-in;
     transition: transform 0.2s ease;
   }  
-  
