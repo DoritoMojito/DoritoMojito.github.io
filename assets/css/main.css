@@ -737,6 +737,7 @@ html {
   .image-expanded-view.show {
     opacity: 1;
     visibility: visible;
+    backdrop-filter: blur(5px);
   }
   
   .image-expanded-wrapper {
