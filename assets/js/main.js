@@ -2,7 +2,7 @@
 // Constants and Configs
 // ======================
 const CONFIG = {
-    scrollSpeed: 150,
+    scrollSpeed: 75,
     imageSizes: {
         small: 500,   // For tiles < 300px
         medium: 800,  // For tiles 300-600px
@@ -568,9 +568,13 @@ const Timestamp = {
           ${processedTags.map(tag => `<span>${tag}</span>`).join(" ")}
         </div>
         <div class="overlay">
-          <h3>${title}</h3>
-          <p class="last-modified">Last Modified: ${modified}</p>
-          <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
+          <div class="overlay-content">
+            <div class="scroll-wrapper">
+                <h3 span>${title}</h3 span>
+            </div>
+            <p class="last-modified">Last Modified: ${modified}</p>
+            <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
+          </div>
         </div>
       `;
   
@@ -768,48 +772,51 @@ const Timestamp = {
             // Create duplicate
             const duplicate = h3.cloneNode(true);
             duplicate.classList.add('scroll-duplicate');
-            h3.classList.add('scroll-primary');
             wrapper.appendChild(duplicate);
             
             // Calculate duration
-            const duration = (textWidth + 20) / CONFIG.scrollSpeed;
-            h3.style.setProperty('--scroll-duration', `${duration}s`);
+            const duration = textWidth / CONFIG.scrollSpeed;
             
-            // Initial state
-            h3.style.animationPlayState = 'paused';
+            // Set CSS variables for animation
+            wrapper.style.setProperty('--scroll-duration', `${duration}s`);
+            wrapper.style.setProperty('--scroll-distance', `-${textWidth}px`);
             
             h3.dataset.scrollSetup = 'true';
         }
     },
     
     startInfiniteScroll(h3) {
-        if (!h3 || h3.dataset.scrollSetup !== 'true') return;
-        
-        const wrapper = h3.parentElement;
-        if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
-        
-        // Reset positions
-        h3.style.transform = 'translateX(0)';
-        const duplicate = wrapper.querySelector('.scroll-duplicate');
-        if (duplicate) duplicate.style.transform = 'translateX(0)';
-        
-        // Start after delay
-        setTimeout(() => {
-            h3.style.animationPlayState = 'running';
-        }, 500);
-    },
+      if (!h3 || h3.dataset.scrollSetup !== 'true') return;
+      
+      const wrapper = h3.parentElement;
+      if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
+      
+      // Reset position
+      wrapper.style.transform = 'translateX(0)';
+      
+      // Start after delay
+      setTimeout(() => {
+          wrapper.style.animationPlayState = 'running';
+      }, 500);
+  },
+  
+  stopInfiniteScroll(h3) {
+    if (!h3) return;
     
-    stopInfiniteScroll(h3) {
-        if (!h3) return;
-        
-        const wrapper = h3.parentElement;
-        if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
-        
-        h3.style.animationPlayState = 'paused';
-        h3.style.transform = 'translateX(0)';
-        const duplicate = wrapper.querySelector('.scroll-duplicate');
-        if (duplicate) duplicate.style.transform = 'translateX(0)';
-    }
+    const wrapper = h3.parentElement;
+    if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
+    
+    // Reset animation to beginning
+    wrapper.style.animation = 'none';
+    wrapper.style.transform = 'translateX(0)';
+    
+    // Force reflow before reapplying animation
+    void wrapper.offsetWidth;
+    
+    // Reapply animation properties (but paused)
+    wrapper.style.animation = `scrollText var(--scroll-duration) linear infinite`;
+    wrapper.style.animationPlayState = 'paused';
+}
   };
   
   // ======================
