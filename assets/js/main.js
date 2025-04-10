@@ -2,7 +2,7 @@
 // Constants and Configs
 // ======================
 const CONFIG = {
-    scrollSpeed: 75,
+    scrollSpeed: 100,
     imageSizes: {
         small: 500,   // For tiles < 300px
         medium: 800,  // For tiles 300-600px
@@ -773,6 +773,11 @@ const Timestamp = {
             const duplicate = h3.cloneNode(true);
             duplicate.classList.add('scroll-duplicate');
             wrapper.appendChild(duplicate);
+
+            // Create duplicate
+            const triplicate = h3.cloneNode(true);
+            triplicate.classList.add('scroll-triplicate');
+            wrapper.appendChild(triplicate);
             
             // Calculate duration
             const duration = textWidth / CONFIG.scrollSpeed;

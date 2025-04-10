@@ -430,7 +430,7 @@ hr {
 }
 
 .overlay-content {
-    padding: 0 4%;
+    padding: 0 10px;
 }
 
 .overlay::before {
@@ -446,7 +446,6 @@ hr {
     white-space: nowrap;
     animation: scrollText var(--scroll-duration) linear infinite;
     animation-delay: 0.5s;
-    padding-right: 20px; /* Space between original and duplicate */
     transform: translateX(0);
     transition: transform 0.1s ease-out; /* Smooth reset transition */
 }
@@ -479,6 +478,10 @@ hr {
     visibility: visible;
 }
 
+.overlay h3.scroll-text.scroll-triplicate {
+    visibility: visible;
+}
+
 @keyframes scrollText {
     0% {
       transform: translateX(0%);
@@ -487,7 +490,7 @@ hr {
       transform: translateX(0%);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translateX(-33.33333%);
     }
   }
   
