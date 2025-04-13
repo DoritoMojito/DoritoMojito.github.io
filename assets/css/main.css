@@ -1,3 +1,37 @@
+:root {
+    /* Primary Colors */
+    --color-primary: #007bff;
+    --color-primary-hover: #0067d6;
+    --color-primary-active: #004085;
+
+    /* Accent Colors */
+    --color-accent: #820000;
+    --color-accent-hover: #5c0101;
+
+    /* Backgrounds */
+    --color-bg-light: #ffffff;
+    --color-bg-dark: #393939;
+
+    /* Backgrounds */
+    --color-bg-light-glass: #ffffff45;
+    --color-bg-dark-glass: #39393937;
+
+    /* Text */
+    --color-text-light: #ffffff;
+    --color-text-dark: #000000;
+    --color-text-muted: rgba(0, 0, 0, 0.459);
+
+    /* Status Colors */
+    --color-status-finished: green;
+    --color-status-wip: orange;
+    --color-status-cancelled: red;
+
+    /* Shadows & Overlays */
+    --shadow-default: 0 0 10px rgba(0, 0, 0, 0.1);
+    --button-shadow-default: 0px 0px 10px #00000065, 0px 0px 1px #00000057;
+    --overlay-dark: rgba(0, 0, 0, 0.111);
+}
+
 .ribbon{
     position: fixed;
     display: block;
@@ -14,16 +48,16 @@
 }
 
 #viewer.dark-mode, #project-iframe.dark-mode, .dark-mode {
-    background-color: #393939;
-    color: #ffffff;
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
 }
 
 .dark-mode-toggle {
     position: fixed;
     font-size: 20px;
     padding-bottom: 0.5px;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -35,7 +69,7 @@
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     box-shadow: 0px 0px 10px #00000065, 0px 0px 1px #00000057;
-    z-index: 1002;
+    z-index: 1003;
 }
 
 body.dark-mode .dark-mode-toggle {
@@ -50,15 +84,11 @@ body.dark-mode .dark-mode-toggle {
     color: #f1f0ff;
 }
 
-.dark-mode a {
-    color: #bb86fc;
-}
-
 body{
     font-family: Arial, sans-serif;
     font-size: small;
-    background-color: #ffffff;
-	color: #393939;
+    background-color: var(--color-bg-light);
+	color: var(--color-text-light);
     margin: 0;
     padding: 0;
 }
@@ -102,32 +132,31 @@ hr {
 
 .contact-widget {
     position: fixed;
-    bottom: 10px;
-    right: 10px;
+    bottom: 5px;
+    right: 5px;
     z-index: 1003;
   }
   
   .contact-button {
-    background: #007bff;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-bg-light);
     border: none;
     border-radius: 50px;
     width: 30px;
     height: 30px;
     font-size: 18px;
-    padding-bottom: 0.5px;
+    padding-bottom: 0.5%;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    box-shadow: var(--button-shadow-default);
     display: flex;
     gap: 8px;
     transition: all 0.3s ease;
   }
   
   .contact-button:hover {
-    background: #0069d9;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    background: var(--color-primary-hover);
   }
   
   .contact-form-container {
@@ -176,8 +205,8 @@ hr {
   }
   
   .contact-form-container button[type="submit"] {
-    background: #007bff;
-    color: white;
+    background: var(--color-primary);
+    color: var(--color-text-light);
     border: none;
     padding: 10px;
     border-radius: 5px;
@@ -186,7 +215,7 @@ hr {
   }
   
   .contact-form-container button[type="submit"]:hover {
-    background: #0069d9;
+    background: var(--color-primary-hover);
   }
   
   .close-form {
@@ -202,15 +231,15 @@ hr {
   
   /* Dark mode support */
   .dark-mode .contact-form-container {
-    background: #00000075;
-    color: white;
+    background: var(--color-bg-dark-glass);
+    color: var(--color-text-light);
   }
   
   .dark-mode .contact-form-container input,
   .dark-mode .contact-form-container textarea {
     background: #444;
-    color: white;
-    border-color: #555;
+    color: var(--color-text-light);
+    border-color: var(--color-bg-dark-glass);
   }
 
 .filter-drawer {
@@ -231,7 +260,7 @@ hr {
     right: -210px; /* -(width + 10(padding) */
     width: 200px;
     height: 150px;
-    background: #00000075;
+    background: var(--color-bg-dark-glass);
     color: white;
     padding-right: 10px;
     border-radius: 0 0 0 10px;
@@ -249,14 +278,14 @@ hr {
     height: auto;
     text-align: center;
     padding: 5px;
-    background: #007bff;
+    background: var(--color-primary);
     border: none;
     color: white;
     cursor: pointer;
     border-radius: 5px 0 0 5px;
     font-size: 18px;
     transition: left 0.3s ease-in-out;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0px 0px 1px #00000057;
+    box-shadow: var(--button-shadow-default);
     pointer-events: all;
 
     display: flex;
@@ -281,7 +310,7 @@ hr {
 }
 
 .drawer-toggle:hover {
-    background-color: #0067d6;
+    background-color: var(--color-primary-hover);
 }
 
 #drawer-toggle:checked ~ .drawer {
@@ -289,14 +318,14 @@ hr {
 }
   
 .filter-menu {
-    padding: 5px;
+    padding: 0 5px 5px 5px;
+    border-radius: 0 0 15px 0;
     overflow: hidden;
 }
 
 .filter-menu.open {
     visibility: visible; /* Show the dropdown when 'open' class is added */
-    box-shadow: 0,0,10,#ff0000;
-    border-radius: 0,0,5px,0;
+    box-shadow: 0 0 10 #000000;
     right: 0;
     width: 100%;
     overflow-y: auto;
@@ -396,21 +425,21 @@ hr {
 
 .last-updated {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 5px;
+    left: 5px;
     width: fit-content;
     font-size: 12px;
     font-weight: bold;
-    color: white;
-    background-color: #000000c4;
+    color: var(--color-text-light);
+    background-color: var(--color-bg-dark-glass);
     padding: 4px 8px;
     border-radius: 5px;
     z-index: 1002;
 }
 
 .dark-mode .last-updated {
-    color: #000000;
-    background-color: #ffffff52;
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-light-glass);
 }
 
 .overlay {
@@ -590,7 +619,7 @@ hr {
     font-family: Arial, sans-serif;
     max-width: auto;
     margin: auto;
-    background: rgb(255, 255, 255);
+    background: var(--color-bg-light);
     color: #333;    
 }
 
@@ -637,21 +666,21 @@ hr {
 
 .new-tab-btn {
     left: 10px;
-    background: #007bff;
+    background: var(--color-primary);
 }
 
 .new-tab-btn:hover {
-    background: #0056b3;
+    background: var(--color-primary-hover);
 }
 
 .new-tab-btn:active {
-    background: #004085;
+    background: var(--color-primary-active);
 }
 
 .custom-tooltip {
     position: absolute;
-    background: black;
-    color: white;
+    background: var(--color-bg-dark-glass);
+    color: var(--color-text-light);
     padding: 5px;
     border-radius: 5px;
     opacity: 1;
@@ -694,25 +723,25 @@ button:hover + .custom-tooltip {
 
 /* The draggable thumb (scrollbar handle) */
 ::-webkit-scrollbar-thumb {
-    background-color: #007bff; /* Color of the thumb */
+    background-color: var(--color-primary); /* Color of the thumb */
     border-radius: 10px; /* Round the thumb */
 }
 
 /* The track (background of the scrollbar) */
 ::-webkit-scrollbar-track {
-    background-color: #f0f0f000; /* Track color */
+    background-color: #00000019; /* Track color */
     border-radius: 10px; /* Round the track */
 }
 
 /* Hover effect for the thumb */
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #007bff; /* Darken the thumb when hovering */
+    background-color: var(--color-primary-hover); /* Darken the thumb when hovering */
 }
 
 /* Style for Firefox */
 html {
     scrollbar-width: thin; /* Thin scrollbar */
-    scrollbar-color: #007bff #f0f0f000; /* Thumb color and track color */
+    scrollbar-color: var(--color-primary) #00000019; /* Thumb color and track color */
     overflow-x: hidden;
 }
 
@@ -785,3 +814,38 @@ html {
     cursor: zoom-in;
     transition: transform 0.2s ease;
   }  
+
+  /* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    padding-bottom: 2px;
+    box-shadow: var(--button-shadow-default);
+    z-index: 1003; /* Above other elements but below expanded views */
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    background: var(--color-primary-hover);
+}
+
+

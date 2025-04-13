@@ -2,7 +2,7 @@
 // Constants and Configs
 // ======================
 const CONFIG = {
-    scrollSpeed: 100,
+    scrollSpeed: 75,
     imageSizes: {
         small: 500,   // For tiles < 300px
         medium: 800,  // For tiles 300-600px
@@ -232,7 +232,38 @@ const CONFIG = {
       );
     }
   };
+  const ScrollToTop = {
+    btn: null,
+    scrollThreshold: 50, // Pixels scrolled before button appears
 
+    init() {
+        this.btn = document.getElementById('scrollToTopBtn');
+        if (!this.btn) return;
+
+        this.setupEventListeners();
+        this.checkScrollPosition();
+    },
+
+    setupEventListeners() {
+        window.addEventListener('scroll', () => this.checkScrollPosition());
+        this.btn.addEventListener('click', () => this.scrollToTop());
+    },
+
+    checkScrollPosition() {
+        if (window.pageYOffset > this.scrollThreshold) {
+            this.btn.classList.add('visible');
+        } else {
+            this.btn.classList.remove('visible');
+        }
+    },
+
+    scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+  };
 // ======================
 // Timestamp Management
 // ======================
@@ -1245,7 +1276,8 @@ const ImageViewer = {
     Theme.init();
     Timestamp.display();
     ContactWidget.init();
-    ImageViewer.init(); // Add this line
+    ImageViewer.init();
+    ScrollToTop.init();
 
     Filters.load().then(() => {
         Filters.sortFilterButtons();
