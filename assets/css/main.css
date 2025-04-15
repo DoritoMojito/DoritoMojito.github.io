@@ -32,6 +32,10 @@
     --overlay-dark: rgba(0, 0, 0, 0.111);
 }
 
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
 .ribbon{
     position: fixed;
     display: block;
@@ -342,10 +346,11 @@ hr {
     margin: 2px;
     font-size: 14px;
     color: #ffffff;
-    background: #393939;
+    background: #4f4f4f;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    box-shadow: 0px 0px 2px #0000007a;
 }
 
 .filter-btn.active {
@@ -362,10 +367,10 @@ hr {
     flex: 1;
 	position: relative;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
 	/* justify-self: auto; */
 	gap: 15px;
-    padding: 20px;
+    padding: 15px 10px 15px 10px;
     max-width: 100%;
     max-height: fit-content;
 }
@@ -374,7 +379,8 @@ hr {
     position: relative;
     overflow: hidden;
     max-height: 80vh;
-    max-width: 80vh;
+    aspect-ratio: 1/1;
+    /* max-width: 60vh; */
 /* 	max-width: 40vw; */
     border-radius: 10px;
     box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1),;
@@ -401,6 +407,7 @@ hr {
     opacity: 0;
     transition: opacity 0.3s ease;    
     z-index: 2;
+    max-width: 80%;
 }
 
 .project-tags span {
@@ -412,10 +419,37 @@ hr {
     border-radius: 6px;
     white-space: nowrap;
     font-weight: bold;
+    
 }
 
 .project-tile:hover .project-tags {
     opacity: 1;
+}
+
+
+.status {
+    position: absolute;
+    top: 5px; /* 10px; */
+    right: 5px; /*  3%; */
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;    
+}
+
+.project-tile:hover .status {
+    opacity: 1;
+}
+
+.status.finished {
+    color: green;
+}
+
+.status.wip {
+    color: orange;
+}
+
+.status.cancelled {
+    color: red;
 }
 
 .project-image {
@@ -486,7 +520,7 @@ hr {
     position: relative;
     animation: none;
     transform: translateX(0);
-    padding-inline-end: 50px;
+    padding-inline-end: 100px;
 }
 
 .scroll-content span {
@@ -539,25 +573,6 @@ hr {
 
 .project-tile:hover .overlay {
     transform: translateY(0);
-}
-
-.status {
-    position: absolute;
-    bottom: 10px;
-    right: 3%;
-    font-size: 20px;
-}
-
-.status.finished {
-    color: green;
-}
-
-.status.wip {
-    color: orange;
-}
-
-.status.cancelled {
-    color: red;
 }
 
 .expanded-view {

@@ -598,13 +598,14 @@ const Timestamp = {
         <div class="project-tags">
           ${processedTags.map(tag => `<span>${tag}</span>`).join(" ")}
         </div>
+        <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
         <div class="overlay">
           <div class="overlay-content">
             <div class="scroll-wrapper">
                 <h3 span>${title}</h3 span>
             </div>
             <p class="last-modified">Last Modified: ${modified}</p>
-            <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
+            <!-- <span class="status ${statusClass}"><i class="${iconClass}"></i></span> --!>
           </div>
         </div>
       `;
