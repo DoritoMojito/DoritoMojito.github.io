@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 set "script_dir=%~dp0"
 set "projects_dir=%script_dir%..\projects"
 set "output_dir=%script_dir%..\assets\data"
-set "output_file=%output_dir%\last_updated.json"
+set "output_file=%output_dir%\last_Updated.json"
 
 :: Ensure the projects directory exists
 if not exist "%projects_dir%" (
@@ -45,6 +45,6 @@ set minute=!datetime:~10,2!
 set timestamp=!monthabbr! !day! !year!, !hour!:!minute!
 
 :: Write to JSON file
-echo {"last_updated":"!timestamp!"} > "%output_file%"
+echo {"last_Updated":"!timestamp!"} > "%output_file%"
 
 exit /b 0

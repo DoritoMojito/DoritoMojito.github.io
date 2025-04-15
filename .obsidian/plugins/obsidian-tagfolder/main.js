@@ -177,7 +177,7 @@ function state_proxy_equality_mismatch(operator) {
   if (DEV) console.warn(`%c[svelte] state_proxy_equality_mismatch\n%cReactive \`$state(...)\` proxies and the values they proxy have different identities. Because of this, comparisons with \`${operator}\` will produce unexpected results`, bold, normal); else console.warn("state_proxy_equality_mismatch");
 }
 
-var EACH_ITEM_REACTIVE = 1, EACH_INDEX_REACTIVE = 2, EACH_IS_CONTROLLED = 4, EACH_IS_ANIMATED = 8, EACH_ITEM_IMMUTABLE = 16, PROPS_IS_IMMUTABLE = 1, PROPS_IS_RUNES = 2, PROPS_IS_UPDATED = 4, PROPS_IS_BINDABLE = 8, PROPS_IS_LAZY_INITIAL = 16, TRANSITION_OUT = 2, TRANSITION_GLOBAL = 4, TEMPLATE_FRAGMENT = 1, TEMPLATE_USE_IMPORT_NODE = 2, HYDRATION_START = "[", HYDRATION_START_ELSE = "[!", HYDRATION_END = "]", HYDRATION_ERROR = {}, ELEMENT_PRESERVE_ATTRIBUTE_CASE = 2, UNINITIALIZED = Symbol(), FILENAME = Symbol("filename"), HMR = Symbol("hmr"), boundaries = {}, chrome_pattern = /at (?:.+ \()?(.+):(\d+):(\d+)\)?$/, firefox_pattern = /@(.+):(\d+):(\d+)$/;
+var EACH_ITEM_REACTIVE = 1, EACH_INDEX_REACTIVE = 2, EACH_IS_CONTROLLED = 4, EACH_IS_ANIMATED = 8, EACH_ITEM_IMMUTABLE = 16, PROPS_IS_IMMUTABLE = 1, PROPS_IS_RUNES = 2, PROPS_IS_Updated = 4, PROPS_IS_BINDABLE = 8, PROPS_IS_LAZY_INITIAL = 16, TRANSITION_OUT = 2, TRANSITION_GLOBAL = 4, TEMPLATE_FRAGMENT = 1, TEMPLATE_USE_IMPORT_NODE = 2, HYDRATION_START = "[", HYDRATION_START_ELSE = "[!", HYDRATION_END = "]", HYDRATION_ERROR = {}, ELEMENT_PRESERVE_ATTRIBUTE_CASE = 2, UNINITIALIZED = Symbol(), FILENAME = Symbol("filename"), HMR = Symbol("hmr"), boundaries = {}, chrome_pattern = /at (?:.+ \()?(.+):(\d+):(\d+)\)?$/, firefox_pattern = /@(.+):(\d+):(\d+)$/;
 
 function get_stack() {
   var _a;
@@ -2422,7 +2422,7 @@ function prop(props, key, flags, fallback2) {
       return void 0 === value ? fallback_value : value;
     };
   }
-  if (!(flags & PROPS_IS_UPDATED)) return getter;
+  if (!(flags & PROPS_IS_Updated)) return getter;
   if (setter) {
     var legacy_parent = props.$$legacy;
     return function(value, mutation) {
@@ -3924,9 +3924,9 @@ function TagFolderViewComponent($$anchor, $$props) {
     tags(state2.tags);
     title(state2.title);
   }));
-  let updatedFiles = state(proxy([]));
+  let UpdatedFiles = state(proxy([]));
   appliedFiles.subscribe((async filenames => {
-    set(updatedFiles, proxy(null != filenames ? filenames : []));
+    set(UpdatedFiles, proxy(null != filenames ? filenames : []));
   }));
   const viewItemsSrc = derived((() => {
     if ("tags" == viewType()) return store_get(allViewItems, "$allViewItems", $$stores); else return store_get(allViewItemsByLink, "$allViewItemsByLink", $$stores);

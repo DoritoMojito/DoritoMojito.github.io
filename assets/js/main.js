@@ -12,7 +12,7 @@ const CONFIG = {
     projectFilesPath: "assets/data/project_files.json",
     filtersPath: "assets/data/project_filters.json",
     debounceDelay: 100,
-    timestampPath: "assets/data/last_updated.json",
+    timestampPath: "assets/data/last_Updated.json",
 
     localBackground: "rgba(255, 200, 200, 0.2)",
     localText: "DEV MODE",
@@ -100,7 +100,7 @@ const CONFIG = {
           });
           
           if (response.ok) {
-            const lastModified = response.headers.get('Last-Modified');
+            const lastModified = response.headers.get('Updated');
             if (lastModified) {
               return this.formatDateFromString(lastModified);
             }
@@ -111,14 +111,14 @@ const CONFIG = {
             cache: 'no-store',
             headers: { 'Cache-Control': 'no-cache' }
           });
-          const fallbackModified = fullResponse.headers.get('Last-Modified');
+          const fallbackModified = fullResponse.headers.get('Updated');
           if (fallbackModified) {
             return this.formatDateFromString(fallbackModified);
           }
           
           return null;
         } catch (error) {
-          console.error(`Error fetching last modified date for ${url}:`, error);
+          console.error(`Error fetching Updated date for ${url}:`, error);
           return null;
         }
       },
@@ -163,7 +163,7 @@ const CONFIG = {
             const data = await response.json();
             
             // Parse the custom format (e.g., "Apr 6 2025, 13:58")
-            const parts = data.last_updated.match(/(\w{3}) (\d{1,2}) (\d{4}), (\d{1,2}):(\d{2})/);
+            const parts = data.last_Updated.match(/(\w{3}) (\d{1,2}) (\d{4}), (\d{1,2}):(\d{2})/);
             if (parts) {
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
                                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -271,7 +271,7 @@ const Timestamp = {
     async display() {
         try {
             const date = await Utils.getLastUpdatedTimestamp();
-            const element = document.getElementById('last-updated-date');
+            const element = document.getElementById('last-Updated-date');
             
             if (element) {
                 // Format exactly like the batch file output
@@ -485,9 +485,9 @@ const Timestamp = {
             return null;
           }
     
-          // Get last modified date (now checking both old and new field names)
+          // Get Updated date (now checking both old and new field names)
           const modifiedDate = this.getLastModifiedDisplay(
-            metadata["last-modified"] || metadata["project-modified"], // Check both field names
+            metadata["Updated"] || metadata["project-modified"], // Check both field names
             filePath
           );
     
@@ -598,14 +598,13 @@ const Timestamp = {
         <div class="project-tags">
           ${processedTags.map(tag => `<span>${tag}</span>`).join(" ")}
         </div>
-        <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
         <div class="overlay">
           <div class="overlay-content">
             <div class="scroll-wrapper">
                 <h3 span>${title}</h3 span>
             </div>
-            <p class="last-modified">Last Modified: ${modified}</p>
-            <!-- <span class="status ${statusClass}"><i class="${iconClass}"></i></span> --!>
+            <p class="Updated">Updated: ${modified}</p>
+            <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
           </div>
         </div>
       `;

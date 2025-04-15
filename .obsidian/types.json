@@ -5,6 +5,6 @@
     "tags": "tags",
     "date": "datetime",
     "status": "text",
-    "last-modified": "date"
+    "Updated": "date"
   }
 }

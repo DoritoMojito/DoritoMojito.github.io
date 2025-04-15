@@ -21,7 +21,7 @@ function createProjectTile({ title, tags, modified, url, image, status }) {
         </div>
         <div class="overlay">
             <h3>${title}</h3>
-            <p class="last-modified">${modified}</p>
+            <p class="Updated">${modified}</p>
             <span class="status ${status.toLowerCase()}"><i class="fas fa-check"></i></span>
         </div>
     `;
@@ -79,7 +79,7 @@ async function fetchProjectFiles() {
             const projectTile = createProjectTile({
                 title: metadata["project-title"],
                 tags: metadata["project-tags"] || [],
-                modified: "Last Modified: " + modifiedDate, // Now uses either YAML or server last-modified date
+                modified: "Updated: " + modifiedDate, // Now uses either YAML or server Updated date
                 url: filePath,
                 image: imagePath,
                 status: metadata["project-status"]

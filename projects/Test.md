@@ -5,7 +5,7 @@ project-image: "![](assets/attachments/Pasted%20image%2020250409151732.png)"
 project-tags:
   - CAD
   - Metal Working
-last-modified: 2007-04-27
+Updated: 2007-04-27
 ---
 ![](assets/attachments/Pasted%20image%2020250407182438.png)
 
