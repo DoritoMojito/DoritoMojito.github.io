@@ -1,7 +1,7 @@
 ---
-project-title: A very long test title for testing scrolling
+project-title: A very long test title for testing scrolling video
 project-status: wip
-project-image: "![](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)"
+project-image: "![](assets/attachments/20250410-1211-19.0232475.mp4)"
 project-tags:
   - Test
 last-modified:
@@ -9,6 +9,7 @@ last-modified:
 
 # Cells: The building blocks of life
 
+![](assets/attachments/20250410-1211-19.0232475.mp4)
 ![[Pasted image 20230902120540.png]]
 
 - Cells are the fundamental units of life (living units)

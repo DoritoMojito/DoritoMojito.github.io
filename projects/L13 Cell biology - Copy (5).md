@@ -9,7 +9,7 @@ project-tags:
   - Metal Working
 last-modified: 2025-04-01
 ---
-
+![](assets/attachments/Sequence%2001_1.gif)
 # Cells: The building blocks of life
 
 ![[Pasted image 20230902120540.png]]
