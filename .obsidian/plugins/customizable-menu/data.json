@@ -1,0 +1,20 @@
+{
+  "menuCommands": [
+    {
+      "id": "editor:insert-table",
+      "name": "Insert table",
+      "icon": "lucide-table"
+    },
+    {
+      "id": "insert-template",
+      "name": "Templates: Insert template",
+      "icon": "lucide-copy"
+    },
+    {
+      "id": "insert-current-date",
+      "name": "Templates: Insert current date",
+      "icon": "lucide-calendar-days"
+    }
+  ],
+  "hideTitles": []
+}

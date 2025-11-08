@@ -36,6 +36,18 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+.section-header{
+    padding: 20px;
+    text-align: center;
+    color: var(--color-text-dark);
+    font-size: medium;
+    border-bottom: #000000;
+}
+
+.dark-mode .section-header{
+    color: var(--color-text-light);
+}
+
 .ribbon{
     position: fixed;
     display: block;
@@ -194,11 +206,16 @@ hr {
     flex-direction: column;
     gap: 15px;
   }
-  
+  .contact-form-container h3, .close-form {
+    color: var(--color-text-dark);
+  }
+
   .contact-form-container input,
   .contact-form-container textarea {
+    font-family: Arial, sans-serif;
+    font-size: small;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ececec;
     border-radius: 5px;
     font-size: 14px;
   }
@@ -224,18 +241,22 @@ hr {
   
   .close-form {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 30px;
     cursor: pointer;
-    color: #777;
+    color: var(--color-text-dark);
   }
   
   /* Dark mode support */
   .dark-mode .contact-form-container {
     background: var(--color-bg-dark-glass);
+    color: var(--color-text-light);
+  }
+
+  .dark-mode .contact-form-container h3, .dark-mode .close-form {
     color: var(--color-text-light);
   }
   

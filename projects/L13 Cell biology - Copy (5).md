@@ -12,6 +12,10 @@ Updated: 2025-04-01
 ![](assets/attachments/Sequence%2001_1.gif)
 # Cells: The building blocks of life
 
+[Organelles](projects/L13%20Cell%20biology%20-%20Copy%20(5).md#Organelles)
+
+[Mitochondria](#Mitochondria)
+
 ![[Pasted image 20230902120540.png]]
 
 - Cells are the fundamental units of life (living units)
@@ -26,12 +30,16 @@ Updated: 2025-04-01
 		- **Prokaryotic** - no cell nucleus (they have a nucleoid)
 		- **Eukaryotic** - has a cell nucleus
 		  
-		- Both have DNA
+		- Bo|th have DNA
 - Cells come in many different shapes and sizes
 	- A. Neuron from a mammalian brain
 		- ![1](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)
 	- B. Paramecium - giant, single celled organism
-		- ![](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG)
+		- 
+
+| ![](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG) | ![](assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG) |
+|:---------------------------------------------------------------- | ----------------------------------------------------------------:|
+
 	- C. Chlamydomonas - algae
 		- ![[Pasted image 20230902121127.png]]
 	- D. Saccharomyces cerevisiae - yeast

@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 693.5085258483887
+    "width": 200
   },
   "right": {
     "id": "c0dfaf813882b78a",
@@ -140,19 +140,31 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "projects/L13 Cell biology - Copy (5).md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of L13 Cell biology - Copy (5)"
+            }
+          },
+          {
+            "id": "34eb308f1f76385a",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {},
+              "icon": "spreadsheet",
+              "title": "Advanced Tables"
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 342.5,
     "collapsed": true
   },
   "left-ribbon": {
@@ -162,14 +174,16 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
   "active": "f27a9e46654012f7",
   "lastOpenFiles": [
+    "projects/- The organelles are a series of internal structures within a cell.md",
+    "projects/L13 Cell biology - Copy (5).md",
     "assets/attachments/Sequence 01_1.gif",
     "projects/L13 Cell biology - Copy (4).md",
-    "projects/L13 Cell biology - Copy (5).md",
     "assets/attachments/processed/Sequence 01-2/Sequence 01-2-small.gif",
     "assets/attachments/processed/Sequence 01-2/Sequence 01-2-large.gif",
     "assets/attachments/processed/Sequence 01-2/Sequence 01-2-medium.gif",
@@ -200,7 +214,6 @@
     "assets/attachments/processed/Pasted image 20250409151732",
     "assets/attachments/processed/Pasted image 20250407182438/Pasted image 20250407182438-large.png",
     "assets/attachments/processed/Pasted image 20250407182438/Pasted image 20250407182438-medium.png",
-    "assets/attachments/processed/Pasted image 20250407182438/Pasted image 20250407182438-small.png",
     "projects/Test - Copy (2).md",
     "projects/2025-04-07.md",
     "projects/2025-04-09.md",
