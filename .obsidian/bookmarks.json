@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "type": "folder",
+      "ctime": 1769482806859,
+      "path": "assets/attachments",
+      "title": "Attachments"
+    },
+    {
+      "type": "folder",
+      "ctime": 1769482819036,
+      "path": "projects",
+      "title": "Projects"
+    }
+  ]
+}

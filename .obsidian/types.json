@@ -5,6 +5,7 @@
     "tags": "tags",
     "date": "datetime",
     "status": "text",
-    "Updated": "date"
+    "Updated": "date",
+    "project-status": "text"
   }
 }

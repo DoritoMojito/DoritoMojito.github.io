@@ -614,9 +614,9 @@ const Timestamp = {
   
     getStatusIcon(status) {
       const statusIcons = {
-        finished: "fas fa-check",
-        wip: "fas fa-wrench",
-        cancelled: "fas fa-times-circle"
+        Complete: "fas fa-check",
+        WIP: "fas fa-wrench",
+        Suspended: "fas fa-times-circle"
       };
       return statusIcons[status] || "fas fa-question";
     }
