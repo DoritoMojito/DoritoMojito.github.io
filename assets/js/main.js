@@ -92,7 +92,6 @@ const CONFIG = {
   
     async getLastModified(url) {
         try {
-          // First try HEAD request
           const response = await fetch(url, { 
             method: 'HEAD', 
             cache: 'no-store',
@@ -106,7 +105,6 @@ const CONFIG = {
             }
           }
           
-          // Fallback for local files
           const fullResponse = await fetch(url, {
             cache: 'no-store',
             headers: { 'Cache-Control': 'no-cache' }
@@ -162,7 +160,6 @@ const CONFIG = {
             const response = await fetch(CONFIG.timestampPath);
             const data = await response.json();
             
-            // Parse the custom format (e.g., "Apr 6 2025, 13:58")
             const parts = data.last_Updated.match(/(\w{3}) (\d{1,2}) (\d{4}), (\d{1,2}):(\d{2})/);
             if (parts) {
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
@@ -170,22 +167,18 @@ const CONFIG = {
                 const monthIndex = monthNames.indexOf(parts[1]);
                 const day = parseInt(parts[2], 10);
                 const year = parseInt(parts[3], 10);
-                const hours = parseInt(parts[4], 10);
-                const minutes = parseInt(parts[5], 10);
                 
-                return new Date(year, monthIndex, day, hours, minutes);
+                return new Date(year, monthIndex, day);
             }
-            return new Date(document.lastModified); // Fallback if parsing fails
+            return new Date(document.lastModified);
         } catch (error) {
             console.error("Error fetching timestamp:", error);
-            return new Date(document.lastModified); // Fallback
+            return new Date(document.lastModified);
         }
     },
     isDevEnvironment() {
-        // Check for file protocol
         if (window.location.protocol === 'file:') return true;
         
-        // Check for localhost or specific IP addresses
         const hostname = window.location.hostname;
         return CONFIG.devHostnames.some(devHost => 
           hostname === devHost || 
@@ -198,24 +191,9 @@ const CONFIG = {
     init() {
       if (!Utils.isDevEnvironment()) return;
       
-      // Add corner ribbon with more detailed info
       const ribbon = document.createElement('div');
       ribbon.classList.add("ribbon");
-      /*ribbon.style.position = 'fixed';
-      ribbon.style.bottom = '10px';
-      ribbon.style.right = '10px';
-      ribbon.style.padding = '5px 10px';
-      ribbon.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-      ribbon.style.border = `2px solid ${CONFIG.localTextColor}`;
-      ribbon.style.borderRadius = '5px';
-      ribbon.style.color = CONFIG.localTextColor;
-      ribbon.style.fontWeight = 'bold';
-      ribbon.style.fontSize = '12px';
-      ribbon.style.display = 'flex';
-      ribbon.style.alignItems = 'center';
-      ribbon.style.gap = '8px';*/
       
-      // Add icon and text
       ribbon.innerHTML = `
         <i class="fas fa-code" style="font-size: 14px;"></i>
         <span>${CONFIG.localText} (${window.location.hostname || 'local file'})</span>
@@ -223,7 +201,6 @@ const CONFIG = {
       
       document.body.appendChild(ribbon);
       
-      // Enhanced console warning
       console.log(
         '%c⚠️ RUNNING IN DEVELOPMENT MODE ⚠️\n' +
         `%cThis is a development environment`,
@@ -234,7 +211,7 @@ const CONFIG = {
   };
   const ScrollToTop = {
     btn: null,
-    scrollThreshold: 50, // Pixels scrolled before button appears
+    scrollThreshold: 50,
 
     init() {
         this.btn = document.getElementById('scrollToTopBtn');
@@ -264,6 +241,7 @@ const CONFIG = {
         });
     }
   };
+
 // ======================
 // Timestamp Management
 // ======================
@@ -274,16 +252,13 @@ const Timestamp = {
             const element = document.getElementById('last-Updated-date');
             
             if (element) {
-                // Format exactly like the batch file output
                 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 const month = monthNames[date.getMonth()];
                 const day = date.getDate();
                 const year = date.getFullYear();
-                const hours = date.getHours();
-                const minutes = date.getMinutes().toString().padStart(2, '0');
                 
-                element.textContent = `${month} ${day} ${year}, ${hours}:${minutes}`;
+                element.textContent = `${month} ${day} ${year}`;
             }
         } catch (error) {
             console.error("Error displaying timestamp:", error);
@@ -296,6 +271,7 @@ const Timestamp = {
   // ======================
   const Projects = {
     tagCache: new Map(),
+    currentFilePath: null,
   
     initProjectTagCache() {
       this.tagCache.clear();
@@ -307,56 +283,107 @@ const Timestamp = {
         });
       });
     },
-    async processProjectFile(filePath) {
-        try {
-          const fileResponse = await fetch(filePath);
-          const fileText = await fileResponse.text();
-          const yamlMatch = fileText.match(/^---\n([\s\S]+?)\n---/);
-          
-          if (!yamlMatch) {
-            console.warn(`No YAML front matter found in ${filePath}`);
-            return;
-          }
     
-          const metadata = Utils.parseYAML(yamlMatch[1]);
-          if (!metadata["project-title"] || !metadata["project-status"]) {
-            console.warn(`Skipping ${filePath} due to missing metadata`);
-            return;
-          }
+    // FIXED: Extract image path from both ![]() and []() formats
+    extractImagePath(imageMetadata) {
+    console.log("Extracting image from metadata:", imageMetadata);
     
-          // Get the display date (synchronously)
-          const modifiedDate = this.getDisplayDate(metadata["project-modified"]);
-          const imagePath = this.extractImagePath(metadata["project-image"]);
+    if (!imageMetadata) {
+        console.log("No image metadata, using default");
+        return CONFIG.defaultImage;
+    }
     
-          const projectTile = this.createProjectTile({
-            title: metadata["project-title"],
-            tags: metadata["project-tags"] || [],
-            modified: modifiedDate,
-            url: filePath,
-            image: imagePath,
-            status: metadata["project-status"]
-          });
+    // Try to match ![]() format first
+    let imageMatch = imageMetadata.trim().match(/!\[\]\((.*?)\)/);
     
-          DOM.projectGrid.appendChild(projectTile);
-        } catch (error) {
-          console.error(`Error processing ${filePath}:`, error);
+    // If not found, try []() format
+    if (!imageMatch) {
+        imageMatch = imageMetadata.trim().match(/\[\]\((.*?)\)/);
+    }
+    
+    if (!imageMatch) {
+        console.log("No markdown image syntax found, using default");
+        return CONFIG.defaultImage;
+    }
+    
+    const extractedPath = imageMatch[1];
+    console.log("Extracted image path:", extractedPath);
+    
+    // Return the exact path from the YAML
+    return extractedPath;
+},
+    
+    // FIXED: Generate correct processed image path with debugging
+    getResponsivePath(imgPath, size) {
+        console.log(`Getting responsive path for: ${imgPath}, size: ${size}`);
+        
+        if (imgPath === CONFIG.defaultImage) {
+            console.log("Using default image path");
+            return imgPath;
         }
-      },
+        
+        // If it's already a processed image path, return as is
+        if (imgPath.includes('/_processed/')) {
+            console.log("Path already contains _processed:", imgPath);
+            return imgPath;
+        }
+        
+        // Handle the new folder structure: assets/attachments/<project>/image.png
+        if (imgPath.includes('assets/attachments/')) {
+            const attachmentsIndex = imgPath.indexOf('assets/attachments/');
+            const pathAfterAttachments = imgPath.substring(attachmentsIndex + 18); // +18 for 'assets/attachments/'
+            const pathParts = pathAfterAttachments.split('/');
+            
+            console.log("Path after attachments:", pathAfterAttachments);
+            console.log("Path parts:", pathParts);
+            
+            // Check if we have a project folder
+            if (pathParts.length > 0) {
+                const projectFolder = pathParts[0];
+                const fileName = pathParts[pathParts.length - 1];
+                const fileNameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+                const ext = '.webp';
+                
+                let processedPath;
+                
+                // Handle files directly in project folder or in subfolders
+                if (pathParts.length > 2) {
+                    // File is in a subfolder: assets/attachments/project/subfolder/image.png
+                    const subfolder = pathParts.slice(1, -1).join('/');
+                    processedPath = `assets/attachments/_processed${projectFolder}/${subfolder}/${fileNameWithoutExt}-${size}${ext}`;
+                } else {
+                    // File is directly in project folder: assets/attachments/project/image.png
+                    processedPath = `assets/attachments/_processed${projectFolder}/${fileNameWithoutExt}-${size}${ext}`;
+                }
+                
+                console.log(`Generated processed path (${size}):`, processedPath);
+                return processedPath;
+            }
+        }
+        
+        // Fallback for other paths
+        const baseName = imgPath.substring(0, imgPath.lastIndexOf('.'));
+        const ext = imgPath.substring(imgPath.lastIndexOf('.'));
+        const fileName = baseName.substring(baseName.lastIndexOf('/') + 1);
+        const dirPath = baseName.substring(0, baseName.lastIndexOf('/'));
+        const fallbackPath = `${dirPath}/_processed/${fileName}/${fileName}-${size}${ext}`;
+        
+        console.log("Using fallback path:", fallbackPath);
+        return fallbackPath;
+    },
     
-      // Synchronous date processing
-      getDisplayDate(yamlDate) {
+    // Synchronous date processing
+    getDisplayDate(yamlDate) {
         if (!yamlDate) return "Date not specified";
         
-        // Try to parse as direct date string first (for hosted environment)
         const directDate = this.tryParseDate(yamlDate);
         if (directDate) return directDate;
         
-        // Try parsing various formats (for local environment)
         const parsedDate = this.parseYAMLDate(yamlDate);
-        return parsedDate || yamlDate; // Fallback to raw string if parsing fails
-      },
+        return parsedDate || yamlDate;
+    },
     
-      tryParseDate(dateString) {
+    tryParseDate(dateString) {
         try {
           const date = new Date(dateString);
           if (!isNaN(date.getTime())) {
@@ -368,19 +395,17 @@ const Timestamp = {
           return null;
         }
         return null;
-      },
+    },
     
-      parseYAMLDate(dateString) {
+    parseYAMLDate(dateString) {
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         
-        // Clean the string
         dateString = dateString.toString().trim();
         
-        // Try common formats
         const formats = [
-          { regex: /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, parts: [1, 2, 3] }, // dd-mm-yyyy or dd/mm/yyyy
-          { regex: /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, parts: [3, 2, 1] }  // yyyy-mm-dd or yyyy/mm/dd
+          { regex: /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, parts: [1, 2, 3] },
+          { regex: /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, parts: [3, 2, 1] }
         ];
         
         for (const format of formats) {
@@ -397,22 +422,17 @@ const Timestamp = {
         }
         
         return null;
-      },
+    },
   
-      formatYAMLDate(dateString) {
+    formatYAMLDate(dateString) {
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       
-        // Remove any time portion and extra spaces
         dateString = dateString.split(' ')[0].trim();
       
-        // Try different date formats
         const formatsToTry = [
-          // dd-mm-yyyy
           { regex: /^(\d{1,2})-(\d{1,2})-(\d{4})$/, parts: [1, 2, 3] },
-          // mm/dd/yyyy
           { regex: /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, parts: [2, 1, 3] },
-          // yyyy-mm-dd
           { regex: /^(\d{4})-(\d{1,2})-(\d{1,2})$/, parts: [3, 2, 1] }
         ];
       
@@ -430,33 +450,30 @@ const Timestamp = {
           }
         }
       
-        // If no format matched, return the original string
         return dateString;
-      },
+    },
   
-      async fetchProjects() {
+    async fetchProjects() {
         if (!DOM.projectGrid) {
           console.error("Project container not found");
           return;
         }
     
         try {
+          console.log("Fetching projects from:", CONFIG.projectFilesPath);
           const response = await fetch(CONFIG.projectFilesPath);
           const fileList = await response.json();
+          console.log("Project files:", fileList);
           
-          // Process all files first
           const projects = await Promise.all(
             fileList.map(file => this.processProjectFile(`projects/${file}`))
           );
           
-          // Filter out nulls and sort by date (newest first)
           const validProjects = projects.filter(p => p !== null);
           validProjects.sort((a, b) => b.modified - a.modified);
           
-          // Clear existing content
           DOM.projectGrid.innerHTML = "";
           
-          // Append sorted projects
           validProjects.forEach(project => {
             DOM.projectGrid.appendChild(project.element);
           });
@@ -466,34 +483,37 @@ const Timestamp = {
         } catch (error) {
           console.error("Error fetching projects:", error);
         }
-      },
-  
+    },
+    
     async processProjectFile(filePath) {
         try {
+          console.log("Processing project file:", filePath);
           const fileResponse = await fetch(filePath);
           const fileText = await fileResponse.text();
           const yamlMatch = fileText.match(/^---\n([\s\S]+?)\n---/);
           
           if (!yamlMatch) {
             console.warn(`No YAML front matter found in ${filePath}`);
-            return null; // Return null for filtering
+            return null;
           }
     
           const metadata = Utils.parseYAML(yamlMatch[1]);
+          console.log("Metadata for", filePath, metadata);
+          
           if (!metadata["project-title"] || !metadata["project-status"]) {
             console.warn(`Skipping ${filePath} due to missing metadata`);
             return null;
           }
     
-          // Get Updated date (now checking both old and new field names)
           const modifiedDate = this.getLastModifiedDisplay(
-            metadata["Updated"] || metadata["project-modified"], // Check both field names
+            metadata["Updated"] || metadata["project-modified"],
             filePath
           );
     
           const imagePath = this.extractImagePath(metadata["project-image"]);
+          console.log("Final image path for", metadata["project-title"], ":", imagePath);
     
-          return { // Return project data instead of immediately creating tile
+          return {
             element: this.createProjectTile({
               title: metadata["project-title"],
               tags: metadata["project-tags"] || [],
@@ -509,26 +529,24 @@ const Timestamp = {
           console.error(`Error processing ${filePath}:`, error);
           return null;
         }
-      },
+    },
     
-      getLastModifiedDisplay(yamlDate, filePath) {
-        // If empty string or undefined/null
+    getLastModifiedDisplay(yamlDate, filePath) {
         if (!yamlDate || yamlDate.toString().trim() === "") {
           return "Unknown";
         }
         
         const formattedDate = this.formatYAMLDate(yamlDate);
         return formattedDate !== yamlDate ? formattedDate : yamlDate;
-      },
+    },
     
-      parseDateForSorting(dateString) {
+    parseDateForSorting(dateString) {
         if (dateString === "Unknown") return new Date(0);
         
-        // Try to parse various date formats
         const formats = [
-          { regex: /(\w{3}) (\d{1,2}) (\d{4})/, fn: (m) => new Date(`${m[1]} ${m[2]}, ${m[3]}`) }, // "Apr 15 2025"
-          { regex: /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, fn: (m) => new Date(m[3], m[2]-1, m[1]) }, // "15-04-2025"
-          { regex: /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, fn: (m) => new Date(m[1], m[2]-1, m[3]) }  // "2025-04-15"
+          { regex: /(\w{3}) (\d{1,2}) (\d{4})/, fn: (m) => new Date(`${m[1]} ${m[2]}, ${m[3]}`) },
+          { regex: /(\d{1,2})[-/](\d{1,2})[-/](\d{4})/, fn: (m) => new Date(m[3], m[2]-1, m[1]) },
+          { regex: /(\d{4})[-/](\d{1,2})[-/](\d{1,2})/, fn: (m) => new Date(m[1], m[2]-1, m[3]) }
         ];
         
         for (const format of formats) {
@@ -539,13 +557,7 @@ const Timestamp = {
           }
         }
         
-        return new Date(0); // Fallback for unparseable dates
-      },
-  
-    extractImagePath(imageMetadata) {
-      if (!imageMetadata) return CONFIG.defaultImage;
-      const imageMatch = imageMetadata.trim().match(/!\[\]\((.*?)\)/);
-      return imageMatch ? imageMatch[1] : CONFIG.defaultImage;
+        return new Date(0);
     },
   
     createProjectTile({ title, tags, modified, url, image, status }) {
@@ -566,34 +578,31 @@ const Timestamp = {
       projectTile.setAttribute("data-url", "/" + url);
       projectTile.setAttribute("style", "display: block;");
   
-      const imgBase = image !== CONFIG.defaultImage ? 
-            image.substring(0, image.lastIndexOf('.')) : 
-            CONFIG.defaultImage.substring(0, CONFIG.defaultImage.lastIndexOf('.'));
-        const imgExt = image !== CONFIG.defaultImage ? 
-            image.substring(image.lastIndexOf('.')) : 
-            CONFIG.defaultImage.substring(CONFIG.defaultImage.lastIndexOf('.'));
-
-            const getResponsivePath = (imgPath, size) => {
-                if (imgPath === CONFIG.defaultImage) return imgPath;
-                
-                const baseName = imgPath.substring(0, imgPath.lastIndexOf('.'));
-                const ext = imgPath.substring(imgPath.lastIndexOf('.'));
-                const fileName = baseName.substring(baseName.lastIndexOf('/') + 1);
-                const dirPath = baseName.substring(0, baseName.lastIndexOf('/'));
-                
-                return `${dirPath}/processed/${fileName}/${fileName}-${size}${ext}`;
-            };
-
-        projectTile.innerHTML = `
+      // Store references to the getResponsivePath function
+      const getResponsivePath = this.getResponsivePath.bind(this);
+      
+      const smallPath = getResponsivePath(image, 'small');
+      const mediumPath = getResponsivePath(image, 'medium');
+      const largePath = getResponsivePath(image, 'large');
+      
+      console.log(`Image paths for "${title}":`, {
+        original: image,
+        small: smallPath,
+        medium: mediumPath,
+        large: largePath
+      });
+  
+      projectTile.innerHTML = `
             <picture>
                 <source media="(max-width: 300px)" 
-                        srcset="${getResponsivePath(image, 'small')}">
+                        srcset="${smallPath}">
                 <source media="(max-width: 600px)" 
-                        srcset="${getResponsivePath(image, 'medium')}">
-                <img src="${getResponsivePath(image, 'large')}" 
+                        srcset="${mediumPath}">
+                <img src="${largePath}" 
                      alt="${title}" 
                      class="project-image"
-                     loading="lazy">
+                     loading="lazy"
+                     onerror="console.error('Failed to load image:', this.src); this.onerror=null; this.src='${CONFIG.defaultImage}';">
             </picture>
         <div class="project-tags">
           ${processedTags.map(tag => `<span>${tag}</span>`).join(" ")}
@@ -601,7 +610,7 @@ const Timestamp = {
         <div class="overlay">
           <div class="overlay-content">
             <div class="scroll-wrapper">
-                <h3 span>${title}</h3 span>
+                <h3>${title}</h3>
             </div>
             <p class="Updated">Updated: ${modified}</p>
             <span class="status ${statusClass}"><i class="${iconClass}"></i></span>
@@ -614,9 +623,9 @@ const Timestamp = {
   
     getStatusIcon(status) {
       const statusIcons = {
-        Complete: "fas fa-check",
-        WIP: "fas fa-wrench",
-        Suspended: "fas fa-times-circle"
+        complete: "fas fa-check",
+        wip: "fas fa-wrench",
+        suspended: "fas fa-times-circle"
       };
       return statusIcons[status] || "fas fa-question";
     }
@@ -628,7 +637,7 @@ const Timestamp = {
   const Visibility = {
     pendingUpdates: new Map(),
     updateScheduled: false,
-    scrollingElements: new Map(), // Tracks scrolling elements
+    scrollingElements: new Map(),
   
     updateProjectVisibility: Utils.debounce(function() {
       if (!Projects.tagCache || Projects.tagCache.size !== DOM.projectTiles.length) {
@@ -658,7 +667,7 @@ const Timestamp = {
       requestAnimationFrame(() => {
         this.pendingUpdates.forEach((isVisible, tile) => {
           tile.style.display = isVisible ? "block" : "none";
-          this.handleOverlayScroll(tile, isVisible); // Manage scrolling per tile
+          this.handleOverlayScroll(tile, isVisible);
         });
   
         if (DOM.projectCount) {
@@ -677,14 +686,12 @@ const Timestamp = {
       const h3 = overlay.querySelector('h3');
       if (!h3) return;
   
-      // Reset animation state when visibility changes
       h3.classList.remove("scroll-text");
       h3.style.removeProperty('--animation-duration');
       h3.style.removeProperty('--scroll-distance');
       h3.style.removeProperty('transform');
   
       if (isVisible) {
-        // Only calculate scrolling if element is visible
         requestAnimationFrame(() => {
           const containerWidth = overlay.clientWidth;
           const textWidth = h3.scrollWidth;
@@ -692,10 +699,9 @@ const Timestamp = {
           const availableSpace = containerWidth - offset;
   
           if (textWidth > availableSpace) {
-            const scrollDistance = textWidth; - availableSpace;
+            const scrollDistance = textWidth - availableSpace;
             const duration = (scrollDistance + containerWidth) / CONFIG.scrollSpeed;
   
-            // Store original position
             this.scrollingElements.set(h3, {
               originalTransform: window.getComputedStyle(h3).transform
             });
@@ -713,7 +719,6 @@ const Timestamp = {
         if (tile.style.display !== 'none') {
           const h3 = tile.querySelector('.overlay h3');
           if (h3) {
-            // Reset and recalculate
             h3.classList.remove("scroll-text");
             h3.style.removeProperty('--animation-duration');
             h3.style.removeProperty('--scroll-distance');
@@ -737,7 +742,6 @@ const Timestamp = {
     },
   
     initScrollingText() {
-        // Set up MutationObserver to handle dynamic content
         const mutationObserver = new MutationObserver((mutations) => {
           mutations.forEach((mutation) => {
             mutation.addedNodes.forEach((node) => {
@@ -748,7 +752,6 @@ const Timestamp = {
           });
         });
     
-        // Observe the project grid for changes
         if (DOM.projectGrid) {
           mutationObserver.observe(DOM.projectGrid, {
             childList: true,
@@ -756,7 +759,6 @@ const Timestamp = {
           });
         }
     
-        // Set up IntersectionObserver
         const intersectionObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             const h3 = entry.target.querySelector('h3');
@@ -770,13 +772,11 @@ const Timestamp = {
           });
         }, { threshold: 0.1 });
     
-        // Initialize all existing overlays
         document.querySelectorAll('.overlay').forEach(overlay => {
           intersectionObserver.observe(overlay);
           this.setupInfiniteScroll(overlay.querySelector('h3'));
         });
     
-        // Optimized resize handler
         const resizeHandler = Utils.debounce(() => {
           document.querySelectorAll('.overlay h3').forEach(h3 => {
             this.stopInfiniteScroll(h3);
@@ -794,26 +794,21 @@ const Timestamp = {
         const containerWidth = container.clientWidth;
         
         if (textWidth > containerWidth) {
-            // Wrap h3 in a container div
             const wrapper = document.createElement('div');
             wrapper.className = 'scroll-container';
             h3.parentNode.insertBefore(wrapper, h3);
             wrapper.appendChild(h3);
             
-            // Create duplicate
             const duplicate = h3.cloneNode(true);
             duplicate.classList.add('scroll-duplicate');
             wrapper.appendChild(duplicate);
 
-            // Create duplicate
             const triplicate = h3.cloneNode(true);
             triplicate.classList.add('scroll-triplicate');
             wrapper.appendChild(triplicate);
             
-            // Calculate duration
             const duration = textWidth / CONFIG.scrollSpeed;
             
-            // Set CSS variables for animation
             wrapper.style.setProperty('--scroll-duration', `${duration}s`);
             wrapper.style.setProperty('--scroll-distance', `-${textWidth}px`);
             
@@ -827,10 +822,8 @@ const Timestamp = {
       const wrapper = h3.parentElement;
       if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
       
-      // Reset position
       wrapper.style.transform = 'translateX(0)';
       
-      // Start after delay
       setTimeout(() => {
           wrapper.style.animationPlayState = 'running';
       }, 500);
@@ -842,14 +835,11 @@ const Timestamp = {
     const wrapper = h3.parentElement;
     if (!wrapper || !wrapper.classList.contains('scroll-container')) return;
     
-    // Reset animation to beginning
     wrapper.style.animation = 'none';
     wrapper.style.transform = 'translateX(0)';
     
-    // Force reflow before reapplying animation
     void wrapper.offsetWidth;
     
-    // Reapply animation properties (but paused)
     wrapper.style.animation = `scrollText var(--scroll-duration) linear infinite`;
     wrapper.style.animationPlayState = 'paused';
 }
@@ -1121,7 +1111,6 @@ const Timestamp = {
 // Contact Form
 // ======================
 
-// Contact Form Functionality
 const ContactWidget = {
     init() {
       this.form = document.getElementById('contact-form');
@@ -1136,7 +1125,7 @@ const ContactWidget = {
     
     setupEventListeners() {
       this.contactButton.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent immediate close when opening
+        e.stopPropagation();
         this.toggleForm();
       });
       
@@ -1144,12 +1133,10 @@ const ContactWidget = {
         this.hideForm();
       });
       
-      // Prevent clicks inside form from closing it
       this.formContainer.addEventListener('click', (e) => {
         e.stopPropagation();
       });
       
-      // Close when clicking anywhere outside
       document.addEventListener('click', (e) => {
         if (this.formContainer.classList.contains('show') && 
             !this.formContainer.contains(e.target) && 
@@ -1219,29 +1206,24 @@ const ImageViewer = {
       this.imgElement = document.querySelector('.expanded-image');
       this.closeBtn = document.querySelector('.close-image-btn');
       
-      // Initialize only if elements exist
       if (this.viewer && this.imgElement && this.closeBtn) {
         this.setupEventListeners();
       }
     },
   
     setupEventListeners() {
-      // Attach click handlers to all viewer images
       document.querySelectorAll('#viewer img').forEach(img => {
         img.addEventListener('click', (e) => this.openImage(e));
       });
   
-      // Close when clicking outside image
       this.viewer.addEventListener('click', (e) => {
         if (e.target === this.viewer) {
           this.close();
         }
       });
   
-      // Close with button
       this.closeBtn.addEventListener('click', () => this.close());
   
-      // Close with ESC key
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && this.viewer.classList.contains('show')) {
           this.close();
@@ -1288,7 +1270,6 @@ const ImageViewer = {
     });
 });
   
-  // Check for filter container existence
   document.addEventListener("DOMContentLoaded", () => {
     const checkExist = setInterval(() => {
       if (DOM.filterMenu) {

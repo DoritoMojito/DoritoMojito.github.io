@@ -22,9 +22,9 @@
     --color-text-muted: rgba(0, 0, 0, 0.459);
 
     /* Status Colors */
-    --color-status-finished: green;
+    --color-status-complete: green;
     --color-status-wip: orange;
-    --color-status-cancelled: red;
+    --color-status-suspended: red;
 
     /* Shadows & Overlays */
     --shadow-default: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -72,8 +72,8 @@
     position: fixed;
     font-size: 20px;
     padding-bottom: 0.5px;
-    top: 5px;
-    right: 5px;
+    top: 8px;
+    right: 8px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -107,6 +107,7 @@ body{
 	color: var(--color-text-light);
     margin: 0;
     padding: 0;
+    height: 100%;
 }
 
 #viewer img {
@@ -148,8 +149,8 @@ hr {
 
 .contact-widget {
     position: fixed;
-    bottom: 5px;
-    right: 5px;
+    bottom: 8px;
+    right: 8px;
     z-index: 1003;
   }
   
@@ -390,7 +391,7 @@ hr {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 	/* justify-self: auto; */
-	gap: 15px;
+	gap: 30px;
     padding: 15px 10px 15px 10px;
     max-width: 100%;
     max-height: fit-content;
@@ -399,7 +400,7 @@ hr {
 .project-tile {
     position: relative;
     overflow: hidden;
-    max-height: 80vh;
+    max-height: 50vh;
     aspect-ratio: 1/1;
     /* max-width: 60vh; */
 /* 	max-width: 40vw; */
@@ -460,7 +461,7 @@ hr {
     opacity: 1;
 }
 
-.status.finished {
+.status.complete {
     color: green;
 }
 
@@ -468,18 +469,19 @@ hr {
     color: orange;
 }
 
-.status.cancelled {
+.status.suspended {
     color: red;
 }
 
 .project-image {
     width: 100%;
     display: block;
+    vertical-align: baseline;
 }
 
-.last-Updated {
+/*.last-Updated {
     position: absolute;
-    top: 5px;
+    bottom: 6px;
     left: 5px;
     width: fit-content;
     font-size: 12px;
@@ -489,7 +491,7 @@ hr {
     padding: 4px 8px;
     border-radius: 5px;
     z-index: 1002;
-}
+}*/
 
 .dark-mode .last-Updated {
     color: var(--color-text-dark);
@@ -858,7 +860,7 @@ html {
 .scroll-to-top {
     position: fixed;
     bottom: 100px;
-    right: 5px;
+    right: 8px;
     width: 30px;
     height: 30px;
     border-radius: 50%;

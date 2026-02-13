@@ -13,12 +13,12 @@ Updated: 2026-02-11
 # Splitbox
 
 > A custom ergonomic fighting game controller with a *twist*
-
+![](assets/attachments/Splitbox/2226425b-ad34-464f-a523-35db58e5c3de.png)
 ---
 
 ## Overview
 
-I started playing Tekken with friends and thought using a proper controller instead of an Xbox controller would make me better (spoiler: it didn't) so I set out to make one, plus it sounded like a cool project.
+I started playing fighting games with friends and thought using a proper controller instead of an Xbox controller would make me better so I set out to make one, plus it sounded like a cool project. (Spoiler: it didn't make me better)
 
 ---
 

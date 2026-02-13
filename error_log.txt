@@ -12,6 +12,10 @@ Running: generate_resolutions.bat
 Exit Code: 0 
 Finished: generate_resolutions.bat 
  
+Running: generate_resolutions_OLD.bat 
+Exit Code: 0 
+Finished: generate_resolutions_OLD.bat 
+ 
 Running: update_timestamp.bat 
 Exit Code: 0 
 Finished: update_timestamp.bat 
