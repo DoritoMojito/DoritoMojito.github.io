@@ -1,10 +1,11 @@
 ---
-project-title: Test
-project-status: Suspended
-project-image: "[](assets/attachments/Splitbox/PCF8575%20%20Troubleshooting.png)"
+project-title: Travel Matcha Set
+project-status: Complete
+project-image: "[](assets/attachments/Travel%20Matcha%20Set/Travel_Matcha_Set_2025-Jun-26_08-55-47AM-000_CustomizedView28892460620.png)"
 project-tags:
-  - Electronics
-Updated: 2026-02-13
+  - 3D Printing
+  - CAD
+Updated:
 ---
 
 # <mark>{{ project-title }}</mark>

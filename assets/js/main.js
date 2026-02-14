@@ -974,7 +974,7 @@ const Timestamp = {
   
       tooltip.style.top = `${tooltipTop}px`;
       tooltip.style.left = `${tooltipLeft}px`;
-      tooltip.style.visibility = 'visible';
+      tooltip.style.visibility = 'hidden'; //'visible'; change to make visible
       tooltip.style.opacity = '1';
     },
   
