@@ -187,6 +187,7 @@
   },
   "active": "9918f3c6a5ae42c1",
   "lastOpenFiles": [
+    "pushscripts/04_convert_source.bat",
     "pushscripts/03_generate_resolutions_filter.bat",
     "pushscripts/02_generate_filter_list.bat",
     "pushscripts/01_generate_file_list.bat",
@@ -206,7 +207,6 @@
     "New folder",
     "pushscripts/generate_resolutions_OLD.batOLD",
     "pushscripts/generate_resolutions.batOLD",
-    "assets/convert_source.bat",
     "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599.webp",
     "assets/attachments/_processed/Splitbox/Screenshot 2025-12-15 172617.webp",
     "assets/attachments/_processed/Splitbox/Splitbox_2025-Dec-15_05-56-09AM-000_CustomizedView6459242511.webp",
