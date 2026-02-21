@@ -19,6 +19,11 @@
       "name": "Pretty Properties: Show images menu",
       "id": "pretty-properties:select-image-for-file",
       "icon": "book-open"
+    },
+    {
+      "name": "Convert url to preview (iframe): URL to Preview/Iframe",
+      "id": "convert-url-to-iframe:url-to-iframe",
+      "icon": "video"
     }
   ],
   "hideTitles": []

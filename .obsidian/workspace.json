@@ -6,7 +6,6 @@
       {
         "id": "47cc769a2da59652",
         "type": "tabs",
-        "dimension": 76.1491317671093,
         "children": [
           {
             "id": "9918f3c6a5ae42c1",
@@ -14,33 +13,32 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/Splitbox.md",
+                "file": "projects/Simplicity.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "Splitbox"
+              "title": "Simplicity"
             }
           }
         ]
       },
       {
-        "id": "9d4a03bd57dd13be",
+        "id": "93999d3736f68fa5",
         "type": "tabs",
-        "dimension": 23.850868232890704,
         "children": [
           {
-            "id": "718d3b6ab1b3b48a",
+            "id": "f9e47ad4354d5046",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/Splitbox.md",
+                "file": "projects/Simplicity.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Splitbox"
+              "title": "Simplicity"
             }
           }
         ]
@@ -147,13 +145,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "projects/Splitbox.md",
+                "file": "projects/Simplicity.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Splitbox"
+              "title": "Outline of Simplicity"
             }
           },
           {
@@ -187,8 +185,21 @@
       "publish:Publish changes...": false
     }
   },
-  "active": "7c7519ae8af5b2ee",
+  "active": "9918f3c6a5ae42c1",
   "lastOpenFiles": [
+    "pushscripts/03_generate_resolutions_filter.bat",
+    "pushscripts/02_generate_filter_list.bat",
+    "pushscripts/01_generate_file_list.bat",
+    "pushscripts/05_update_timestamp.bat",
+    "projects/Splitbox.md",
+    "projects/Simplicity.md",
+    "assets/attachments/_processed/Pasted image 20250409151732.webp",
+    "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-small.webp",
+    "assets/attachments/_processed/Splitbox/Sequence 01_1.webp",
+    "assets/attachments/_processed/Splitbox/Sequence 01-2.webp",
+    "assets/attachments/_processed/Splitbox/20250218_194851.webp",
+    "assets/attachments/_processed/Splitbox/Splitbox_2025-Jan-17_01-20-00AM-000_CustomizedView7063729267blue.webp",
+    "projects/Guitar.md",
     "oldpushscripts/generate_resolutions.batOLD",
     "oldpushscripts/generate_resolutions_OLD.batOLD",
     "oldpushscripts",
@@ -200,23 +211,11 @@
     "assets/attachments/_processed/Splitbox/Screenshot 2025-12-15 172617.webp",
     "assets/attachments/_processed/Splitbox/Splitbox_2025-Dec-15_05-56-09AM-000_CustomizedView6459242511.webp",
     "assets/attachments/_processed/Splitbox/Splitbox_2025-Feb-07_09-50-42AM-000_CustomizedView12322407696_png_alpha.webp",
-    "assets/attachments/_processed/Splitbox/Splitbox_2025-Feb-08_11-47-11AM-000_CustomizedView12322407696_png_alpha.webp",
-    "assets/attachments/_processed/Splitbox/20241216_184508.webp",
-    "assets/attachments/_processed/Splitbox/20241224_143259.webp",
-    "assets/attachments/_processed/Splitbox/20241228_163210.webp",
-    "assets/attachments/_processed/Splitbox/20250118_225006.webp",
-    "assets/attachments/_processed/Splitbox/20250122_133533.webp",
-    "projects/Splitbox.md",
-    "pushscripts/convert_source.bat",
-    "projects/Guitar.md",
     "projects/Travel Matcha Set.md",
     "projects/2026-02-11.md",
     "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-large.webp.sidecar.md",
     "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-medium.webp.sidecar.md",
     "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-small.webp.sidecar.md",
-    "assets/attachments/_processed/Splitbox",
-    "pushscripts/generate_resolutions_filter.bat",
-    "pushscripts/generate_resolutions_filter",
     "assets/temp/Mountain128-medium.webp.sidecar.md",
     "assets/temp/Mountain128-large.webp.sidecar.md",
     "assets/temp/20231221_092618-small.webp.sidecar.md",
@@ -233,7 +232,6 @@
     "assets/temp/20250403_104514-large.webp.sidecar.md",
     "assets/temp/IMG_20220407_212320-small.webp.sidecar.md",
     "assets/temp/IMG_20220407_212320-medium.webp.sidecar.md",
-    "assets/temp/IMG_20220407_212320-large.webp.sidecar.md",
-    "assets/temp/IMG_20220409_141337-small.webp.sidecar.md"
+    "assets/temp/IMG_20220407_212320-large.webp.sidecar.md"
   ]
 }
