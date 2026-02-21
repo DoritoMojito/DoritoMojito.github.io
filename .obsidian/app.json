@@ -1,0 +1,17 @@
+{
+  "newFileLocation": "folder",
+  "newFileFolderPath": "projects",
+  "userIgnoreFilters": [
+    "BoardBoms/",
+    "drawer test/",
+    "assets/css/",
+    "assets/js/",
+    "assets/webfonts/",
+    "assets/sass/"
+  ],
+  "attachmentFolderPath": "assets/attachments",
+  "useMarkdownLinks": true,
+  "newLinkFormat": "absolute",
+  "alwaysUpdateLinks": true,
+  "promptDelete": false
+}

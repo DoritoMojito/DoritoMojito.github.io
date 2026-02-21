@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Showcase</title>
+	<meta name="description" content="My online portfolio. Check out my latest works.">
+	<link rel="shortcut icon" href="assets/source/Mountainfavicon@1.0x.png" type="image/x-icon">
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="assets/css/main.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">	
+</head>
+<body>
+	<section id="about" class="section-bg">
+        <div class="container">
+            <header class="section-header">
+                <h1>Welcome to my project showcase</h1><h1><strong>(UNDER CONSTRUCTION)</strong> </h1>
+				<hr>
+				<p>My name is <strong>Nicholas Bowles</strong>. Here you can explore my various projects. Use the filters to find specific categories of work. Each project includes details and can be expanded for more in-depth viewing. Feel free to contact me via the contact form with any queries.</p>
+            </header>
+        </div>
+    </section>
+	<button id="darkModeToggle" class="dark-mode-toggle"> <!-- style="top: 34%; right: 0px; border-radius: 50% 0 0 50%;"> -->
+		<i id="lightMode" class="fas fa-sun"></i>
+	</button>	
+	<div class="body-grid">
+		<div class="filter-drawer">
+			<input type="checkbox" id="drawer-toggle" hidden>
+			<div class="drawer">
+			<label for="drawer-toggle" class="drawer-toggle"><i class="fas fa-filter"></i>
+				<div id="project-count">...</div><div id="toggle-label">FILTERS</div></label>
+				<div id="filter-menu" class="filter-menu">					
+					<div class="filter-buttons">
+						<!--<button class="filter-btn" data-filter="all">All</button>
+						<button class="filter-btn" data-filter="WoodWorking">Woodworking</button>
+						<button class="filter-btn" data-filter="MetalWorking">Metalworking</button>
+						<button class="filter-btn" data-filter="LeatherWorking">Leatherworking</button>
+						<button class="filter-btn" data-filter="CAD">CAD</button>
+						<button class="filter-btn" data-filter="3DP">3D Printing</button> -->
+					</div>
+				</div>
+			</div>
+		</div>		
+
+		<div class="project-grid">
+			<!-- <div class="project-tile" data-title="Splitbox" data-tags="3DP,CAD" data-modified="2025-02-20" data-url="/projects/L13 Cell biology.md">
+				<img src="assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 1" class="project-image">
+				<div class="project-tags"></div>
+				<div class="overlay">
+					<h3>Splitbox - an ergonomic arcade stick</h3>
+					<p class="Updated">Loading...</p>
+					<span class="status Completed"><i class="fas fa-check"></i></span>					
+				</div>
+			</div>
+			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="https://sunkcostfactory.xyz">
+				<img src="assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
+				<div class="project-tags"></div>
+				<div class="overlay">
+					<h3>Cancelled</h3>
+					<p class="Updated">Loading...</p>
+					<span class="status Suspended"><i class="fas fa-times-circle"></i></span>
+				</div>
+			</div>
+			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="/projects/Test.md">
+				<img src="assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
+				<div class="project-tags"></div>
+				<div class="overlay">
+					<h3>WIP</h3>
+					<p class="Updated">Loading...</p>
+					<span class="status wip"><i class="fas fa-wrench"></i></span>
+				</div>
+			</div>
+			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="">
+				<img src="assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
+				<div class="project-tags"></div>
+				<div class="overlay">
+					<h3>.</h3>
+					<p class="Updated">Loading...</p>
+					<span class="status finished"><i class="fas fa-check"></i></span>
+				</div>
+			</div>
+			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="">
+				<img src="assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
+				<div class="project-tags"></div>
+				<div class="overlay">
+					<h3>Test</h3>
+					<p class="Updated">Loading...</p>
+					<span class="status finished"><i class="fas fa-check"></i></span>
+				</div>
+			</div>
+			<div class="project-tile" data-tags="WoodWorking" data-modified="2025-02-20" data-url="">
+				<img src="assets/attachments/89cce57c-0022-448e-a5fb-296175ec8599.PNG" alt="Project 2" class="project-image">
+				<div class="project-tags"></div>
+				<div class="overlay">
+					<h3>Test</h3>
+					<p class="Updated">Loading...</p>
+					<span class="status finished"><i class="fas fa-check"></i></span>
+				</div>
+			</div>-->
+		</div>
+    </div>	
+	<div class="contact-widget">
+		<button id="contact-button" class="contact-button">
+		<i class="fas fa-envelope"></i>
+		</button>
+		
+		<div class="contact-form-container">
+		<form id="contact-form" action="https://formspree.io/f/INSERTLATER" method="POST">
+			<button type="button" class="close-form">&times;</button>
+			<h3>Send me a message</h3>
+			<input type="text" name="Sender Name" placeholder="Your Name" required>
+			<input type="email" name="Sender Email" placeholder="Your Email" required>
+			<textarea name="message" placeholder="Your Message" required></textarea>
+			<!-- <input type="hidden" name="_subject" value="New message from your portfolio"> -->
+			<button type="submit">Send</button>
+		</form>
+		</div>
+	</div>
+	<button id="scrollToTopBtn" class="scroll-to-top" title="Go to top">
+		<i class="fas fa-chevron-up"></i>
+	</button>
+	<script src="assets/js/main.js" defer></script>	
+</body>
+<!-- <footer>	
+	<div id="last-Updated" class="last-Updated">
+		Last Updated: <span id="last-Updated-date"></span>
+	</div>	
+</footer> -->
+</html>

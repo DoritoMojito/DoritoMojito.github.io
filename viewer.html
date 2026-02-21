@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <meta name="description" content="Read more about this project.">
+    <link rel="shortcut icon" href="assets/source/Mountainfavicon@1.0x.png" type="image/x-icon">
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">	
+    <script>
+        function setPageTitleFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const projectTitle = params.get("title");
+
+            if (projectTitle) {
+                document.title = decodeURIComponent(projectTitle) + ": Details";
+            } else {
+                document.title = "Project Details";
+            }
+        }
+    </script>    	
+</head>
+<body id="viewer" onload="setPageTitleFromURL()" style="padding-left: 10px; padding-right: 10px; padding-bottom: 10px;">
+    <button id="darkModeToggle" class="dark-mode-toggle">
+		<i id="lightMode" class="fas fa-sun"></i>
+	</button>
+    <div id="content">Loading...</div>
+    <script>
+        async function loadMarkdown() {
+    const params = new URLSearchParams(window.location.search);
+    const file = params.get("file");
+
+    if (!file) {
+        document.getElementById("content").innerHTML = "<p>Error: No file provided.</p>";
+        return;
+    }
+
+    try {
+        const response = await fetch(file);
+        if (!response.ok) throw new Error("Failed to load file.");
+        let markdownText = await response.text();
+
+        // Extract YAML front matter
+        const yamlMatch = markdownText.match(/^---\n([\s\S]+?)\n---\n*/);
+        let title = "Project Details"; // Default title
+
+        if (yamlMatch) {
+            const yamlContent = yamlMatch[1];
+            const titleMatch = yamlContent.match(/^project-title:\s*(.+)$/m);
+            if (titleMatch) {
+                title = titleMatch[1].trim();
+            }
+
+            // Remove YAML front matter completely, ensuring no blank lines remain
+            markdownText = markdownText.replace(yamlMatch[0], '').trim();
+        }
+
+        // Set document title and add a formatted header with a horizontal line
+        document.title = title + " - Details";
+        document.getElementById("content").innerHTML = `<h1 class="project-header">${title}</h1><hr>\n` + marked.parse(markdownText);
+        
+        // Initialize image viewer after content loads
+        if (window.ImageViewer) {
+            ImageViewer.init();
+        }
+    } catch (error) {
+        console.error("Error loading Markdown:", error);
+        document.getElementById("content").innerHTML = "<p>Error loading the document.</p>";
+    }
+}
+
+    
+        document.addEventListener("DOMContentLoaded", loadMarkdown);
+    </script>     
+    
+<div class="image-expanded-view">
+    <div class="image-expanded-wrapper">      
+        <img class="expanded-image" src="" alt="">
+      <button class="close-image-btn" data-title="Close">
+        <i class="fas fa-times"></i>
+      </button>
+
+    </div>
+  </div>
+<button id="scrollToTopBtn" class="scroll-to-top" title="Go to top">
+    <i class="fas fa-chevron-up"></i>
+</button>
+  
+  <script>
+  // Initialize image viewer after content loads
+  document.addEventListener('DOMContentLoaded', function() {
+      // Wait a brief moment to ensure all images are loaded
+      setTimeout(function() {
+          const initImageViewer = setInterval(function() {
+              if (typeof ImageViewer !== 'undefined') {
+                  clearInterval(initImageViewer);
+                  ImageViewer.init();
+                  console.log('ImageViewer initialized');
+                  
+                  // Add click handlers to all images
+                  document.querySelectorAll('#viewer img').forEach(img => {
+                      img.style.cursor = 'zoom-in';
+                      img.addEventListener('click', function(e) {
+                          console.log('Image clicked:', e.target.src);
+                          ImageViewer.openImage(e);
+                      });
+                  });
+              }
+          }, 100);
+      }, 300);
+  });
+  </script>   
+</body>
+</html>

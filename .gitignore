@@ -1,0 +1,11 @@
+*.vsidx
+*.sqlite
+*.png
+*.jpg
+*.jpeg
+*.mp4
+/.vs
+/drawer test
+/oldpushscripts
+error_log.txt
+pushscripts/debug_log.txt

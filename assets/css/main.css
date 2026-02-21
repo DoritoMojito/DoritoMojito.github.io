@@ -1,0 +1,894 @@
+:root {
+    /* Primary Colors */
+    --color-primary: #007bff;
+    --color-primary-hover: #0067d6;
+    --color-primary-active: #004085;
+
+    /* Accent Colors */
+    --color-accent: #820000;
+    --color-accent-hover: #5c0101;
+
+    /* Backgrounds */
+    --color-bg-light: #ffffff;
+    --color-bg-dark: #393939;
+
+    /* Backgrounds */
+    --color-bg-light-glass: #ffffff45;
+    --color-bg-dark-glass: #39393937;
+
+    /* Text */
+    --color-text-light: #ffffff;
+    --color-text-dark: #000000;
+    --color-text-muted: rgba(0, 0, 0, 0.459);
+
+    /* Status Colors */
+    --color-status-complete: green;
+    --color-status-wip: orange;
+    --color-status-suspended: red;
+
+    /* Shadows & Overlays */
+    --shadow-default: 0 0 10px rgba(0, 0, 0, 0.1);
+    --button-shadow-default: 0px 0px 10px #00000065, 0px 0px 1px #00000057;
+    --overlay-dark: rgba(0, 0, 0, 0.111);
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.section-header{
+    padding: 20px;
+    text-align: center;
+    color: var(--color-text-dark);
+    font-size: medium;
+    border-bottom: #000000;
+}
+
+.dark-mode .section-header{
+    color: var(--color-text-light);
+}
+
+.ribbon{
+    position: fixed;
+    display: block;
+    width: max-content;
+    height: max-content;
+    color: rgba(0, 0, 0, 0.459);
+    font-weight: bold;
+    font-size: 75px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-37%,300%);
+    rotate: 45deg;
+    z-index: -1;
+}
+
+#viewer.dark-mode, #project-iframe.dark-mode, .dark-mode {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light);
+}
+
+.dark-mode-toggle {
+    position: fixed;
+    font-size: 20px;
+    padding-bottom: 0.5px;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f1c40f; /* Sun color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0px 0px 10px #00000065, 0px 0px 1px #00000057;
+    z-index: 1003;
+}
+
+body.dark-mode .dark-mode-toggle {
+    background-color: #8e8e8e; /* Dark mode moon color */
+}
+
+.dark-mode-toggle #lightMode {
+    color: #000000;
+}
+
+.dark-mode-toggle #darkMode {
+    color: #f1f0ff;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    font-size: small;
+    background-color: var(--color-bg-light);
+	color: var(--color-text-light);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#viewer img {
+    display: inline-flex;
+    border-radius: 8px;
+}
+
+.project-header {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid #444;
+    width: 60%;
+    margin: 0 auto 20px auto;
+}
+
+
+.body-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	padding: 20px;
+	max-width: 100%;
+	margin: auto;
+    justify-items: center;
+}
+
+.content-wrapper {
+    display: flex;
+	justify-self: center;
+    align-items: flex-start; /* Align items at the top */
+    gap: 20px;
+    max-width: 90%;
+    margin: auto;
+}
+
+.contact-widget {
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+    z-index: 1003;
+  }
+  
+  .contact-button {
+    background: var(--color-primary);
+    color: var(--color-bg-light);
+    border: none;
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    padding-bottom: 0.5%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--button-shadow-default);
+    display: flex;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .contact-button:hover {
+    background: var(--color-primary-hover);
+  }
+  
+  .contact-form-container {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    min-width: 60vw;
+    max-width: 80vw;
+    height: fit-content;
+    max-height: 80vh;
+    background: rgba(255, 255, 255, 0.495);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    padding: 20px;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+  
+  .contact-form-container.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .contact-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .contact-form-container h3, .close-form {
+    color: var(--color-text-dark);
+  }
+
+  .contact-form-container input,
+  .contact-form-container textarea {
+    font-family: Arial, sans-serif;
+    font-size: small;
+    padding: 10px;
+    border: 1px solid #ececec;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .contact-form-container textarea {
+    min-height: 100px;
+    resize: none;
+  }
+  
+  .contact-form-container button[type="submit"] {
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .contact-form-container button[type="submit"]:hover {
+    background: var(--color-primary-hover);
+  }
+  
+  .close-form {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--color-text-dark);
+  }
+  
+  /* Dark mode support */
+  .dark-mode .contact-form-container {
+    background: var(--color-bg-dark-glass);
+    color: var(--color-text-light);
+  }
+
+  .dark-mode .contact-form-container h3, .dark-mode .close-form {
+    color: var(--color-text-light);
+  }
+  
+  .dark-mode .contact-form-container input,
+  .dark-mode .contact-form-container textarea {
+    background: #444;
+    color: var(--color-text-light);
+    border-color: var(--color-bg-dark-glass);
+  }
+
+.filter-drawer {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);    
+    z-index: 1002;
+    pointer-events: none;
+}
+
+.filter-drawer.open {
+    right: 0;
+}
+
+.drawer {
+    position: relative;
+    right: -210px; /* -(width + 10(padding) */
+    width: 200px;
+    height: 150px;
+    background: var(--color-bg-dark-glass);
+    color: white;
+    padding-right: 10px;
+    border-radius: 0 0 0 10px;
+    transition: right 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0px 0px 1px #00000057;
+    backdrop-filter: blur(5px);
+}  
+
+.drawer-toggle {
+    position: absolute;
+    right: 0;
+    top: 0%;
+    left: -30px;
+    width: 20px;
+    height: auto;
+    text-align: center;
+    padding: 5px;
+    background: var(--color-primary);
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px 0 0 5px;
+    font-size: 18px;
+    transition: left 0.3s ease-in-out;
+    box-shadow: var(--button-shadow-default);
+    pointer-events: all;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#project-count {
+    font-size: auto;
+    padding-top: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
+}
+
+#toggle-label {
+    rotate: 270deg;
+    margin-top: 56px;
+    margin-left: 1px;
+}
+
+.drawer-toggle:hover {
+    background-color: var(--color-primary-hover);
+}
+
+#drawer-toggle:checked ~ .drawer {
+    right: 0;
+}
+  
+.filter-menu {
+    padding: 0 5px 5px 5px;
+    border-radius: 0 0 15px 0;
+    overflow: hidden;
+}
+
+.filter-menu.open {
+    visibility: visible; /* Show the dropdown when 'open' class is added */
+    box-shadow: 0 0 10 #000000;
+    right: 0;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: 20px;
+    pointer-events: all;
+}
+
+.filter-menu, .filter-menu.open {
+    height: 142px; /* Padding + drawer height + drawer padding */
+}
+
+.filter-btn {
+    padding: 5px 10px;
+    margin: 2px;
+    font-size: 14px;
+    color: #ffffff;
+    background: #4f4f4f;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px #0000007a;
+}
+
+.filter-btn.active {
+    background: #007bff;
+    color: white;
+    box-shadow: inset;
+}
+
+.filter-btn:hover {
+    background: #00a2ff;
+}
+
+.project-grid {
+    flex: 1;
+	position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	/* justify-self: auto; */
+	gap: 30px;
+    padding: 15px 10px 15px 10px;
+    max-width: 100%;
+    max-height: fit-content;
+}
+
+.project-tile {
+    position: relative;
+    overflow: hidden;
+    max-height: 50vh;
+    aspect-ratio: 1/1;
+    align-content: center;
+    /* max-width: 60vh; */
+/* 	max-width: 40vw; */
+    border-radius: 10px;
+    box-shadow: 0 0px 10px rgba(0, 0, 0, 0.1), 0 0 4px rgba(255, 255, 255, 0.113);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+	background-color: rgba(22, 22, 22, 0.546);
+}
+
+.project-tile:hover {
+    transform: scale(1.05);
+    z-index: 1001;
+}
+
+.project-tags {
+    display: flex;
+    direction: ltr;
+    gap: 5px;
+    flex-wrap: wrap;
+    max-width: max-content;
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;    
+    z-index: 2;
+}
+
+.project-tags span {
+    background: rgba(0, 0, 0, 0.41);
+    color: rgb(255, 255, 255);
+    text-shadow: #000000 0 0 2px, #000000 0 0 2px, #000000 0 0 2px;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-weight: bold;
+    
+}
+
+.project-tile:hover .project-tags {
+    opacity: 1;
+}
+
+
+.status {
+    position: absolute;
+    bottom: 10px;
+    right: 3%;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;    
+}
+
+.project-tile:hover .status {
+    opacity: 1;
+}
+
+.status.complete {
+    color: green;
+}
+
+.status.wip {
+    color: orange;
+}
+
+.status.suspended {
+    color: red;
+}
+
+.project-image {
+    width: 100%;
+    display: block;
+    vertical-align: baseline;
+}
+
+/*.last-Updated {
+    position: absolute;
+    bottom: 6px;
+    left: 5px;
+    width: fit-content;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-text-light);
+    background-color: var(--color-bg-dark-glass);
+    padding: 4px 8px;
+    border-radius: 5px;
+    z-index: 1002;
+}*/
+
+.dark-mode .last-Updated {
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-light-glass);
+}
+
+.overlay {
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+    bottom: -3px;
+    left: 0;
+    width: 101%;
+    background: rgba(0, 0, 0, 0.509);
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
+    mask-image: radial-gradient(circle, white 100%, transparent 100%);
+}
+
+.overlay-content {
+    padding: 0 10px;
+}
+
+.overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+}
+
+.scroll-container {
+    display: inline-flex;
+    position: relative;
+    white-space: nowrap;
+    animation: scrollText var(--scroll-duration) linear infinite;
+    animation-delay: 0.5s;
+    transform: translateX(0);
+    transition: transform 0.1s ease-out; /* Smooth reset transition */
+}
+
+.scroll-container, .scroll-wrapper {
+    height: 25px;
+    transform: translateY(-7px);
+}
+
+.overlay h3 {
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+    animation: none;
+    transform: translateX(0);
+    padding-inline-end: 100px;
+}
+
+.scroll-content span {
+    display: inline-block;
+    font-size: 1.2rem;
+  }
+
+.project-tile:hover .scroll-container {
+    animation-play-state: running;
+    transition: none;
+}
+
+.project-tile:not(:hover) .scroll-container {
+    animation-play-state: paused;
+}
+
+.overlay h3.scroll-text.scroll-duplicate {
+    visibility: visible;
+}
+
+.overlay h3.scroll-text.scroll-triplicate {
+    visibility: visible;
+}
+
+@keyframes scrollText {
+    0% {
+      transform: translateX(0%);
+    }
+    10% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-33.33333%);
+    }
+  }
+  
+  .overlay h3.scroll-primary {
+    animation: scrollText var(--scroll-duration) linear infinite;
+    animation-delay: 0.3s;
+    padding-right: 70px;
+  }
+
+.scroll-text {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+
+
+.project-tile:hover .overlay {
+    transform: translateY(0);
+}
+
+.expanded-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1003;
+	opacity: 0; /* Start with it invisible */
+	transform: scale(1); /* Start with it smaller */
+    transition: opacity 0.5s ease, transform 0.3s ease; /* Only apply opacity transition to the background */
+    
+}
+
+.expanded-view.show {
+    opacity: 1; /* Fade to fully visible */
+	transform: scale(1); /* Grow the background to full size */
+    backdrop-filter: blur(5px);
+}
+
+.expanded-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.expanded-content {
+    background: none;
+    border-radius: 8px;
+    width: 80vw;
+    height: 80vh;
+    display: block;
+    flex-direction: column;
+    align-items: center;
+}
+
+.expanded-content iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: none;
+    background-color: none;
+}
+
+.expanded-view.show iframe {
+    transform: scale(1); /* Grow iframe to normal size */
+}
+
+#project-iframe{
+    backdrop-filter: blur(5px);
+}
+
+#viewer{
+    font-family: Arial, sans-serif;
+    align-content: center;
+    max-width: 80vw;
+    margin: auto;
+    background: var(--color-bg-light);
+    color: #333;    
+}
+
+#viewer pre{
+    box-sizing: content-box;
+    overflow-x: auto;
+    background-color: #0000003e;
+    padding: 10px;
+    border-radius: 10px;
+}
+#viewer code{
+    box-sizing: content-box;
+    overflow-x: visible;
+}
+
+#viewer img{
+    max-width: 100%;
+}
+
+.new-tab-btn, .close-btn {
+    position: absolute;
+    top: 10px;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1003; /* Ensure it's above the iframe */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-btn{
+    right: 10px;
+    background: #820000;
+}
+
+.close-btn:hover{
+    background-color: #5c0101;
+}
+
+.new-tab-btn {
+    left: 10px;
+    background: var(--color-primary);
+}
+
+.new-tab-btn:hover {
+    background: var(--color-primary-hover);
+}
+
+.new-tab-btn:active {
+    background: var(--color-primary-active);
+}
+
+.custom-tooltip {
+    position: absolute;
+    background: var(--color-bg-dark-glass);
+    color: var(--color-text-light);
+    padding: 5px;
+    border-radius: 5px;
+    opacity: 1;
+    visibility: visible; /* Ensure it's visible when shown */
+    z-index: 1006;
+    pointer-events: none;
+}
+
+button[data-title]:hover + .custom-tooltip {
+    opacity: 1;
+    visibility: visible;
+    top: -30px; /* Position the tooltip above the button */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+}
+/* Close Button Tooltip */
+.close-btn:hover + .tooltip {
+    left: -110%;
+	transform: translate(-50%, -100%);
+}
+
+
+button:hover + .custom-tooltip {
+    opacity: 1;
+}
+
+/* Ensure the tooltip stays within the viewport horizontally */
+@media screen and (max-width: 768px) {
+
+    /* Position it below the button on smaller screens */
+    button[data-title]:hover + .custom-tooltip {
+        top: 10px !important;
+    }
+}
+/* Webkit-based browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px; /* Width of vertical scrollbar */
+    height: 12px; /* Height of horizontal scrollbar */
+}
+
+/* The draggable thumb (scrollbar handle) */
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary); /* Color of the thumb */
+    border-radius: 10px; /* Round the thumb */
+}
+
+/* The track (background of the scrollbar) */
+::-webkit-scrollbar-track {
+    background-color: #00000019; /* Track color */
+    border-radius: 10px; /* Round the track */
+}
+
+/* Hover effect for the thumb */
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-hover); /* Darken the thumb when hovering */
+}
+
+/* Style for Firefox */
+html {
+    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-color: var(--color-primary) #00000019; /* Thumb color and track color */
+    overflow-x: hidden;
+}
+
+/* Image Expanded View */
+.image-expanded-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1005;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .image-expanded-view.show {
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(5px);
+  }
+  
+  .image-expanded-wrapper {
+    position: fixed;
+    max-width: 95vw;
+    max-height: 95vh;
+    padding: 20px;
+    border-radius: 25px;
+    z-index: 1003;
+  }
+  
+  .expanded-image {
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  
+  .close-image-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #820000;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1006;
+    transition: all 0.2s ease;
+  }
+
+  .close-image-btn:hover {
+    background-color: #5c0101;
+    z-index: 1006;
+  }
+  
+  /* Make all images in viewer clickable */
+  #viewer img {
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+  }  
+
+  /* Scroll to Top Button */
+.scroll-to-top {
+    position: fixed;
+    bottom: 100px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: var(--color-text-light);
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    padding-bottom: 2px;
+    box-shadow: var(--button-shadow-default);
+    z-index: 1003; /* Above other elements but below expanded views */
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scroll-to-top:hover {
+    background: var(--color-primary-hover);
+}
+
+
