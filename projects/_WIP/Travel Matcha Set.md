@@ -1,7 +1,7 @@
 ---
-project-title: Simplicity
+project-title: Travel Matcha Set
 project-status: Complete
-project-image:
+project-image: "[](assets/attachments/_processed/Travel%20Matcha%20Set/Travel_Matcha_Set_2025-Jun-26_08-55-47AM-000_CustomizedView28892460620.webp)"
 project-tags:
   - 3D Printing
   - CAD
@@ -21,9 +21,6 @@ What problem were you trying to solve, or what prompted you to build this?
 Keep this section readable and reflective rather than technical.</mark>
 
 ---
-
-<iframe src="https://drive.google.com/file/d/1rULbVa2LsMtmhWac3BFOu_JcDdG9KEqV/preview" allow="fullscreen" allowfullscreen="" style="height:100%;width:100%; aspect-ratio: 16 / 9; "></iframe>
-
 
 ## Goals & Requirements
 

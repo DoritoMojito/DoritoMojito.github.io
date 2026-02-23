@@ -1,19 +1,12 @@
 ---
-project-title: Guitar
-project-status: WIP
-project-image: "[](assets/attachments/Guitar/d8de29a4-399c-4475-90a9-3f3768b8c3d9.png)"
+project-title: Simplicity
+project-status: Complete
+project-image: "[](assets/attachments/_processed/Pasted%20image%2020250409151732.webp)"
 project-tags:
+  - 3D Printing
   - CAD
-  - Woodworking
-Updated: 2026-02-04
+Updated: 2026-02-21
 ---
-
-
-| ![](assets/attachments/Guitar/d8de29a4-399c-4475-90a9-3f3768b8c3d9%20(1).PNG) | ![](assets/attachments/Guitar/90c83870-bc34-4c2a-a861-22319092c865%20(1).PNG) |
-| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-|                                                                               |                                                                               |
-|                                                                               |                                                                               |
-
 
 # <mark>{{ project-title }}</mark>
 
@@ -28,6 +21,9 @@ What problem were you trying to solve, or what prompted you to build this?
 Keep this section readable and reflective rather than technical.</mark>
 
 ---
+
+<iframe src="https://drive.google.com/file/d/1rULbVa2LsMtmhWac3BFOu_JcDdG9KEqV/preview" allow="fullscreen" allowfullscreen="" style="height:100%;width:100%; aspect-ratio: 16 / 9; "></iframe>
+
 
 ## Goals & Requirements
 

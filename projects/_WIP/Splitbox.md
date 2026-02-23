@@ -13,7 +13,7 @@ Updated: 2026-02-11
 # Splitbox
 
 > A custom ergonomic fighting game controller with a *twist*
-![](assets/attachments/Splitbox/2226425b-ad34-464f-a523-35db58e5c3de.png)
+![](assets/attachments/_processed/Splitbox/2226425b-ad34-464f-a523-35db58e5c3de.webp)
 ---
 ## Overview
 

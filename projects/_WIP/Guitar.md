@@ -1,12 +1,19 @@
 ---
-project-title: Travel Matcha Set
-project-status: Complete
-project-image: "[](assets/attachments/Travel%20Matcha%20Set/Travel_Matcha_Set_2025-Jun-26_08-55-47AM-000_CustomizedView28892460620.png)"
+project-title: Guitar
+project-status: WIP
+project-image: "[](assets/attachments/_processed/Guitar/d8de29a4-399c-4475-90a9-3f3768b8c3d9.webp)"
 project-tags:
-  - 3D Printing
   - CAD
-Updated:
+  - Woodworking
+Updated: 2026-02-04
 ---
+
+
+| ![](assets/attachments/_processed/Guitar/d8de29a4-399c-4475-90a9-3f3768b8c3d9%20(1).webp) | ![](assets/attachments/Guitar/90c83870-bc34-4c2a-a861-22319092c865%20(1).PNG) |
+| ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+|                                                                                           |                                                                               |
+|                                                                                           |                                                                               |
+
 
 # <mark>{{ project-title }}</mark>
 
