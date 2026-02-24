@@ -13,24 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/Key Organiser.md",
+                "file": "projects/Filament Drier.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Key Organiser"
-            }
-          },
-          {
-            "id": "c71db4ef9f3e4c21",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/attachments/_processed/Planters/IMG_20210408_111615.webp"
-              },
-              "icon": "lucide-image",
-              "title": "IMG_20210408_111615"
+              "title": "Filament Drier"
             }
           }
         ]
@@ -232,6 +220,7 @@
   },
   "active": "89503fe7ec7415d3",
   "lastOpenFiles": [
+    "projects/Key Organiser.md",
     "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-large.webp",
     "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-medium.webp",
     "assets/attachments/_processed/_processed/Under Desk Organiser/20240521_141330-large.webp",
@@ -245,7 +234,6 @@
     "assets/attachments/_processed/_processed/Travel Matcha Set/Travel_Matcha_Set_2025-Jun-26_08-55-47AM-000_CustomizedView28892460620-small.webp",
     "assets/attachments/_processed/_processed/Travel Matcha Set",
     "assets/attachments/_processed/_processed/Thickness Gauge/20250403_104514-large.webp",
-    "assets/attachments/_processed/_processed/Thickness Gauge/20250403_104514-medium.webp",
     "assets/attachments/_processed/_processed/Thickness Gauge",
     "assets/attachments/_processed/_processed/Splitbox",
     "assets/attachments/_processed/_processed/Planters",
@@ -254,7 +242,6 @@
     "assets/attachments/_processed/_processed/Ouros",
     "assets/attachments/_processed/_processed/Key Organiser",
     "projects/Guitar.md",
-    "projects/Key Organiser.md",
     "projects/Filament Drier.md",
     "projects/Coffee Cup Planter.md",
     "projects/Coffee Cup Wall Art.md",
