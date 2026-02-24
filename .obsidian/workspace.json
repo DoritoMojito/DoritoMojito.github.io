@@ -8,69 +8,32 @@
         "type": "tabs",
         "children": [
           {
-            "id": "9918f3c6a5ae42c1",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/attachments/_processed/Coffee Cup Planter/IMG_20200704_095624.webp"
-              },
-              "icon": "lucide-image",
-              "title": "IMG_20200704_095624"
-            }
-          },
-          {
-            "id": "41191577799f619b",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/attachments/_processed/Coffee Cup Wall Art/20250521_120955.webp"
-              },
-              "icon": "lucide-image",
-              "title": "20250521_120955"
-            }
-          },
-          {
             "id": "89503fe7ec7415d3",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/attachments/_processed/Coffee Cup Wall Art/20250521_120955.webp"
-              },
-              "icon": "lucide-image",
-              "title": "20250521_120955"
-            }
-          },
-          {
-            "id": "543291309820253c",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/attachments/_processed/Coffee Cup Wall Art/coffee_cup_wall_art_2024-Jan-24_06-41-44AM-000_CustomizedView21556000476.webp"
-              },
-              "icon": "lucide-image",
-              "title": "coffee_cup_wall_art_2024-Jan-24_06-41-44AM-000_CustomizedView21556000476"
-            }
-          },
-          {
-            "id": "9718886fc34cfeed",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/Filament Drier.md",
+                "file": "projects/Coffee Cup Planter.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Filament Drier"
+              "title": "Coffee Cup Planter"
+            }
+          },
+          {
+            "id": "c71db4ef9f3e4c21",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "assets/attachments/_processed/Planters/IMG_20210408_111615.webp"
+              },
+              "icon": "lucide-image",
+              "title": "IMG_20210408_111615"
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "vertical"
@@ -102,7 +65,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "convert",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -174,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "projects/Filament Drier.md",
+                "file": "projects/Planters.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Filament Drier"
+              "title": "Outline of Planters"
             }
           },
           {
@@ -191,6 +154,21 @@
               "state": {},
               "icon": "spreadsheet",
               "title": "Advanced Tables"
+            }
+          },
+          {
+            "id": "c7d1c9555f6a173a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           }
         ],
@@ -210,57 +188,95 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "publish:Publish changes...": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "9718886fc34cfeed",
+  "floating": {
+    "id": "2a46a516929012e8",
+    "type": "floating",
+    "children": [
+      {
+        "id": "bc163bfe901a70e9",
+        "type": "window",
+        "children": [
+          {
+            "id": "120c92bca7c7818b",
+            "type": "tabs",
+            "children": [
+              {
+                "id": "9718886fc34cfeed",
+                "type": "leaf",
+                "state": {
+                  "type": "markdown",
+                  "state": {
+                    "file": "projects/Guitar.md",
+                    "mode": "source",
+                    "source": false
+                  },
+                  "icon": "lucide-file",
+                  "title": "Guitar"
+                }
+              }
+            ]
+          }
+        ],
+        "direction": "vertical",
+        "x": 2316,
+        "y": -126,
+        "width": 1599,
+        "height": 1234,
+        "maximize": false,
+        "zoom": 0
+      }
+    ]
+  },
+  "active": "89503fe7ec7415d3",
   "lastOpenFiles": [
-    "assets/attachments/_processed/_processed/Filament Drier/IMG_20220812_150824-large.webp",
-    "assets/attachments/_processed/_processed/Filament Drier/IMG_20220812_150824-medium.webp",
-    "assets/attachments/_processed/_processed/Filament Drier/IMG_20220812_150824-small.webp",
-    "assets/attachments/_processed/_processed/Filament Drier",
-    "assets/attachments/_processed/_processed/DSOX Cover/20250521_121400-large.webp",
-    "assets/attachments/_processed/_processed/DSOX Cover/20250521_121400-medium.webp",
-    "assets/attachments/_processed/_processed/DSOX Cover/20250521_121400-small.webp",
-    "assets/attachments/_processed/_processed/DSOX Cover",
-    "assets/attachments/_processed/_processed/Desk Phone Holder Charger/20250423_183047-large.webp",
-    "assets/attachments/_processed/_processed/Desk Phone Holder Charger/20250423_183047-medium.webp",
-    "assets/attachments/_processed/_processed/Desk Phone Holder Charger/20250423_183047-small.webp",
-    "assets/attachments/_processed/_processed/Desk Phone Holder Charger",
-    "assets/attachments/_processed/_processed/Desk Clamp/20250521_121456-large.webp",
-    "assets/attachments/_processed/_processed/Desk Clamp/20250521_121456-medium.webp",
-    "assets/attachments/_processed/_processed/Desk Clamp",
+    "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-large.webp",
+    "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-medium.webp",
+    "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-small.webp",
+    "assets/attachments/_processed/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-large.webp",
+    "assets/attachments/_processed/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-medium.webp",
+    "assets/attachments/_processed/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-small.webp",
+    "assets/attachments/_processed/_processed/Splitbox",
+    "assets/attachments/_processed/_processed/Coffee Cup Planter/IMG_20200622_151855-large.webp",
+    "assets/attachments/_processed/_processed/Coffee Cup Planter/IMG_20200622_151855-medium.webp",
+    "assets/attachments/_processed/_processed/Coffee Cup Planter/IMG_20200622_151855-small.webp",
+    "projects/Coffee Cup Wall Art.md",
     "projects/Desk Clamp.md",
     "projects/Desk Phone Holder Charger.md",
-    "projects/DSOX Cover.md",
     "projects/Filament Drier.md",
-    "assets/attachments/DSOX Cover/~0250515_095350.tmp",
-    "assets/attachments/DSOX Cover/~0250515_095343.tmp",
-    "assets/attachments/Desk Phone Holder Charger/~0250423_183102.tmp",
-    "assets/attachments/Desk Phone Holder Charger/~0250423_183047.tmp",
-    "projects/_Untitled.md",
-    "assets/attachments/Desk Clamp/~0250428_163820.tmp",
-    "projects/Coffee Cup Wall Art.md",
-    "projects/Coffee Cup Planter.md",
+    "projects/DSOX Cover.md",
+    "projects/Guitar.md",
+    "projects/Pen Cup.md",
+    "projects/Splitbox.md",
+    "projects/Planters.md",
+    "projects/Pen Stylus Conversion.md",
+    "projects/Ouros.md",
+    "assets/attachments/_processed/Planters/IMG_20210408_111615.webp",
+    "assets/attachments/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-large.webp",
+    "assets/attachments/_processed/_processed/Wallet",
+    "assets/attachments/_processed/_processed/Under Desk Organiser",
     "assets/attachments/_processed/_processed/Travel Matcha Set",
+    "assets/attachments/_processed/_processed/Thickness Gauge",
+    "assets/attachments/_processed/_processed/Planters",
+    "assets/attachments/_processed/_processed/Pen Stylus Conversion",
+    "assets/attachments/_processed/_processed/Pen Cup",
+    "assets/attachments/_processed/_processed/Ouros",
+    "assets/attachments/_processed/_processed/Key Organiser",
+    "projects/Key Organiser.md",
+    "projects/Coffee Cup Planter.md",
+    "projects/Thickness Gauge.md",
+    "projects/Travel Matcha Set.md",
+    "projects/Under Desk Organiser.md",
+    "projects/Wallet.md",
+    "projects/_Untitled.md",
     "projects/_WIP/Leather Wallet w Notepad.md",
     "projects/_WIP/Travel Matcha Set.md",
     "projects/Work Examples.md",
     "projects/_WIP/Simplicity.md",
     "projects/_WIP/Splitbox.md",
     "projects/_WIP/Guitar.md",
-    "projects/2026-02-11.md",
-    "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-large.webp.sidecar.md",
-    "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-medium.webp.sidecar.md",
-    "assets/attachments/_processed/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-small.webp.sidecar.md",
-    "assets/temp/Mountain128-medium.webp.sidecar.md",
-    "assets/temp/Mountain128-large.webp.sidecar.md",
-    "assets/temp/20231221_092618-small.webp.sidecar.md",
-    "assets/temp/20231221_092618-medium.webp.sidecar.md",
-    "assets/temp/20231221_092618-large.webp.sidecar.md",
-    "assets/temp/20231221_092707-small.webp.sidecar.md",
-    "assets/temp/20231221_092707-medium.webp.sidecar.md",
-    "assets/temp/20231221_092707-large.webp.sidecar.md"
+    "projects/2026-02-11.md"
   ]
 }
