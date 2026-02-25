@@ -313,64 +313,84 @@ const Timestamp = {
     return extractedPath;
 },
     
-    // FIXED: Generate correct processed image path with debugging
-    getResponsivePath(imgPath, size) {
-        console.log(`Getting responsive path for: ${imgPath}, size: ${size}`);
+// FIXED: Generate correct processed image path with debugging
+getResponsivePath(imgPath, size) {
+    console.log(`Getting responsive path for: ${imgPath}, size: ${size}`);
+    
+    if (imgPath === CONFIG.defaultImage) {
+        console.log("Using default image path");
+        return imgPath;
+    }
+    
+    // Handle paths that already contain _processed
+    if (imgPath.includes('/_processed/')) {
+        console.log("Path already contains _processed, extracting base info:", imgPath);
         
-        if (imgPath === CONFIG.defaultImage) {
-            console.log("Using default image path");
-            return imgPath;
-        }
+        // Extract the base filename without size suffix
+        // Example: assets/attachments/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9.webp
+        const processedIndex = imgPath.indexOf('/_processed/');
+        const pathAfterProcessed = imgPath.substring(processedIndex + 11); // +11 for '/_processed/'
+        const pathParts = pathAfterProcessed.split('/');
         
-        // If it's already a processed image path, return as is
-        if (imgPath.includes('/_processed/')) {
-            console.log("Path already contains _processed:", imgPath);
-            return imgPath;
-        }
+        // Get the filename and remove any existing size suffix if present
+        let fileName = pathParts[pathParts.length - 1];
+        const ext = '.webp'; // Since you're converting to webp
         
-        // Handle the new folder structure: assets/attachments/<project>/image.png
-        if (imgPath.includes('assets/attachments/')) {
-            const attachmentsIndex = imgPath.indexOf('assets/attachments/');
-            const pathAfterAttachments = imgPath.substring(attachmentsIndex + 18); // +18 for 'assets/attachments/'
-            const pathParts = pathAfterAttachments.split('/');
+        // Remove any existing size suffix (e.g., -small, -medium, -large)
+        fileName = fileName.replace(/-(small|medium|large)\.webp$/, '.webp');
+        const fileNameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+        
+        // Reconstruct the path with the appropriate size
+        const folderPath = pathParts.slice(0, -1).join('/');
+        const newPath = `assets/attachments/_processed${folderPath}/${fileNameWithoutExt}-${size}${ext}`;
+        
+        console.log(`Generated ${size} path:`, newPath);
+        return newPath;
+    }
+    
+    // Handle the new folder structure: assets/attachments/<project>/image.png
+    if (imgPath.includes('assets/attachments/')) {
+        const attachmentsIndex = imgPath.indexOf('assets/attachments/');
+        const pathAfterAttachments = imgPath.substring(attachmentsIndex + 18); // +18 for 'assets/attachments/'
+        const pathParts = pathAfterAttachments.split('/');
+        
+        console.log("Path after attachments:", pathAfterAttachments);
+        console.log("Path parts:", pathParts);
+        
+        // Check if we have a project folder
+        if (pathParts.length > 0) {
+            const projectFolder = pathParts[0];
+            const fileName = pathParts[pathParts.length - 1];
+            const fileNameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
+            const ext = '.webp';
             
-            console.log("Path after attachments:", pathAfterAttachments);
-            console.log("Path parts:", pathParts);
+            let processedPath;
             
-            // Check if we have a project folder
-            if (pathParts.length > 0) {
-                const projectFolder = pathParts[0];
-                const fileName = pathParts[pathParts.length - 1];
-                const fileNameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.'));
-                const ext = '.webp';
-                
-                let processedPath;
-                
-                // Handle files directly in project folder or in subfolders
-                if (pathParts.length > 2) {
-                    // File is in a subfolder: assets/attachments/project/subfolder/image.png
-                    const subfolder = pathParts.slice(1, -1).join('/');
-                    processedPath = `assets/attachments/_processed${projectFolder}/${subfolder}/${fileNameWithoutExt}-${size}${ext}`;
-                } else {
-                    // File is directly in project folder: assets/attachments/project/image.png
-                    processedPath = `assets/attachments/_processed${projectFolder}/${fileNameWithoutExt}-${size}${ext}`;
-                }
-                
-                console.log(`Generated processed path (${size}):`, processedPath);
-                return processedPath;
+            // Handle files directly in project folder or in subfolders
+            if (pathParts.length > 2) {
+                // File is in a subfolder: assets/attachments/project/subfolder/image.png
+                const subfolder = pathParts.slice(1, -1).join('/');
+                processedPath = `assets/attachments/_processed/${projectFolder}/${subfolder}/${fileNameWithoutExt}-${size}${ext}`;
+            } else {
+                // File is directly in project folder: assets/attachments/project/image.png
+                processedPath = `assets/attachments/_processed/${projectFolder}/${fileNameWithoutExt}-${size}${ext}`;
             }
+            
+            console.log(`Generated processed path (${size}):`, processedPath);
+            return processedPath;
         }
-        
-        // Fallback for other paths
-        const baseName = imgPath.substring(0, imgPath.lastIndexOf('.'));
-        const ext = imgPath.substring(imgPath.lastIndexOf('.'));
-        const fileName = baseName.substring(baseName.lastIndexOf('/') + 1);
-        const dirPath = baseName.substring(0, baseName.lastIndexOf('/'));
-        const fallbackPath = `${dirPath}/_processed/${fileName}/${fileName}-${size}${ext}`;
-        
-        console.log("Using fallback path:", fallbackPath);
-        return fallbackPath;
-    },
+    }
+    
+    // Fallback for other paths
+    const baseName = imgPath.substring(0, imgPath.lastIndexOf('.'));
+    const ext = imgPath.substring(imgPath.lastIndexOf('.'));
+    const fileName = baseName.substring(baseName.lastIndexOf('/') + 1);
+    const dirPath = baseName.substring(0, baseName.lastIndexOf('/'));
+    const fallbackPath = `${dirPath}/_processed/${fileName}/${fileName}-${size}${ext}`;
+    
+    console.log("Using fallback path:", fallbackPath);
+    return fallbackPath;
+},
     
     // Synchronous date processing
     getDisplayDate(yamlDate) {

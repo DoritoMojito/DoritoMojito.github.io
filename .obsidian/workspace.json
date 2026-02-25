@@ -11,14 +11,10 @@
             "id": "89503fe7ec7415d3",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "projects/Filament Drier.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Filament Drier"
+              "title": "New tab"
             }
           }
         ]
@@ -195,14 +191,10 @@
                 "id": "9718886fc34cfeed",
                 "type": "leaf",
                 "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "projects/Guitar.md",
-                    "mode": "source",
-                    "source": false
-                  },
+                  "type": "empty",
+                  "state": {},
                   "icon": "lucide-file",
-                  "title": "Guitar"
+                  "title": "New tab"
                 }
               }
             ]
@@ -220,20 +212,18 @@
   },
   "active": "89503fe7ec7415d3",
   "lastOpenFiles": [
-    "assets/attachments/_processed/Filament Drier/IMG_20220812_150927.webp",
-    "assets/attachments/_processed/Filament Drier/IMG_20220727_104529.webp",
-    "assets/attachments/_processed/Filament Drier/IMG_20220812_150824.webp",
-    "assets/attachments/_processed/Filament Drier/IMG_20220623_142846.webp",
-    "assets/attachments/_processed/Filament Drier/IMG_20220619_125000.webp",
-    "assets/attachments/_processed/Filament Drier",
-    "projects/Key Organiser.md",
-    "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-large.webp",
-    "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-medium.webp",
-    "assets/attachments/_processed/_processed/Under Desk Organiser/20240521_141330-large.webp",
-    "assets/attachments/_processed/_processed/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-small.webp",
-    "assets/attachments/_processed/_processed/Under Desk Organiser/20240521_141330-medium.webp",
+    "assets/attachments/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-large.webp",
+    "assets/attachments/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-medium.webp",
+    "assets/attachments/Wallet/f81d4326-7e90-4d75-9e4e-3bc80ab81ab9-small.webp",
+    "assets/attachments/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-large.webp",
+    "assets/attachments/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-medium.webp",
+    "assets/attachments/Splitbox/89cce57c-0022-448e-a5fb-296175ec8599-small.webp",
+    "assets/attachments/_processed/Under Desk Organiser/20240521_141330-large.webp",
+    "assets/attachments/_processed/Under Desk Organiser/20240521_141330-medium.webp",
+    "assets/attachments/_processed/Under Desk Organiser/20240521_141330-small.webp",
+    "assets/attachments/_processed/Travel Matcha Set/Travel_Matcha_Set_2025-Jun-26_08-55-47AM-000_CustomizedView28892460620-large.webp",
+    "assets/attachments/_processed/Travel Matcha Set/Travel_Matcha_Set_2025-Jun-26_08-55-47AM-000_CustomizedView28892460620-medium.webp",
     "assets/attachments/_processed/_processed/Wallet",
-    "assets/attachments/_processed/_processed/Under Desk Organiser/20240521_141330-small.webp",
     "assets/attachments/_processed/_processed/Under Desk Organiser",
     "assets/attachments/_processed/_processed/Travel Matcha Set",
     "assets/attachments/_processed/_processed/Thickness Gauge",
@@ -242,29 +232,31 @@
     "assets/attachments/_processed/_processed/Pen Stylus Conversion",
     "assets/attachments/_processed/_processed/Pen Cup",
     "assets/attachments/_processed/_processed/Ouros",
-    "projects/Guitar.md",
+    "assets/attachments/_processed/_processed/Key Organiser",
+    "projects/PH_.md",
+    "projects/PH_Untitled.md",
     "projects/Filament Drier.md",
+    "projects/PH_Wallet.md",
+    "projects/PH_Under Desk Organiser.md",
+    "projects/PH_Travel Matcha Set.md",
+    "projects/PH_Thickness Gauge.md",
+    "projects/PH_Splitbox.md",
+    "projects/PH_Planters.md",
+    "projects/PH_Pen Stylus Conversion.md",
+    "projects/PH_Pen Cup.md",
+    "projects/PH_Ouros.md",
+    "projects/PH_Key Organiser.md",
+    "projects/PH_Guitar.md",
+    "projects/PH_Filament Drier.md",
+    "projects/PH_DSOX Cover.md",
+    "projects/PH_Desk Phone Holder Charger.md",
+    "projects/PH_Desk Clamp.md",
+    "projects/PH_Coffee Cup Wall Art.md",
+    "projects/PH_Coffee Cup Planter.md",
+    "projects/Key Organiser.md",
+    "projects/Guitar.md",
     "projects/Coffee Cup Planter.md",
     "projects/Coffee Cup Wall Art.md",
-    "projects/Desk Clamp.md",
-    "projects/Desk Phone Holder Charger.md",
-    "projects/DSOX Cover.md",
-    "projects/Pen Cup.md",
-    "projects/Splitbox.md",
-    "projects/Planters.md",
-    "projects/Pen Stylus Conversion.md",
-    "projects/Ouros.md",
-    "projects/Thickness Gauge.md",
-    "projects/Travel Matcha Set.md",
-    "projects/Under Desk Organiser.md",
-    "projects/Wallet.md",
-    "projects/_Untitled.md",
-    "projects/_WIP/Leather Wallet w Notepad.md",
-    "projects/_WIP/Travel Matcha Set.md",
-    "projects/Work Examples.md",
-    "projects/_WIP/Simplicity.md",
-    "projects/_WIP/Splitbox.md",
-    "projects/_WIP/Guitar.md",
-    "projects/2026-02-11.md"
+    "projects/Desk Clamp.md"
   ]
 }

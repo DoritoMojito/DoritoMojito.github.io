@@ -6,7 +6,7 @@ setlocal EnableDelayedExpansion
 :: ==============================
 set "script_dir=%~dp0"
 set "source_dir=%script_dir%..\assets\attachments"
-set "output_dir=%script_dir%..\assets\attachments\_processed"
+set "output_dir=%script_dir%..\assets\attachments"
 set "projects_dir=%script_dir%..\projects"
 set "max_jobs=5"
 

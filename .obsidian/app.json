@@ -7,11 +7,14 @@
     "assets/css/",
     "assets/js/",
     "assets/webfonts/",
-    "assets/sass/"
+    "assets/sass/",
+    "pushscripts/",
+    "oldpushscripts/"
   ],
   "attachmentFolderPath": "assets/attachments",
   "useMarkdownLinks": true,
   "newLinkFormat": "absolute",
   "alwaysUpdateLinks": true,
-  "promptDelete": false
+  "promptDelete": false,
+  "focusNewTab": false
 }
